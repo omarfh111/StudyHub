@@ -1,0 +1,362 @@
+<?php
+require_once 'C:/xampp/htdocs/WebProject/Controller/reclamationC.php';
+//juste pour tester la liste apres la supprimer
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $reclamation = new Reclamation();
+  $reclamation->setNom($_POST['nom']);
+  $reclamation->setPrenom($_POST['prenom']);
+  $reclamation->setEmail($_POST['email']);
+  $reclamation->setDate(new DateTime($_POST['date']));
+  $reclamation->setObjet($_POST['objet']);
+  $reclamation->setMessage($_POST['message']);
+
+  // Ajouter la réclamation à la base de données
+  $controller->ajouterReclamation($reclamation);
+
+  // Rediriger vers la page afficher_reclamation.php avec un message de succès
+  header("Location: afficher_reclamation.php?success=true");
+  exit;
+}
+
+
+?>
+
+<script>
+  function validateForm() {
+      // Récupérer les éléments du formulaire
+      var nom = document.getElementById("fname").value;
+      var prenom = document.getElementById("lname").value;
+      var email = document.getElementById("eaddress").value;
+      var date = document.getElementById("date").value;
+      var objet = document.getElementById("Objet").value;
+      var message = document.getElementById("message").value;
+
+      // Vérifier que tous les champs sont remplis
+      if (nom === "" || prenom === "" || email === "" || date === "" || objet === "" || message === "") {
+          alert("Tous les champs sont obligatoires!");
+          return false; // Empêche l'envoi du formulaire
+      }
+
+      // Validation du format de l'email
+      var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+      if (!email.match(emailPattern)) {
+          alert("Veuillez entrer un email valide.");
+          return false; // Empêche l'envoi du formulaire
+      }
+
+      // Validation de la longueur du message
+      if (message.length < 10) {
+          alert("Le message doit contenir au moins 10 caractères.");
+          return false; // Empêche l'envoi du formulaire
+      }
+
+      // Si tout est validé, retourner true pour soumettre le formulaire
+      return true;
+  }
+</script>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>StudyHub &mdash; Website by WebNexus</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+  <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
+  <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/jquery-ui.css">
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+
+  <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+
+  <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+
+  <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+
+  <link rel="stylesheet" href="css/aos.css">
+  <link href="css/jquery.mb.YTPlayer.min.css" media="all" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="css/style.css">
+
+
+
+</head>
+
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+  <div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+
+
+    <div class="py-2 bg-light">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-9 d-none d-lg-block">
+            <a href="#" class="small mr-3"><span class="icon-question-circle-o mr-2"></span> Besoin d'aide?</a> 
+            <a href="#" class="small mr-3"><span class="icon-phone2 mr-2"></span>+216 22 200 616 </a> 
+            <a href="#" class="small mr-3"><span class="icon-envelope-o mr-2"></span> StudyHub@gmail.com</a> 
+          </div>
+          <div class="col-lg-3 text-right">
+            <a href="login.html" class="small mr-3"><span class="icon-unlock-alt"></span> S'identifier</a>
+            <a href="register.html" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span>S'inscrire</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <header class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner">
+
+      <div class="container">
+        <div class="d-flex align-items-center">
+          <div class="site-logo">
+            <a href="index.html" class="d-block">
+              <img src="images/logo.jpg" alt="Image" class="img-fluid">
+            </a>
+          </div>
+          <div class="mr-auto">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+              <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                <li>
+                  <a href="index.html" class="nav-link text-left">Accueil</a>
+                </li>
+                <li class="has-children">
+                  <a href="about.html" class="nav-link text-left">About Us</a>
+                  <ul class="dropdown">
+                    <li><a href="teachers.html">Nos Professeurs</a></li>
+                    <li><a href="about.html">Notre Academie</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="admissions.html" class="nav-link text-left">Admissions</a>
+                </li>
+                <li>
+                  <a href="courses.html" class="nav-link text-left">Cours</a>
+                </li>
+                <li class="active">
+                  <a href="contact.html" class="nav-link text-left">Reclamation</a>
+                  </li>
+              </ul>                                                                                                                                                                                                                                                                                          </ul>
+            </nav>
+
+          </div>
+          <div class="ml-auto">
+            <div class="social-wrap">
+              <a href="#"><span class="icon-facebook"></span></a>
+              <a href="#"><span class="icon-twitter"></span></a>
+              <a href="#"><span class="icon-linkedin"></span></a>
+
+              <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span
+                class="icon-menu h3"></span></a>
+            </div>
+          </div>
+         
+        </div>
+      </div>
+
+    </header>
+
+    
+    <div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('images/bg_1.jpg')">
+        <div class="container">
+          <div class="row align-items-end">
+            <div class="col-lg-7">
+              <h2 class="mb-0">Reclamation</h2>
+              <p>Comment pouvons-nous vous aider?.</p>
+            </div>
+          </div>
+        </div>
+      </div> 
+    
+
+    <div class="custom-breadcrumns border-bottom">
+      <div class="container">
+        <a href="index.html">Accueil</a>
+        <span class="mx-3 icon-keyboard_arrow_right"></span>
+        <span class="current">Reclamation</span>
+      </div>
+    </div>
+
+    <div class="custom-breadcrumns border-bottom">
+      <div class="container">
+        <a href="index.html">Accueil</a>
+        <span class="mx-3 icon-keyboard_arrow_right"></span>
+        <span class="current">Reclamation</span>
+      </div>
+    </div>
+    
+    <div class="site-section">
+      <div class="formulaire-conteneur">
+        <div class="container">
+          <h3 class="form-title">Formulaire de réclamation</h3>
+          <!-- Formulaire modifié -->
+           
+          <form action="http://localhost/WebProject/Controller/reclamationC.php" method="POST">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="fname">Nom</label>
+                <input type="text" id="fname" name="nom" class="form-control form-control-lg" required>
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="lname">Prénom</label>
+                <input type="text" id="lname" name="prenom" class="form-control form-control-lg" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="eaddress">Email</label>
+                <input type="text" id="eaddress" name="email" class="form-control form-control-lg" required>
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" class="form-control form-control-lg" required>
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="Objet">Objet</label>
+                <input type="text" id="Objet" name="objet" class="form-control form-control-lg" style="width: 700px;" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 form-group">
+                <label for="message">Message</label>
+                <textarea name="message" id="message" cols="30" rows="10" class="form-control" required></textarea>
+              </div>
+            </div>
+    
+            <div class="row">
+              <div class="col-12">
+                <input type="submit" value="Envoyer" class="btn btn-primary btn-lg px-5">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+  
+  
+    <div class="section-bg style-1" style="background-image: url('images/hero_1.jpg');">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
+              <span class="icon flaticon-mortarboard"></span>
+              <h3>Notre Philosphie</h3>
+              <p>Nous croyons que chaque individu, quel que soit son parcours, mérite d'avoir accès à une éducation de qualité. C'est pourquoi nous nous efforçons de créer un environnement d'apprentissage respectueux et accessible à tous.</p>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
+              <span class="icon flaticon-school-material"></span>
+              <h3>Principe</h3>
+              <p>Excellence académique.</p>
+              <p>Respect de l'intégrité .</p>
+              <p>Pédagogie centrée sur l'apprenant.</p>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
+              <span class="icon flaticon-library"></span>
+              <h3>Clés pour le Succès</h3>
+              <p>La réussite commence par un engagement fort envers ses objectifs. Être assidu, respecter ses délais et maintenir une routine d’étude régulière sont des habitudes fondamentales pour avancer avec succès dans ses études..</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      
+
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3">
+            <p class="mb-4"><img src="images/logo.png" alt="Image" class="img-fluid"></p>
+            <p>Bienvenue sur StudyHub, votre espace d'apprentissage personnalisé où chaque étudiant trouve les ressources et le soutien nécessaires pour atteindre ses objectifs académiques avec succès.</p>  
+            <!--<p><a href="#">Learn More</a></p>-->
+          </div>
+          <div class="col-lg-3">
+            <h3 class="footer-heading"><span>Our Campus</span></h3>
+            <ul class="list-unstyled">
+                <li><a href="#">Acedemic</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Our Interns</a></li>
+                <li><a href="#">Our Leadership</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Human Resources</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-3">
+              <h3 class="footer-heading"><span>Our Courses</span></h3>
+              <ul class="list-unstyled">
+                  <li><a href="#">Math</a></li>
+                  <li><a href="#">Science &amp; Engineering</a></li>
+                  <li><a href="#">Arts &amp; Humanities</a></li>
+                  <li><a href="#">Economics &amp; Finance</a></li>
+                  <li><a href="#">Business Administration</a></li>
+                  <li><a href="#">Computer Science</a></li>
+              </ul>
+          </div>
+          <div class="col-lg-3">
+              <h3 class="footer-heading"><span>Contact</span></h3>
+              <ul class="list-unstyled">
+                  <li><a href="#">Help Center</a></li>
+                  <li><a href="#">Support Community</a></li>
+                  <li><a href="#">Press</a></li>
+                  <li><a href="#">Share Your Story</a></li>
+                  <li><a href="#">Our Supporters</a></li>
+              </ul>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="copyright">
+                <p>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+  </div>
+  <!-- .site-wrap -->
+
+  <!-- loader -->
+  <div id="loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#51be78"/></svg></div>
+
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/jquery.countdown.min.js"></script>
+  <script src="js/bootstrap-datepicker.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/jquery.fancybox.min.js"></script>
+  <script src="js/jquery.sticky.js"></script>
+  <script src="js/jquery.mb.YTPlayer.min.js"></script>
+
+
+
+
+  <script src="js/main.js"></script>
+  <script src="js/validation.js"></script>
+</body>
+
+</html>
