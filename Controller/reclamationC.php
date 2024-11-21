@@ -1,9 +1,8 @@
 <?php
-// Inclure ta classe de connexion à la base de données (config.php)
+
 require_once 'C:\xampp\htdocs\WebProject\config.php';
 require_once 'C:\xampp\htdocs\WebProject\Model\reclamationM.php'; 
 
-// Vérifier si la méthode de la requête est POST (formulaire soumis)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Crée un objet Reclamation avec les données du formulaire
     $reclamation = new Reclamation();
@@ -21,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 class ReclamationController {
 
-    // Fonction pour ajouter une réclamation
+    // ajouter réclamation
     public function ajouterReclamation($reclamation) {
         // Connexion à la base de données
         $db = config::getConnexion();
