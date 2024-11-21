@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     exit();
                 }
             } else {
-                header('Location: 500.php'); // Mauvais mot de passe
+                header('Location: http://localhost/login6/view/back/university/500.php'); // Mauvais mot de passe
                 exit();
             }
         }
