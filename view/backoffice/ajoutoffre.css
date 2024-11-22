@@ -1,0 +1,73 @@
+body {
+    font-family: 'Muli', sans-serif;
+    background-color: #f5f5f5;
+}
+
+.site-navbar {
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.site-logo {
+    width: 150px;
+    height: 150px;
+    background-image: url('logo.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.site-navigation {
+    font-size: 14px;
+}
+
+.site-navigation a {
+    color: #333;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.site-navigation a:hover {
+    color: #007bff;
+}
+
+.custom-breadcrumns {
+    background-color: #f5f5f5;
+    padding: 20px 0;
+}
+
+.site-section {
+    padding: 50px 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
