@@ -1,4 +1,5 @@
 //addEventListener
+//function validerFormulaire(){
 const forum = document.getElementById('registerform');
 forum.addEventListener('submit', function (event) {
     let isValid = true;
@@ -95,3 +96,4 @@ function clearMessages() {
     const messages = document.querySelectorAll('.error-message, .success-message');
     messages.forEach(message => message.remove());
 }
+//}

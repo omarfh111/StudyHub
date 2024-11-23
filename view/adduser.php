@@ -49,7 +49,7 @@
             $result = $userController->addUser($nom, $prenom, $email, $naissance, $tel, encryptPassword($mdp, $key), null, "etudiant");
 
             if ($result) {
-                echo "<p>User added successfully!</p>";
+                header('Location:login.php');
             } else {
                 echo "<p>Failed to add user.</p>";
             }

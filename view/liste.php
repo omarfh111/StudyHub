@@ -110,7 +110,6 @@ function decryptPassword($encryptedPassword, $key) {
         <td><?= $user['naissance']; ?></td>
         <td><?= $user['tel']; ?></td>
         <td><?= $decryptedPassword; ?></td>
-        <td><?= $user['metier']; ?></td>
         <td><?= $user['rol']; ?></td>
         <td class="actions">
             <a href="edit.php?idu=<?= $user['idu']; ?>">Modifier</a>

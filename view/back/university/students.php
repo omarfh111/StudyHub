@@ -1,6 +1,6 @@
 <?php
 require_once 'C:\xampp\htdocs\login6\controller\usercontroller.php';
-error_reporting(E_ALL & ~E_WARNING);
+//error_reporting(E_ALL & ~E_WARNING);
 $userC = new UserController();
 $liste = $userC->listuser();
 $key='00';
@@ -1063,7 +1063,7 @@ function decryptPassword($encryptedPassword, $key) {
                                     <th>Date de naissance</th>
                                     <th>Téléphone</th>
                                     <th>Mot de passe</th>
-                                    <th>Métier</th>
+                                    <th>status</th>
                                     <th>Rôle</th>
                                     <th colspan="2">Actions</th>
                                     </tr>
@@ -1081,7 +1081,17 @@ function decryptPassword($encryptedPassword, $key) {
                                         <td><?= $user['naissance']; ?></td>
                                         <td><?= $user['tel']; ?></td>
                                         <td><?= $decryptedPassword; ?></td>
-                                        <td><?= $user['metier']; ?></td>
+                                        <td>
+                                            <?php if ($user['metier'] === 'ban'): ?>
+                                                <a href="/login6/view/update_status.php?idu=<?= $user['idu']; ?>&action=unban" class="btn btn-success btn-sm">
+                                                    Unban
+                                                </a>
+                                            <?php else: ?>
+                                                <a href="/login6/view/update_status.php?idu=<?= $user['idu']; ?>&action=ban" class="btn btn-danger btn-sm">
+                                                    Ban
+                                                </a>
+                                            <?php endif; ?>
+                                        </td>
                                         <td><?= $user['rol']; ?></td>
                                         <td class="actions">
                                             <a class="btn btn-icon btn-sm" title="Edit" href="/login6/view/edit.php?idu=<?= $user['idu']; ?>"><i class="fa fa-edit"></i></a>

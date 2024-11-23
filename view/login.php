@@ -32,6 +32,14 @@
                 <div class="form-title">
                     <span>S'identifier</span>
                 </div>
+                <div class="alert-box">
+                    <?php if (!empty($alert)) : ?>
+                        <div class="alert alert-danger custom-alert" role="alert">
+                            <i class="bx bx-error-circle"></i>
+                            <?= htmlspecialchars($alert); ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
                 <form action="acces.php" method="post" class="form-inputs" id="loginform">
                 <div class="form-inputs">
                     <div class="input-box">

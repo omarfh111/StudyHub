@@ -242,3 +242,49 @@ body{
 .input-submit:hover{
     gap: 15px;
 }
+/* Conteneur principal pour les alertes */
+.alert-box {
+    width: 100%;
+    margin: 0 auto 20px;
+    text-align: center;
+}
+
+/* Design de l'alerte */
+.alert.custom-alert {
+    display: inline-block;
+    background: #ffcccc;
+    color: #cc0000;
+    border: 1px solid #cc0000;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    max-width: 400px;
+}
+
+/* Icône d'erreur */
+.alert.custom-alert i {
+    font-size: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
+    color: #cc0000;
+}
+
+/* Animation d'apparition */
+.alert.custom-alert {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

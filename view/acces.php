@@ -18,6 +18,7 @@ function decryptPassword($encryptedPassword, $key) {
 
     return $decryptedPassword;
 }
+$alert = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
@@ -37,17 +38,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Compare les mots de passe
             if ($decryptedPassword === $mdp) {
-                if ($user['rol'] === 'admin') {
+                if ($user['metier'] === 'unban') {
+                if (in_array($user['rol'], ['admin', 'prof'])) {
                     header('Location: http://localhost/login6/view/back/university/students.php');
                     exit();
-                } elseif (in_array($user['rol'], ['etudiant', 'prof'])) {
+                } elseif ($user['rol'] === 'etudiant') {
                     header('Location: index.php');
                     exit();
                 }
+                } else {
+                    header('Location: http://localhost/login6/view/back/university/404.php'); // Mauvais mot de passe
+                    exit();
+                }
             } else {
-                header('Location: http://localhost/login6/view/back/university/500.php'); // Mauvais mot de passe
-                exit();
+                $alert = "Mot de passe incorrect.";
             }
+        }
+        else{
+            $alert = "Utilisateur introuvable.";
         }
     } catch (PDOException $e) {
         // Redirige vers une page d'erreur en cas de problème avec la base de données
@@ -55,4 +63,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 }
+include 'login.php';
 ?>

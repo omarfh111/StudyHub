@@ -32,6 +32,15 @@ class UserController {
             die('Error:' . $e->getMessage());
         }
     }
+    public function updateStatus($userId, $metier) {
+        try {
+            $pdo = config::getConnexion();
+            $stmt = $pdo->prepare("UPDATE user SET metier = :metier WHERE idu = :idu");
+            $stmt->execute(['metier' => $metier, 'idu' => $userId]);
+        } catch (PDOException $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
     function updateuser($user, $idu)
 {
     var_dump($user);
