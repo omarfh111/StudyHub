@@ -41,14 +41,13 @@ function decryptPassword($encryptedPassword, $key) {
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <link rel="icon" href="favicon.ico" type="image/x-icon"/>
-<title>:: Ericsson :: Students</title>
+<title>:: Ericsson :: Staff</title>
 
 <!-- Bootstrap Core and vandor -->
 <link rel="stylesheet" href="../assets/plugins/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" href="../assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
 <link rel="stylesheet" href="../assets/plugins/dropify/css/dropify.min.css">
 <link rel="stylesheet" href="../assets/plugins/summernote/dist/summernote.css"/>
-<link rel="stylesheet" href="../assets/plugins/sweetalert/sweetalert.css">
 
 <!-- Core css -->
 <link rel="stylesheet" href="../assets/css/style.min.css"/>
@@ -80,7 +79,7 @@ function decryptPassword($encryptedPassword, $key) {
             </div>
             <div class="hright">
                 <a href="javascript:void(0)" class="nav-link icon right_tab"><i class="fe fe-align-right"></i></a>
-                <a href="/login6/view/logout.php" class="nav-link icon settingbar"><i class="fe fe-power"></i></a>                
+                <a href="login.html" class="nav-link icon settingbar"><i class="fe fe-power"></i></a>                
             </div>
         </div>
     </div>
@@ -818,8 +817,8 @@ function decryptPassword($encryptedPassword, $key) {
                     <ul class="metismenu">
                         <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
                         <li><a href="professors.php"><i class="fa fa-black-tie"></i><span>Professors</span></a></li>
-                        <li><a href="staff.php"><i class="fa fa-user-circle-o"></i><span>Staff</span></a></li>
-                        <li class="active"><a href="students.php"><i class="fa fa-users"></i><span>Students</span></a></li>
+                        <li class="active"><a href="staff.php"><i class="fa fa-user-circle-o"></i><span>Staff</span></a></li>
+                        <li><a href="students.php"><i class="fa fa-users"></i><span>Students</span></a></li>
                         <li><a href="departments.html"><i class="fa fa-users"></i><span>Departments</span></a></li>
                         <li><a href="courses.html"><i class="fa fa-graduation-cap"></i><span>Courses</span></a></li>                        
                         <li><a href="library.html"><i class="fa fa-book"></i><span>Library</span></a></li>
@@ -996,7 +995,7 @@ function decryptPassword($encryptedPassword, $key) {
                             </div>
                             <div class="dropdown d-flex">
                                 <a href="javascript:void(0)" class="chip ml-3" data-toggle="dropdown">
-                                    <span class="avatar" style="background-image: url(../assets/images/xs/avatar5.jpg)"></span> <?php echo $nom . " (" . $role . ")"; ?></a>
+                                <span class="avatar" style="background-image: url(../assets/images/xs/avatar5.jpg)"></span> <?php echo $nom . " (" . $role . ")"; ?></a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                     <a class="dropdown-item" href="page-profile.html"><i class="dropdown-icon fe fe-user"></i> Profile</a>
                                     <a class="dropdown-item" href="app-setting.html"><i class="dropdown-icon fe fe-settings"></i> Settings</a>
@@ -1017,16 +1016,17 @@ function decryptPassword($encryptedPassword, $key) {
             <div class="container-fluid">
                 <div class="d-flex justify-content-between align-items-center ">
                     <div class="header-action">
-                        <h1 class="page-title">Students</h1>
+                        <h1 class="page-title">Staff</h1>
                         <ol class="breadcrumb page-breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Ericsson</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Students</li>
+                            <li class="breadcrumb-item active" aria-current="page">Staff</li>
                         </ol>
                     </div>
                     <ul class="nav nav-tabs page-header-tab">
-                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#Student-all">List View</a></li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Student-profile">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Student-add">Add</a></li>
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#Staff-all">List View</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Staff-grid">Grid View</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Staff-profile">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Staff-add">Add</a></li>
                     </ul>
                 </div>
             </div>
@@ -1034,38 +1034,10 @@ function decryptPassword($encryptedPassword, $key) {
         <div class="section-body mt-4">
             <div class="container-fluid">
                 <div class="tab-content">
-                    <div class="tab-pane active" id="Student-all">
+                    <div class="tab-pane active" id="Staff-all">
                         <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-2 col-md-4 col-sm-6">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Roll No.">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-md-4 col-sm-6">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-6">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Department">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-md-4 col-sm-6">
-                                        <div class="input-group">
-                                            <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Admission Date">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-md-4 col-sm-6">
-                                        <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-block" title="">Search</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="table-responsive card">
-                        <table class="table table-hover table-vcenter table-striped mb-0 text-nowrap">
+                            <div class="table-responsive">
+                            <table class="table table-hover table-vcenter table-striped mb-0 text-nowrap">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -1085,7 +1057,7 @@ function decryptPassword($encryptedPassword, $key) {
                                     <?php
                                     foreach ($liste as $user) {
                                         // Vérifier si l'utilisateur a le rôle 'prof'
-                                        if ($user['rol'] === 'etudiant') {
+                                        if ($user['rol'] === 'admin') {
                                             $decryptedPassword = decryptPassword($user['mdp'], $key);
                                     ?>
                                         <tr>
@@ -1119,15 +1091,146 @@ function decryptPassword($encryptedPassword, $key) {
                                     ?>
                                 </tbody>
                             </table>
+
+                            </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="Student-profile">
+                    <div class="tab-pane" id="Staff-grid">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <img class="card-profile-img" src="../assets/images/sm/avatar1.jpg" alt="">
+                                        <h5 class="mb-0">Peter Richards</h5>
+                                        <span>Librarian</span>
+                                        <div class="text-muted">+ (916) 369-7180</div>
+                                        <p class="mb-4 mt-3">449 Thompson St, Conway, SC, 29527</p>
+                                        <button class="btn btn-primary btn-sm">Read More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body text-center ribbon">
+                                        <div class="ribbon-box orange" data-toggle="tooltip" title="Permanent"><i class="fa fa-star"></i></div>
+                                        <img class="card-profile-img" src="../assets/images/sm/avatar2.jpg" alt="">
+                                        <h5 class="mb-0">Ken Smith</h5>
+                                        <span>Clerk</span>
+                                        <div class="text-muted">+ (916) 369-7180</div>
+                                        <p class="mb-4 mt-3">449 Thompson St, Conway, SC, 29527</p>
+                                        <button class="btn btn-primary btn-sm">Read More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <img class="card-profile-img" src="../assets/images/sm/avatar3.jpg" alt="">
+                                        <h5 class="mb-0">Alan Johnson</h5>
+                                        <span>Librarian</span>
+                                        <div class="text-muted">+ (916) 369-7180</div>
+                                        <p class="mb-4 mt-3">5290 NE 50th Rd, Osceola, MO, 64776</p>
+                                        <button class="btn btn-primary btn-sm">Read More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <img class="card-profile-img" src="../assets/images/sm/avatar4.jpg" alt="">
+                                        <h5 class="mb-0">Alice A Smith</h5>
+                                        <span>Clerk</span>
+                                        <div class="text-muted">+ (916) 369-7180</div>
+                                        <p class="mb-4 mt-3">462 Acacia Ave, Blythe, CA, 92225</p>
+                                        <button class="btn btn-primary btn-sm">Read More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body text-center ribbon">
+                                        <div class="ribbon-box orange" data-toggle="tooltip" title="Permanent"><i class="fa fa-star"></i></div>
+                                        <img class="card-profile-img" src="../assets/images/sm/avatar5.jpg" alt="">
+                                        <h5 class="mb-0">Gerald K Smith</h5>
+                                        <span>Receptionist</span>
+                                        <div class="text-muted">+ (916) 369-7180</div>
+                                        <p class="mb-4 mt-3">449 Thompson St, Conway, SC, 29527</p>
+                                        <button class="btn btn-primary btn-sm">Read More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-status bg-yellow"></div>
+                                    <div class="card-body text-center">
+                                        <img class="card-profile-img" src="../assets/images/sm/avatar6.jpg" alt="">
+                                        <h5 class="mb-0">Peter Richards</h5>
+                                        <span>Purchase Officer</span>
+                                        <div class="text-muted">+ (916) 369-7180</div>
+                                        <p class="mb-4 mt-3">449 Thompson St, Conway, SC, 29527</p>
+                                        <button class="btn btn-primary btn-sm">Read More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <img class="card-profile-img" src="../assets/images/sm/avatar3.jpg" alt="">
+                                        <h5 class="mb-0">Alan Johnson</h5>
+                                        <span>Peon</span>
+                                        <div class="text-muted">+ (916) 369-7180</div>
+                                        <p class="mb-4 mt-3">5290 NE 50th Rd, Osceola, MO, 64776</p>
+                                        <button class="btn btn-primary btn-sm">Read More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body text-center ribbon">
+                                        <div class="ribbon-box green" data-toggle="tooltip" title="Assistent"><i class="fa fa-star"></i></div>
+                                        <img class="card-profile-img" src="../assets/images/sm/avatar2.jpg" alt="">
+                                        <h5 class="mb-0">Ken Smith</h5>
+                                        <span>Lab Assistent</span>
+                                        <div class="text-muted">+ (916) 369-7180</div>
+                                        <p class="mb-4 mt-3">449 Thompson St, Conway, SC, 29527</p>
+                                        <button class="btn btn-primary btn-sm">Read More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body text-center ribbon">
+                                        <div class="ribbon-box orange" data-toggle="tooltip" title="Permanent"><i class="fa fa-star"></i></div>
+                                        <img class="card-profile-img" src="../assets/images/sm/avatar5.jpg" alt="">
+                                        <h5 class="mb-0">Gerald K Smith</h5>
+                                        <span>Peon</span>
+                                        <div class="text-muted">+ (916) 369-7180</div>
+                                        <p class="mb-4 mt-3">449 Thompson St, Conway, SC, 29527</p>
+                                        <button class="btn btn-primary btn-sm">Read More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <img class="card-profile-img" src="../assets/images/sm/avatar4.jpg" alt="">
+                                        <h5 class="mb-0">Alice A Smith</h5>
+                                        <span>Driver</span>
+                                        <div class="text-muted">+ (916) 369-7180</div>
+                                        <p class="mb-4 mt-3">462 Acacia Ave, Blythe, CA, 92225</p>
+                                        <button class="btn btn-primary btn-sm">Read More</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="Staff-profile">
                         <div class="row">
                             <div class="col-xl-4 col-md-12">
                                 <div class="card">
                                     <div class="card-body w_user">
                                         <div class="user_avtar">
-                                            <img class="rounded-circle" src="../assets/images/sm/avatar2.jpg" alt="">
+                                            <img class="rounded-circle" src="../assets/images/sm/avatar1.jpg" alt="">
                                         </div>
                                         <div class="wid-u-info">
                                             <h5>Dessie Parks</h5>
@@ -1160,47 +1263,47 @@ function decryptPassword($encryptedPassword, $key) {
 									<div class="card-body">
 										<p>Hello I am Celena Anderson a Clerk in Xyz College USA. I love to work with all my college staff and seniour professors.</p>
 										<ul class="list-group">
-                                            <li class="list-group-item">
-                                                <b>Gender </b>
-                                                <div class="pull-right">Female</div>
+											<li class="list-group-item">
+												<b>Gender </b>
+												<div>Female</div>
+											</li>
+											<li class="list-group-item">
+												<b>Operation Done </b>
+												<div>30+</div>
+											</li>
+											<li class="list-group-item">
+												<b>Degree </b>
+												<div>M.Com.</div>
                                             </li>
                                             <li class="list-group-item">
-                                                <b>Department</b>
-                                                <div class="pull-right">Mechanical</div>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <b>Email </b>
-                                                <div class="pull-right">test@example.com</div>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <b>Phone</b>
-                                                <div class="pull-right">1234567890</div>
-                                            </li>
+												<b>Designation</b>
+												<div>Jr. Clerk</div>
+											</li>
                                             <li class="list-group-item">
                                                 <div class="clearfix">
-                                                    <div class="float-left"><strong>Study</strong></div>
+                                                    <div class="float-left"><strong>Telly</strong></div>
                                                     <div class="float-right"><small class="text-muted">35%</small></div>
                                                 </div>
                                                 <div class="progress progress-xxs">
-                                                    <div class="progress-bar bg-pink" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar bg-azure" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
                                                 <div class="clearfix">
-                                                    <div class="float-left"><strong>Cricket</strong></div>
+                                                    <div class="float-left"><strong>Account</strong></div>
                                                     <div class="float-right"><small class="text-muted">72%</small></div>
                                                 </div>
                                                 <div class="progress progress-xxs">
-                                                    <div class="progress-bar bg-blue" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar bg-red" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
                                                 <div class="clearfix">
-                                                    <div class="float-left"><strong>Music</strong></div>
+                                                    <div class="float-left"><strong>MS Office</strong></div>
                                                     <div class="float-right"><small class="text-muted">60%</small></div>
                                                 </div>
                                                 <div class="progress progress-xxs">
-                                                    <div class="progress-bar bg-green" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar bg-blue" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </li>
                                         </ul>
@@ -1351,7 +1454,7 @@ function decryptPassword($encryptedPassword, $key) {
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="Student-add">
+                    <div class="tab-pane" id="Staff-add">
                         <div class="row clearfix">
                             <div class="col-lg-8 col-md-12 col-sm-12">
                                 <div class="card">
@@ -1362,68 +1465,76 @@ function decryptPassword($encryptedPassword, $key) {
                                             <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
                                         </div>
                                     </div>
-                                    <form action="/view/edit.php" method="post" class="card-body">
-                                        <div class="form-group row">
-                                            <label for="nom" class="col-md-3 col-form-label">Nom <span class="text-danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <input  type="text" id="nom" name="nom" value="<?= htmlspecialchars($user['nom']); ?>" class="form-control" placeholder="Enter non a change">
+                                    <div class="card-body">
+                                        <div class="row clearfix">
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label>First Name</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="prenom" class="col-md-3 col-form-label">Prenom <span class="text-danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="text" id="prenom" name="prenom" value="<?= htmlspecialchars($user['prenom']); ?>" class="form-control" placeholder="Enter prenom a change">
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Last Name</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="email" class="col-md-3 col-form-label">Email <span class="text-danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="email" id="email" name="email" value="<?= htmlspecialchars($user['email']); ?>" class="form-control">
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Joining Date</label>
+                                                    <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="naissance" class="col-md-3 col-form-label">Date de naissance</label>
-                                            <div class="col-md-9">
-                                                <input type="date" id="naissance" name="naissance" value="<?= htmlspecialchars($user['naissance']); ?>" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="tel" class="col-md-3 col-form-label">Téléphone <span class="text-danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="metier" class="col-md-3 col-form-label">Metier <span class="text-danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="text" id="metier" name="metier" value="<?= htmlspecialchars($user['metier']); ?>" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="newmdp" class="col-md-3 col-form-label">Nouveau Mot de Passe <span class="text-danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="password" id="mdp" name="mdp"  value="<?= htmlspecialchars($user['mdp']); ?>" placeholder="Laissez vide pour conserver l'ancien mot de passe" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for ="role" class="col-md-3 col-form-label">Role <span class="text-danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <select id="role" class="form-control input-height" name="role">
-                                                    <option value="">Select...</option>
-                                                    <option value="admin" <?= $user['rol'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
-                                                    <option value="prof" <?= $user['rol'] === 'prof' ? 'selected' : ''; ?>>Prof</option>
-                                                    <option value="etudiant" <?= $user['rol'] === 'etudiant' ? 'selected' : ''; ?>>Etudiant</option>
+                                            <div class="col-md-6 col-sm-12">
+                                                <label>Gender</label>
+                                                <select class="form-control show-tick">
+                                                    <option value="">-- Gender --</option>
+                                                    <option value="10">Male</option>
+                                                    <option value="20">Female</option>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Profile Picture</label>
-                                            <div class="col-md-9">
-                                                <input type="file" class="dropify">
-                                                <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Department</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Position</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Phone</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Enter Your Email</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-group mt-2 mb-3">
+                                                    <input type="file" class="dropify">
+                                                    <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-group mt-3">
+                                                    <label>Messages</label>
+                                                    <textarea rows="4" class="form-control no-resize" placeholder="Please type what you want..."></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                <button type="submit" class="btn btn-outline-secondary">Cancel</button>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-12 col-sm-12">
@@ -1530,12 +1641,10 @@ function decryptPassword($encryptedPassword, $key) {
 <script src="../assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="../assets/plugins/dropify/js/dropify.min.js"></script>
 <script src="../assets/bundles/summernote.bundle.js"></script>
-<script src="../assets/plugins/sweetalert/sweetalert.min.js"></script>
 
 <!-- Start project main js  and page js -->
 <script src="../assets/js/core.js"></script>
 <script src="assets/js/form/dropify.js"></script>
 <script src="assets/js/page/summernote.js"></script>
-<script src="assets/js/page/dialogs.js"></script>
 </body>
 </html>

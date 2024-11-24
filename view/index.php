@@ -1,3 +1,22 @@
+<?php 
+require_once '../config.php';
+session_start();
+
+if (isset($_COOKIE['studyhub'])) {
+  // Décoder les données du cookie
+  $userData = json_decode($_COOKIE['studyhub'], true);
+
+  $email = $userData['email'];
+  $nom = $userData['nom'];
+  $role = $userData['role'];
+
+  echo "Bienvenue, " . $nom . " (" . $role . ")!"; // Afficher le nom et rôle
+} else {
+  header('Location: login.php');
+  exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,8 +74,8 @@
             <a href="#" class="small mr-3"><span class="icon-envelope-o mr-2"></span> StudyHub@gmail.com</a> 
           </div>
           <div class="col-lg-3 text-right">
-            <a href="login.html" class="small mr-3"><span class="icon-unlock-alt"></span> S'identifier</a>
-            <a href="register.html" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span>S'inscrire</a>
+            <a href="" class="small mr-3"><span class="icon-user"></span> <?php echo $nom . " (" . $role . ")"; ?></a>
+            <a href="logout.php" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-lock"></span> Se Deconnecter</a>
           </div>
         </div>
       </div>
@@ -79,7 +98,7 @@
                 <li class="has-children">
                   <a href="about.html" class="nav-link text-left">About Us</a>
                   <ul class="dropdown">
-                    <li><a href="prof.html">Nos Proffesseurs</a></li>
+                    <li><a href="prof.php">Nos Proffesseurs</a></li>
                     <li><a href="about.html">Notre academie</a></li>
                   </ul>
                 </li>

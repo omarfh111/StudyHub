@@ -1,3 +1,7 @@
+<?php
+    // Vérifiez si un cookie "user_name" existe pour préremplir le champ email
+    $email = isset($_COOKIE['user_name']) ? $_COOKIE['user_name'] : '';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,6 +56,10 @@
                         </div>
                     <div class="forgot-pass">
                         <a href="#">Mot de passe oublié ?</a>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="remember" id="remember" value="1">
+                        <label for="remember" class="form-check-label">Se souvenir de moi</label>
                     </div>
                     <div class="input-box">
                         <button type="submit" class="input-submit">
