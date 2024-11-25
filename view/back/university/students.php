@@ -819,8 +819,8 @@ function decryptPassword($encryptedPassword, $key) {
                         <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
                         <li><a href="professors.php"><i class="fa fa-black-tie"></i><span>Professors</span></a></li>
                         <li><a href="staff.php"><i class="fa fa-user-circle-o"></i><span>Staff</span></a></li>
-                        <li class="active"><a href="students.php"><i class="fa fa-users"></i><span>Students</span></a></li>
-                        <li><a href="departments.html"><i class="fa fa-users"></i><span>Departments</span></a></li>
+                        <li class="active"><a href="students.php"><i class="fa fa-users"></i><span>Users</span></a></li>
+                        <li><a href="departments.php"><i class="fa fa-users"></i><span>Students</span></a></li>
                         <li><a href="courses.html"><i class="fa fa-graduation-cap"></i><span>Courses</span></a></li>                        
                         <li><a href="library.html"><i class="fa fa-book"></i><span>Library</span></a></li>
                         <li><a href="holiday.html"><i class="fa fa-bullhorn"></i><span>Holiday</span></a></li>
@@ -1031,41 +1031,110 @@ function decryptPassword($encryptedPassword, $key) {
                 </div>
             </div>
         </div>
+        <?php
+require_once 'C:\xampp\htdocs\login6\config.php';
+
+// Initialiser $filters
+$filters = [
+    'nom' => '',
+    'prenom' => '',
+    'email' => '',
+    'tel' => '',
+];
+
+// Récupérer les données GET si elles existent
+if (isset($_GET['nom']) || isset($_GET['prenom']) || isset($_GET['email']) || isset($_GET['tel'])) {
+    $filters['nom'] = $_GET['nom'] ?? '';
+    $filters['prenom'] = $_GET['prenom'] ?? '';
+    $filters['email'] = $_GET['email'] ?? '';
+    $filters['tel'] = $_GET['tel'] ?? '';
+}
+
+// Appeler une fonction (fetchUsers) pour récupérer les utilisateurs en fonction des filtres
+$liste = fetchUsers($filters);
+
+function fetchUsers($filters)
+{
+    $db = config::getConnexion();
+
+    // Construire la requête SQL avec des conditions dynamiques
+    $conditions = [];
+    $params = [];
+
+    if (!empty($filters['nom'])) {
+        $conditions[] = "nom LIKE :nom";
+        $params[':nom'] = "%" . $filters['nom'] . "%";
+    }
+
+    if (!empty($filters['prenom'])) {
+        $conditions[] = "prenom LIKE :prenom";
+        $params[':prenom'] = "%" . $filters['prenom'] . "%";
+    }
+
+    if (!empty($filters['email'])) {
+        $conditions[] = "email LIKE :email";
+        $params[':email'] = "%" . $filters['email'] . "%";
+    }
+
+    if (!empty($filters['tel'])) {
+        $conditions[] = "tel LIKE :tel";
+        $params[':tel'] = "%" . $filters['tel'] . "%";
+    }
+
+    // Ajouter les conditions à la requête SQL
+    $sql = "SELECT * FROM user";
+    if (count($conditions) > 0) {
+        $sql .= " WHERE " . implode(" AND ", $conditions);
+    }
+
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Erreur : " . $e->getMessage();
+        return [];
+    }
+}
+?>
         <div class="section-body mt-4">
             <div class="container-fluid">
                 <div class="tab-content">
                     <div class="tab-pane active" id="Student-all">
                         <div class="card">
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-2 col-md-4 col-sm-6">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Roll No.">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-md-4 col-sm-6">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-6">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Department">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-md-4 col-sm-6">
-                                        <div class="input-group">
-                                            <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Admission Date">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-md-4 col-sm-6">
-                                        <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-block" title="">Search</a>
-                                    </div>
-                                </div>
+                            <div class="row">
+                    <form method="GET" action="students.php" class="d-flex flex-wrap">
+                        <div class="col-lg-2 col-md-4 col-sm-6">
+                            <div class="input-group">
+                                <input type="text" name="nom" class="form-control" placeholder="Nom">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-6">
+                            <div class="input-group">
+                                <input type="text" name="prenom" class="form-control" placeholder="Prénom">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6">
+                            <div class="input-group">
+                                <input type="text" name="email" class="form-control" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-6">
+                            <div class="input-group">
+                                <input type="text" name="tel" class="form-control" placeholder="Téléphone">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-6">
+                            <button type="submit" class="btn btn-sm btn-primary btn-block">Rechercher</button>
+                        </div>
+                    </form>
+                </div>
+
                             </div>
                         </div>
                         <div class="table-responsive card">
-                        <table class="table table-hover table-vcenter table-striped mb-0 text-nowrap">
+                            <table class="table table-hover table-vcenter table-striped mb-0 text-nowrap">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -1074,29 +1143,27 @@ function decryptPassword($encryptedPassword, $key) {
                                         <th>Email</th>
                                         <th>Date de naissance</th>
                                         <th>Téléphone</th>
-                                        <th>Mot de passe</th>
                                         <th>Status</th>
                                         <th>Rôle</th>
-                                        <th colspan="2">Actions</th>
+                                        <th>Mot de passe</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Professeurs -->
-                                    <?php
-                                    foreach ($liste as $user) {
-                                        // Vérifier si l'utilisateur a le rôle 'prof'
-                                        if ($user['rol'] === 'etudiant') {
-                                            $decryptedPassword = decryptPassword($user['mdp'], $key);
-                                    ?>
-                                        <tr>
-                                            <td><?= $user['idu']; ?></td>
-                                            <td><?= $user['nom']; ?></td>
-                                            <td><?= $user['prenom']; ?></td>
-                                            <td><?= $user['email']; ?></td>
-                                            <td><?= $user['naissance']; ?></td>
-                                            <td><?= $user['tel']; ?></td>
-                                            <td><?= $decryptedPassword; ?></td>
-                                            <td>
+                                    <?php if (!empty($liste)): ?>
+                                        <?php foreach ($liste as $user):
+                                            $decryptedPassword = decryptPassword($user['mdp'], $key); ?>
+                                            <tr>
+                                                <td><?= htmlspecialchars($user['idu']); ?></td>
+                                                <td><?= htmlspecialchars($user['nom']); ?></td>
+                                                <td><?= htmlspecialchars($user['prenom']); ?></td>
+                                                <td><?= htmlspecialchars($user['email']); ?></td>
+                                                <td><?= htmlspecialchars($user['naissance']); ?></td>
+                                                <td><?= htmlspecialchars($user['tel']); ?></td>
+                                                <td><?= htmlspecialchars($user['metier']); ?></td>
+                                                <td><?= htmlspecialchars($user['rol']); ?></td>
+                                                <td><?= htmlspecialchars($decryptedPassword); ?></td>
+                                                <td>
                                                 <?php if ($user['metier'] === 'ban'): ?>
                                                     <a href="/login6/view/update_status.php?idu=<?= $user['idu']; ?>&action=unban" class="btn btn-success btn-sm">
                                                         Unban
@@ -1107,19 +1174,21 @@ function decryptPassword($encryptedPassword, $key) {
                                                     </a>
                                                 <?php endif; ?>
                                             </td>
-                                            <td><?= $user['rol']; ?></td>
                                             <td class="actions">
                                                 <a class="btn btn-icon btn-sm" title="Edit" href="/login6/view/edit.php?idu=<?= $user['idu']; ?>"><i class="fa fa-edit"></i></a>
                                                 <a class="btn btn-icon btn-sm js-sweetalert" title="Delete" href="/login6/view/deluser.php?idu=<?php echo $user['idu']; ?>"><i class="fa fa-trash-o text-danger"></i></a>
                                             </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="9" class="text-center">Aucun utilisateur trouvé</td>
                                         </tr>
-                                    <?php
-                                        }
-                                    }
-                                    ?>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
+
                     </div>
                     <div class="tab-pane" id="Student-profile">
                         <div class="row">

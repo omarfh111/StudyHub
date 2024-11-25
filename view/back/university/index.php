@@ -58,7 +58,7 @@ if (isset($_COOKIE['studyhub'])) {
             </div>
             <div class="hright">
                 <a href="javascript:void(0)" class="nav-link icon right_tab"><i class="fe fe-align-right"></i></a>
-                <a href="login.html" class="nav-link icon settingbar"><i class="fe fe-power"></i></a>                
+                <a href="/login6/view/logout.php" class="nav-link icon settingbar"><i class="fe fe-power"></i></a>                
             </div>
         </div>
     </div>
@@ -797,8 +797,8 @@ if (isset($_COOKIE['studyhub'])) {
                         <li class="active"><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
                         <li><a href="professors.php"><i class="fa fa-black-tie"></i><span>Professors</span></a></li>
                         <li><a href="staff.php"><i class="fa fa-user-circle-o"></i><span>Staff</span></a></li>
-                        <li><a href="students.php"><i class="fa fa-users"></i><span>Students</span></a></li>
-                        <li><a href="departments.html"><i class="fa fa-users"></i><span>Departments</span></a></li>
+                        <li><a href="students.php"><i class="fa fa-users"></i><span>Users</span></a></li>
+                        <li><a href="departments.php"><i class="fa fa-users"></i><span>Students</span></a></li>
                         <li><a href="courses.html"><i class="fa fa-graduation-cap"></i><span>Courses</span></a></li>                        
                         <li><a href="library.html"><i class="fa fa-book"></i><span>Library</span></a></li>
                         <li><a href="holiday.html"><i class="fa fa-bullhorn"></i><span>Holiday</span></a></li>

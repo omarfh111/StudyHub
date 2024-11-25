@@ -55,7 +55,7 @@
                             <i class="bx bx-lock-alt icon"></i>
                         </div>
                     <div class="forgot-pass">
-                        <a href="#">Mot de passe oublié ?</a>
+                        <a href="/login6/view/back/university/forgot-password.html">Mot de passe oublié ?</a>
                     </div>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" name="remember" id="remember" value="1">

@@ -29,8 +29,11 @@ forum.addEventListener('submit', function (event) {
 
     let ns = new Date(naissance.value);
     let today = new Date();
-    if (isNaN(ns.getTime()) || ns >= today) {
-        showErrorMessage(naissance, "La date de naissance doit être inférieure à la date d'aujourd'hui.");
+    let ageMin = 16;
+    let dateMin = new Date(today.getFullYear() - ageMin, today.getMonth(), today.getDate());
+    
+    if (isNaN(ns.getTime()) || ns >= dateMin) {
+        showErrorMessage(naissance, "La date de naissance doit être inférieure d'au moins 16 ans à la date d'aujourd'hui.");
         isValid = false;
     } else {
         showSuccessMessage(naissance, "Date de naissance valide.");

@@ -73,8 +73,8 @@ $liste = $userC->listuser();
             <a href="#" class="small mr-3"><span class="icon-envelope-o mr-2"></span> StudyHub@gmail.com</a> 
           </div>
           <div class="col-lg-3 text-right">
-            <a href="login.html" class="small mr-3"><span class="icon-unlock-alt"></span> S'identifier</a>
-            <a href="register.html" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> S'inscrire</a>
+          <a href="" class="small mr-3"><span class="icon-user"></span> <?php echo $nom . " (" . $role . ")"; ?></a>
+          <a href="logout.php" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-lock"></span> Se Deconnecter</a>
           </div>
         </div>
       </div>
@@ -92,7 +92,7 @@ $liste = $userC->listuser();
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
                 <li>
-                  <a href="index.html" class="nav-link text-left">Accueil</a>
+                  <a href="index.php" class="nav-link text-left">Accueil</a>
                 </li>
                 <li class="has-children">
                   <a href="about.html" class="nav-link text-left">About Us</a>
