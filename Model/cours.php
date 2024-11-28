@@ -1,19 +1,20 @@
 <?php
-require_once __DIR__ . "/../config.php";
+require_once __DIR__ . '/../config.php';
 
 class Cours {
     private $pdo;
+    private $idc;
     private $titre_c;
     private $description_c;
     private $niveau;
     private $nombre_consultation;
     private $duree;
-    private $contenu;           
+    private $contenu;
     private $position;
 
-
-    public function __construct($pdo, $titre_c, $description_c, $niveau, $nombre_consultation, $duree, $contenu, $position) {
-        $this->pdo = $pdo;
+    public function __construct($pdo = null, $idc = null, $titre_c = null, $description_c = null, $niveau = null, $nombre_consultation = null, $duree = null, $contenu = null, $position = null) {
+        $this->pdo = $pdo ?? config::getConnexion();
+        $this->idc = $idc;
         $this->titre_c = $titre_c;
         $this->description_c = $description_c;
         $this->niveau = $niveau;
@@ -21,22 +22,107 @@ class Cours {
         $this->duree = $duree;
         $this->contenu = $contenu;
         $this->position = $position;
-   
     }
 
-
     public function addCours() {
-        try{
-            $sql="INSERT INTO cours (titre_c, description_c, niveau, nombre_consultation, duree, contenu, position) VALUES (:titre_c, :description_c, :niveau, :nombre_consultation, :duree, :contenu, :position)";
+        $sql = "INSERT INTO cours (titre_c, description_c, niveau, nombre_consultation, duree, contenu, position) 
+                VALUES (:titre_c, :description_c, :niveau, :nombre_consultation, :duree, :contenu, :position)";
+        try {
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':titre_c', $this->titre_c);
+            $stmt->execute([
+                'titre_c' => $this->titre_c,
+                'description_c' => $this->description_c,
+                'niveau' => $this->niveau,
+                'nombre_consultation' => $this->nombre_consultation,
+                'duree' => $this->duree,
+                'contenu' => $this->contenu,
+                'position' => $this->position
+            ]);
             return true;
-        }catch(PDOException $e){
-            die("could not add:" . $e->getMessage());
-
-
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de l'ajout du cours : " . $e->getMessage());
         }
     }
 
- 
+    public function getidc(){
+        return $this->idc;
+    }
+    public function setidc($idc){
+        $this->idc=$idc;
+    }
+    public function gettitre_c(){
+        return $this->titre_c;
+    }
+    public function settitre_c($titre_c){
+        $this->titre_c=$titre_c;
+    }
+    public function getdescription_c(){
+        return $this->description_c;
+    }
+    public function setdescription_c($description_c){
+        $this->description_c=$description_c;
+    }
+    public function getniveau(){
+        return $this->niveau;
+    }
+    public function setniveau($niveau){
+        $this->niveau=$niveau;
+    }
+    public function getnombre_consultation(){
+        return $this->nombre_consultation;
+    }
+    public function setnombre_consultation($nombre_consultation){
+        $this->nombre_consultation=$nombre_consultation;
+    }
+    public function getduree(){
+        return $this->duree;
+    }
+    public function setduree($duree){
+        $this->duree=$duree;
+    }
+    public function getcontenu(){
+        return $this->contenu;
+    }
+    public function setcontenu($contenu){
+        $this->contenu=$contenu;
+    }
+    public function getposition(){
+        return $this->position;
+    }
+    public function setposition($position){
+        $this->position=$position;
+    }
+
+    public function deleteCours($idc) {
+        $sql = "DELETE FROM cours WHERE idc = :idc";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['idc' => $idc]);
+            return true;
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la suppression du cours : " . $e->getMessage());
+        }
+    }
+
+    public function getCoursById($idc) {
+        $sql = "SELECT * FROM cours WHERE i_c = :idc";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['idc' => $idc]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la récupération du cours : " . $e->getMessage());
+        }
+    }
+
+    public function getAllCourses() {
+        $sql = "SELECT * FROM cours";
+        try {
+            $stmt = $this->pdo->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la récupération des cours : " . $e->getMessage());
+        }
+    }
 }
+?>
