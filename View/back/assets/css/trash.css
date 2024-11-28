@@ -1,0 +1,6 @@
+.icon-trash {
+    width: 16px; /* Largeur réduite */
+    height: 16px; /* Hauteur réduite */
+    cursor: pointer;
+    display: inline-block; /* Permet à l'image d'être centrée avec son conteneur */
+}

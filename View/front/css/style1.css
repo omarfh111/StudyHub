@@ -1,0 +1,61 @@
+/*reclamation*/
+ /* Grand cadre vert avec fond vert */
+ .formulaire-conteneur {
+    border: 5px solid #51be78; /* Bordure verte */
+    border-radius: 15px; /* Coins arrondis */
+    padding: 30px; /* Espacement interne */
+    margin: 20px auto; /* Espacement extérieur */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Effet ombre */
+    background-color: #51be78; /* Fond vert */
+    max-width: 800px; /* Largeur maximale pour centrer */
+    color: white; /* Couleur du texte à l'intérieur du cadre */
+  }
+  
+  /* Style des labels (nom, prénom, etc.) */
+  .formulaire-conteneur label {
+    color: white; /* Couleur des textes des labels en blanc */
+    font-weight: bold; /* Texte en gras */
+    margin-bottom: 10px; /* Espacement sous le label */
+  }
+  
+  
+  .form-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  
+  /* Style des champs (input, textarea) */
+  .formulaire-conteneur .form-control {
+    background-color: #ffffff; /* Fond blanc pour les champs */
+    border: 2px solid #51be78; /* Bordure verte pour les champs */
+    border-radius: 10px; /* Coins arrondis */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    height: 40px; /* Hauteur des champs */
+    margin-bottom: 15px; /* Espacement entre les champs */
+  }
+  
+  /* Style du champ texte étendu (textarea) */
+  .formulaire-conteneur textarea.form-control {
+    height: 100px; /* Hauteur spécifique pour le textarea */
+  }
+  
+  /* Style du bouton Envoyer */
+  .formulaire-conteneur .btn-primary {
+    background-color: white; /* Fond blanc pour le bouton */
+    color: #51be78; /* Texte vert */
+    border: 2px solid #51be78; /* Bordure verte */
+    border-radius: 10px; /* Coins arrondis */
+    padding: 10px 20px; /* Espacement interne du bouton */
+    font-weight: bold; /* Texte en gras */
+    cursor: pointer; /* Curseur main */
+    transition: all 0.3s ease-in-out; /* Animation sur hover */
+  }
+  
+  /* Effet au survol du bouton */
+  .formulaire-conteneur .btn-primary:hover {
+    background-color: #357a4f; /* Fond vert */
+    color: white; /* Texte blanc */
+  }

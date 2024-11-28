@@ -1,7 +1,7 @@
 <?php
 require_once 'C:/xampp/htdocs/WebProject/Controller/reclamationC.php';
 //juste pour tester la liste apres la supprimer
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+/*if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $reclamation = new Reclamation();
   $reclamation->setNom($_POST['nom']);
   $reclamation->setPrenom($_POST['prenom']);
@@ -16,44 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Rediriger vers la page afficher_reclamation.php avec un message de succès
   header("Location: afficher_reclamation.php?success=true");
   exit;
-}
+}*/
 
 
 ?>
 
-<script>
-  function validateForm() {
-      // Récupérer les éléments du formulaire
-      var nom = document.getElementById("fname").value;
-      var prenom = document.getElementById("lname").value;
-      var email = document.getElementById("eaddress").value;
-      var date = document.getElementById("date").value;
-      var objet = document.getElementById("Objet").value;
-      var message = document.getElementById("message").value;
 
-      // Vérifier que tous les champs sont remplis
-      if (nom === "" || prenom === "" || email === "" || date === "" || objet === "" || message === "") {
-          alert("Tous les champs sont obligatoires!");
-          return false; // Empêche l'envoi du formulaire
-      }
-
-      // Validation du format de l'email
-      var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-      if (!email.match(emailPattern)) {
-          alert("Veuillez entrer un email valide.");
-          return false; // Empêche l'envoi du formulaire
-      }
-
-      // Validation de la longueur du message
-      if (message.length < 10) {
-          alert("Le message doit contenir au moins 10 caractères.");
-          return false; // Empêche l'envoi du formulaire
-      }
-
-      // Si tout est validé, retourner true pour soumettre le formulaire
-      return true;
-  }
-</script>
 
 
 <!DOCTYPE html>
@@ -82,8 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <link rel="stylesheet" href="css/aos.css">
   <link href="css/jquery.mb.YTPlayer.min.css" media="all" rel="stylesheet" type="text/css">
-
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style1.css?v=1.0">
+  <link rel="stylesheet" href="css/style.css?">
+  
 
 
 
@@ -180,15 +149,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         </div>
       </div> 
-    
-
-    <div class="custom-breadcrumns border-bottom">
-      <div class="container">
-        <a href="index.html">Accueil</a>
-        <span class="mx-3 icon-keyboard_arrow_right"></span>
-        <span class="current">Reclamation</span>
-      </div>
-    </div>
 
     <div class="custom-breadcrumns border-bottom">
       <div class="container">
@@ -199,53 +159,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     
     <div class="site-section">
-      <div class="formulaire-conteneur">
-        <div class="container">
-          <h3 class="form-title">Formulaire de réclamation</h3>
-          <!-- Formulaire modifié -->
-           
-          <form action="http://localhost/WebProject/Controller/reclamationC.php" method="POST">
+    <div class="formulaire-conteneur">
+    <div class="container">
+        <h3 class="form-title">Formulaire de réclamation</h3>
+        <form action="http://localhost/WebProject/view/front/contact.php" method="POST">
             <div class="row">
-              <div class="col-md-6 form-group">
-                <label for="fname">Nom</label>
-                <input type="text" id="fname" name="nom" class="form-control form-control-lg" required>
-              </div>
-              <div class="col-md-6 form-group">
-                <label for="lname">Prénom</label>
-                <input type="text" id="lname" name="prenom" class="form-control form-control-lg" required>
-              </div>
+                <div class="col-md-6 form-group">
+                    <label for="fname">Nom</label>
+                    <input type="text" id="fname" name="nom" class="form-control form-control-lg" placeholder="Votre Nom">
+                    <small id="nom_error" class="text-danger"></small>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="lname">Prénom</label>
+                    <input type="text" id="lname" name="prenom" class="form-control form-control-lg" placeholder="Votre Prenom">
+                    <small id="prenom_error" class="text-danger"></small>
+                </div>
             </div>
             <div class="row">
-              <div class="col-md-6 form-group">
-                <label for="eaddress">Email</label>
-                <input type="text" id="eaddress" name="email" class="form-control form-control-lg" required>
-              </div>
-              <div class="col-md-6 form-group">
-                <label for="date">Date</label>
-                <input type="date" id="date" name="date" class="form-control form-control-lg" required>
-              </div>
-              <div class="col-md-6 form-group">
-                <label for="Objet">Objet</label>
-                <input type="text" id="Objet" name="objet" class="form-control form-control-lg" style="width: 700px;" required>
-              </div>
+                <div class="col-md-6 form-group">
+                    <label for="eaddress">Email</label>
+                    <input type="email" id="eaddress" name="email" class="form-control form-control-lg" placeholder="exemple@gmail.com">
+                    <small id="email_error" class="text-danger"></small>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" class="form-control form-control-lg">
+                    <small id="date_error" class="text-danger"></small>
+                </div>
+                <div class="col-md-12 form-group">
+                    <label for="Objet">Objet</label>
+                    <input type="text" id="Objet" name="objet" class="form-control form-control-lg" placeholder="L'objet de votre réclamation">
+                    <small id="objet_error" class="text-danger"></small>
+                </div>
             </div>
             <div class="row">
-              <div class="col-md-12 form-group">
-                <label for="message">Message</label>
-                <textarea name="message" id="message" cols="30" rows="10" class="form-control" required></textarea>
-              </div>
+                <div class="col-md-12 form-group">
+                    <label for="message">Message</label>
+                    <textarea name="message" id="message" cols="30" rows="10" class="form-control" placeholder="Tapez votre message"></textarea>
+                    <small id="message_error" class="text-danger"></small>
+                </div>
             </div>
-    
             <div class="row">
-              <div class="col-12">
-                <input type="submit" value="Envoyer" class="btn btn-primary btn-lg px-5">
-              </div>
+                <div class="col-12">
+                    <input type="submit" value="Envoyer" class="btn btn-primary btn-lg px-5">
+                </div>
             </div>
-          </form>
-        </div>
-      </div>
+        </form>
+    </div>
+</div>
+
     </div>
     
+  
+
+<!-- Affichage des messages de succès ou d'erreur -->
+<?php
+// Affichage du message de succès ou d'erreur
+if (isset($message_success)): ?>
+    <div class="alert alert-success text-center" style="background-color: #28a745; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <?php echo $message_success; ?>
+    </div>
+<?php elseif (isset($message_error)): ?>
+    <div class="alert alert-danger text-center" style="background-color: #dc3545; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <?php echo $message_error; ?>
+    </div>
+<?php endif; ?>
+
+
   
   
     <div class="section-bg style-1" style="background-image: url('images/hero_1.jpg');">
@@ -352,11 +332,138 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <script src="js/jquery.sticky.js"></script>
   <script src="js/jquery.mb.YTPlayer.min.js"></script>
 
-
-
-
   <script src="js/main.js"></script>
-  <script src="js/validation.js"></script>
+ <!-- <script src="js/validation.js"></script> -->
+
+ ><script>
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Récupérer les éléments du formulaire avec les IDs correspondants
+  const emailInput = document.getElementById("eaddress");
+  const fnameInput = document.getElementById("fname");
+  const lnameInput = document.getElementById("lname");
+  const messageInput = document.getElementById("message");
+  const dateInput = document.getElementById("date"); // Champ date
+  const submitButton = document.querySelector("input[type='submit']");
+
+  // Fonction de validation d'email
+  function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  // Fonction de validation de la date
+  function validateDate(date) {
+    const currentDate = new Date();
+    return date && new Date(date).getTime() >= currentDate.getTime(); // Vérifie si la date n'est pas dans le futur
+  }
+
+  // Fonction de validation du nom (au moins 3 caractères)
+  function validateName(name) {
+    const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,30}$/; // Lettres uniquement, avec accents, espaces, et longueurs entre 3 et 30
+    return nameRegex.test(name);
+  }
+
+  // Vérifier si un champ est vide et afficher le message d'erreur
+  function showError(input, message) {
+    const errorElement = input.nextElementSibling; // Trouver le <small> associé à l'input
+    errorElement.textContent = message;
+    errorElement.style.display = "block"; // Affiche l'erreur
+    errorElement.style.color = "#8B0000";
+    
+  }
+
+  // Cacher les messages d'erreur
+  function clearError(input) {
+    const errorElement = input.nextElementSibling;
+    errorElement.textContent = "";
+    errorElement.style.display = "none";
+    errorElement.style.color = ""; 
+  }
+
+  // Fonction de validation générale
+  submitButton.addEventListener("click", function (event) {
+    let isValid = true;
+
+    // Vérifier le prénom (au moins 3 caractères)
+    if (!lnameInput.value) {
+      showError(lnameInput, "* Veuillez entrer votre prénom.");
+      isValid = false;
+    } else if (lnameInput.value.length < 3) {
+      showError(lnameInput, "Le prénom doit comporter au moins 3 caractères.");
+      isValid = false;
+    } else {
+      clearError(lnameInput);
+    }
+
+    // Vérifier le nom (au moins 3 caractères)
+    if (!fnameInput.value) {
+      showError(fnameInput, "* Veuillez entrer votre nom.");
+      isValid = false;
+    } else if (fnameInput.value.length < 3) {
+      showError(fnameInput, "Le nom doit comporter au moins 3 caractères.");
+      isValid = false;
+    } else {
+      clearError(fnameInput);
+    }
+
+    // Vérifier l'email
+    if (!emailInput.value) {
+      showError(emailInput, "* Veuillez entrer votre email.");
+      isValid = false;
+    } else if (!validateEmail(emailInput.value)) {
+      showError(emailInput, "* Veuillez entrer un email valide.");
+      isValid = false;
+    } else {
+      clearError(emailInput);
+    }
+
+    // Vérifier la date
+    if (!dateInput.value) {
+  showError(dateInput, "* Veuillez entrer une date.");
+  isValid = false;
+} else {
+  const inputDate = new Date(dateInput.value);
+  const currentDate = new Date();
+
+  // Vérifier si la date saisie est dans le futur
+  if (inputDate.getTime() > currentDate.getTime()) {
+    showError(dateInput, "La date ne peut pas être dans le futur.");
+    isValid = false;
+  }
+  // Vérifier si la date est valide
+  else if (isNaN(inputDate.getTime())) {
+    showError(dateInput, "* Veuillez entrer une date valide.");
+    isValid = false;
+  } else {
+    clearError(dateInput);
+  }
+}
+
+    // Vérifier le message
+    if (!messageInput.value) {
+      showError(messageInput, "* Veuillez écrire un message.");
+      isValid = false;
+    } else {
+      clearError(messageInput);
+    }
+
+    // Si tout est valide, soumettre le formulaire, sinon empêcher l'envoi
+    if (!isValid) {
+      event.preventDefault(); // Empêche l'envoi du formulaire si un champ est vide
+    }
+  });
+});
+
+</script>
+
+  
+
+
+
+
+
+
 </body>
 
 </html>
