@@ -1,7 +1,11 @@
-<?php 
-require_once 'ajoutoffre.php' ;
-?>
+<?php
+require_once 'C:\xampp\htdocs\project\config.php';
+require_once 'C:\xampp\htdocs\project\controller\offercontroller.php';
+require_once 'C:\xampp\htdocs\project\model\produitmodel.php';
 
+$OfferController = new OfferController();
+$list = $OfferController->affichee();
+?>
 
 <!doctype html>
 <html lang="en" dir="ltr">
@@ -1007,12 +1011,33 @@ require_once 'ajoutoffre.php' ;
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                <div>
-                                        <?php include 'affichead.php'; ?>
-                                </div>
+                                <table class="table table-hover table-vcenter table-striped mb-0 text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Reduction</th>
+                                        <th>types</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($list as $produit) : ?>
+                                        <tr>
+                                            <td><?php echo $produit['nomp']; ?> </td>
+                                            <td><?php echo $produit['quantite']; ?> </td>
+                                            <td><?php echo $produit['prix_p']; ?> </td>
+                                            <td><?php echo $produit['reduction']; ?> </td>
+                                            <td><?php echo $produit['types']; ?> </td> 
 
-                                        </tbody>
-                                    </table>
+                                            <td><a title="delete" href="delete.php?idp=<?php echo $produit['idp']; ?>">Delete</a></td>
+                                            <td><a title="update" href="update.php?idp=<?php echo $produit['idp']; ?>">Update</a></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+
                                 </div>
                             </div>
                         </div>
@@ -1028,30 +1053,7 @@ require_once 'ajoutoffre.php' ;
                             </div>
                             <div class="card-body">
                             <div>
-                            <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  require_once 'C:\xampp\htdocs\project\config.php';
-  require_once 'C:\xampp\htdocs\project\model\produitmodel.php';
-  $nomp=$_POST['nomp'];
-  $quantite=$_POST['quantite'];
-  $prix_p=$_POST['prix_p'];
-  $reduction=$_POST['reduction'];
-  $types=$_POST['types'];
-  
-  $produit=new ProductModel($pdo,$nomp,$quantite,$prix_p,$reduction,$types);
-  if($produit->addProduct()){
-    echo "produit ajouté a la base avec succes";
-    //metier envoyer mail
-  }
 
-
-
-} 
-
-  
-
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -1081,7 +1083,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="loader">
     </div>
 </div>
-<form action="ajoutoffre.php" name="ajoutoffre"  method="post" class="form-group" ></form>
+
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 
 
@@ -1116,6 +1118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="number" id="price" name="prix_p" class="form-control"><br><br>
                         <label for="price-reduction">Price Reduction:</label>
                         <input type="number" id="reduction" name="reduction" class="form-control"><br><br>
+                        <label for="description" id="description">Description:</label>
+                        <textarea name="descri" id="description" cols="80" rows="10" class="form-control"></textarea><br><br>
                         <select id="type" name="types" required class="form-control">
                             <option value="scolaire" >scolaire</option>
                             <option value="bureaux" >bureaux</option>
@@ -1144,7 +1148,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         </div>
       </div>
-      
 
    
 

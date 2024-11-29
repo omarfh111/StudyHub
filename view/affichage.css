@@ -1,0 +1,77 @@
+.product-card {
+    display: flex; /* Makes the card a flex container */
+    flex-direction: row; /* Aligns items horizontally */
+    justify-content: space-between; /* Ensures space between the left and right sections */
+    align-items: center; /* Aligns items vertically */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px; /* Optional: Adds rounded corners */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Adds subtle shadow */
+}
+
+/* Left section (product info) */
+.product-card .product-info {
+    flex: 1; /* Allows this section to take up as much space as needed */
+    text-align: left;
+}
+
+/* Styles for product details */
+.product-card .product-info h4 {
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.product-card .product-info p {
+    margin: 5px 0;
+}
+
+/* Right section (buttons and links) */
+.product-card .action-buttons {
+    display: flex;
+    flex-direction: column; /* Stacks buttons and links vertically */
+    align-items: flex-end; /* Aligns to the right */
+}
+
+.product-card .action-buttons input[type="button"] {
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    width: 120px; /* Optional: Set button width */
+    text-align: center;
+}
+
+.product-card .action-buttons input[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+/* Link styling */
+.product-card .action-buttons a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.product-card .action-buttons a:hover {
+    text-decoration: underline;
+}
+.in-stock {
+    color: green;
+    font-weight: bold;
+}
+
+.out-of-stock {
+    color: red;
+    font-weight: bold;
+}
+input[type="button"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
