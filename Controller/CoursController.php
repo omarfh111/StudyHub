@@ -1,7 +1,13 @@
 <?php
+<<<<<<< HEAD
 require_once 'C:\xampp\htdocs\StudyHub\Model\cours.php';
 require_once 'C:\xampp\htdocs\StudyHub\config.php';
 require_once 'C:\xampp\htdocs\StudyHub\Model\cours.php';
+=======
+require_once 'C:\xampp\htdocs\StudyHub_nouv\Model\cours.php';
+require_once 'C:\xampp\htdocs\StudyHub_nouv\config.php';
+require_once 'C:\xampp\htdocs\StudyHub_nouv\Model\cours.php';
+>>>>>>> 79942bc7a6abd3a216a51b1972142a97c9c82fe5
 
 class CoursController {
     private $Model;
