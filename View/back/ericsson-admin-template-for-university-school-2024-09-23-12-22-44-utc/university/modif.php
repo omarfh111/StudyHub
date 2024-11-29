@@ -1,49 +1,7 @@
 <?php
-// Inclure le contrôleur des cours
-/*include 'C:\xampp\htdocs\StudyHub_nouv\Controller\CoursController.php';
-
-// Instanciation du contrôleur
-$CoursController = new CoursController();
-$idc = $_GET["idc"] ?? null; // Récupérer l'ID du cours depuis l'URL
-
-// Vérifier si un cours correspondant existe
-$list = $CoursController->getAllCours();
-$cou = null;
-foreach ($list as $cours) {
-    if ($cours['idc'] == $idc) {
-        $cou = $cours;
-        break;
-    }
-}
-
-if (!$cou) {
-    die("Cours introuvable."); // Message d'erreur si le cours n'existe pas
-}
-
-// Gestion du formulaire soumis
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupération des données du formulaire
-    $updcours = new cours(
-        $_POST['titre_c'] ?? null,
-        $_POST['description_c'] ?? null,
-        $_POST['niveau'] ?? null,
-        $_POST['nombre_consultation'] ?? null,
-        $_POST['duree'] ?? null,
-        $_POST['contenu'] ?? null,
-        $_POST['position'] ?? null
-    );
-
-    // Mettre à jour le cours
-    if ($CoursController->updateCours($updcours, $idc)) {
-        echo "Modification effectuée avec succès.";
-    } else {
-        echo "Erreur lors de la mise à jour du cours.";
-    }
-}*/
-
-require_once 'C:\xampp\htdocs\StudyHub_nouv\config.php';
-require_once 'C:\xampp\htdocs\StudyHub_nouv\Controller\CoursController.php';
-require_once 'C:\xampp\htdocs\StudyHub_nouv\Model\cours.php'; // Inclure la classe Cours si elle est définie ailleurs
+require_once 'C:\xampp\htdocs\StudyHub\config.php';
+require_once 'C:\xampp\htdocs\StudyHub\Controller\CoursController.php';
+require_once 'C:\xampp\htdocs\StudyHub\Model\cours.php'; // Inclure la classe Cours si elle est définie ailleurs
 
 $error = "";
 
@@ -96,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $CoursController->updateCours($cours, $idc);
         header("Location: listecoursB.php");
         exit;
-
     } else {
         $error = "Des informations sont manquantes.";
     }
@@ -104,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -112,12 +69,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Liens CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f9f2f6; /* Couleur de fond rose pâle */
+        }
+        .card {
+            border-radius: 10px;
+        }
+        .card-header {
+            background-color: #e83e8c; /* Couleur rose pour l'entête */
+            color: white;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #e83e8c; /* Couleur du bouton rose */
+            border-color: #e83e8c;
+        }
+        .btn-outline-secondary {
+            border-color: #e83e8c;
+            color: #e83e8c;
+        }
+        .btn-outline-secondary:hover {
+            background-color: #e83e8c;
+            color: white;
+        }
+        .form-group label {
+            color: #6f42c1; /* Légèrement violet pour les étiquettes */
+        }
+        .form-control {
+            border-radius: 5px;
+        }
+        .card-body {
+            padding: 2rem;
+        }
+        .card-title {
+            font-size: 1.5rem;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
     <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="card" style="width: 600%; max-width: 600px;">
-            <div class="card-header">
-                <h3 class="card-title text-center">Modifier un Cours</h3>
+        <div class="card" style="width: 600px; max-width: 600px;">
+            <div class="card-header text-center">
+                <h3 class="card-title">Modifier un Cours</h3>
             </div>
             <form action="" method="POST" class="card-body">
                 <!-- Titre -->
@@ -144,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
 
-                <!-- Nombre de Consultations (entre Niveau et Durée) -->
+                <!-- Nombre de Consultations -->
                 <div class="form-group row">
                     <label class="col-md-4 col-form-label">Nombre de Consultations</label>
                     <div class="col-md-8">
@@ -154,9 +148,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <!-- Durée -->
                 <div class="form-group row">
-                    <label class="col-md-4 col-form-label">Durée (en mois)<span class="text-danger">*</span></label>
+                    <label class="col-md-4 col-form-label">Durée <span class="text-danger">*</span></label>
                     <div class="col-md-8">
-                        <input type="number" class="form-control" name="duree" required placeholder="Durée en mois" value="<?= htmlspecialchars($pr['duree'] ?? '') ?>">
+                        <input type="number" class="form-control" name="duree" required placeholder="Durée " value="<?= htmlspecialchars($pr['duree'] ?? '') ?>">
                     </div>
                 </div>
 
@@ -186,5 +180,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </div>
+
+    <!-- Liens JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

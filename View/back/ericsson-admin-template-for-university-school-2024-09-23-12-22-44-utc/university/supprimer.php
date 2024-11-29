@@ -1,6 +1,6 @@
 <?php
-require_once  'C:\xampp\htdocs\StudyHub_nouv\config.php';
-require_once  'C:\xampp\htdocs\StudyHub_nouv\Controller\CoursController.php';
+require_once  'C:\xampp\htdocs\StudyHub\config.php';
+require_once  'C:\xampp\htdocs\StudyHub\Controller\CoursController.php';
 
 
 $CoursController = new CoursController();
