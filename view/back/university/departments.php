@@ -15,6 +15,12 @@ if (isset($_COOKIE['studyhub'])) {
 //error_reporting(E_ALL & ~E_WARNING);
 $userC = new UserController();
 $liste = $userC->listuser();
+
+$sort = isset($_GET['sort']) ? $_GET['sort'] : null; // Check if sort parameter exists
+$userController = new UserController();
+$liste = $userController->listuser($sort); // Pass sorting parameter
+
+
 ?>
 <!doctype html>
 <html lang="en" dir="ltr">
@@ -1017,57 +1023,59 @@ $liste = $userC->listuser();
                     <div class="tab-pane active" id="Dep-all">
                         <div class="table-responsive">
                             <div class="table-responsive card">
-                            <table class="table table-hover table-vcenter table-striped mb-0 text-nowrap">
-                                <thead>
+                            <div class="mb-3">
+                            <a href="?sort=naissance" class="btn btn-primary btn-sm">Trier par date de naissance</a>
+                        </div>
+                        <?php if ($sort === 'naissance'): ?>
+                            <div class="alert alert-info">Sorted by Date of Birth</div>
+                        <?php endif; ?>
+                        <table class="table table-hover table-vcenter table-striped mb-0 text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom</th>
+                                    <th>Prénom</th>
+                                    <th>Email</th>
+                                    <th>Date de naissance</th>
+                                    <th>Téléphone</th>
+                                    <th>Status</th>
+                                    <th>Rôle</th>
+                                    <th colspan="2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($liste as $user){
+                                    if ($user['rol'] === 'etudiant') { ?>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Nom</th>
-                                        <th>Prénom</th>
-                                        <th>Email</th>
-                                        <th>Date de naissance</th>
-                                        <th>Téléphone</th>
-                                        <th>Status</th>
-                                        <th>Rôle</th>
-                                        <th colspan="2">Actions</th>
+                                        <td><?= $user['idu']; ?></td>
+                                        <td><?= $user['nom']; ?></td>
+                                        <td><?= $user['prenom']; ?></td>
+                                        <td><?= $user['email']; ?></td>
+                                        <td><?= $user['naissance']; ?></td>
+                                        <td><?= $user['tel']; ?></td>
+                                        <td>
+                                            <?php if ($user['metier'] === 'ban'): ?>
+                                                <a href="/login6/view/update_status.php?idu=<?= $user['idu']; ?>&action=unban" class="btn btn-success btn-sm">
+                                                    Unban
+                                                </a>
+                                            <?php else: ?>
+                                                <a href="/login6/view/update_status.php?idu=<?= $user['idu']; ?>&action=ban" class="btn btn-danger btn-sm">
+                                                    Ban
+                                                </a>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?= $user['rol']; ?></td>
+                                        <td class="actions">
+                                            <a class="btn btn-icon btn-sm" title="Edit" href="/login6/view/edit.php?idu=<?= $user['idu']; ?>"><i class="fa fa-edit"></i></a>
+                                            <a class="btn btn-icon btn-sm js-sweetalert" title="Delete" href="/login6/view/deluser.php?idu=<?php echo $user['idu']; ?>"><i class="fa fa-trash-o text-danger"></i></a>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Professeurs -->
-                                    <?php
-                                    foreach ($liste as $user) {
-                                        // Vérifier si l'utilisateur a le rôle 'prof'
-                                        if ($user['rol'] === 'etudiant') {
-                                    ?>
-                                        <tr>
-                                            <td><?= $user['idu']; ?></td>
-                                            <td><?= $user['nom']; ?></td>
-                                            <td><?= $user['prenom']; ?></td>
-                                            <td><?= $user['email']; ?></td>
-                                            <td><?= $user['naissance']; ?></td>
-                                            <td><?= $user['tel']; ?></td>
-                                            <td>
-                                                <?php if ($user['metier'] === 'ban'): ?>
-                                                    <a href="/login6/view/update_status.php?idu=<?= $user['idu']; ?>&action=unban" class="btn btn-success btn-sm">
-                                                        Unban
-                                                    </a>
-                                                <?php else: ?>
-                                                    <a href="/login6/view/update_status.php?idu=<?= $user['idu']; ?>&action=ban" class="btn btn-danger btn-sm">
-                                                        Ban
-                                                    </a>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td><?= $user['rol']; ?></td>
-                                            <td class="actions">
-                                                <a class="btn btn-icon btn-sm" title="Edit" href="/login6/view/edit.php?idu=<?= $user['idu']; ?>"><i class="fa fa-edit"></i></a>
-                                                <a class="btn btn-icon btn-sm js-sweetalert" title="Delete" href="/login6/view/deluser.php?idu=<?php echo $user['idu']; ?>"><i class="fa fa-trash-o text-danger"></i></a>
-                                            </td>
-                                        </tr>
-                                    <?php
-                                        }
+                                <?php 
                                     }
-                                    ?>
-                                </tbody>
-                            </table>
+                                } ?>
+                            </tbody>
+                        </table>
+
                             </div>        
                         </div>
                     </div>

@@ -10,7 +10,7 @@ function encryptPassword($password, $key) {
     $encryptedPassword = openssl_encrypt($password, $cipherMethod, $key, 0, $iv);
     return base64_encode($iv . $encryptedPassword);
 }
-
+$success = false;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupérer les informations du formulaire
     $code = $_POST["code"];
@@ -36,16 +36,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hashed_password = encryptPassword($new_password, $key);  // Hash du mot de passe pour la sécurité
             $stmt = $pdo->prepare("UPDATE user SET mdp = ?, code = NULL WHERE code = ?");
             $stmt->execute([$hashed_password, $code]);
-
-            echo "Votre mot de passe a été mis à jour avec succès.";
+            $success = true;
+            echo "Le mot de passe a été mis à jour avec succès";
         } else {
-            echo "Code de réinitialisation invalide.";
+            echo "Le code de réinitialisation est invalide.";
         }
     } catch (PDOException $e) {
         echo "Erreur : " . $e->getMessage();
     }
-    header('Location: login.php');
-    exit();
+    //header('Location: login.php');
+    //exit();
 }
 ?>
 <!DOCTYPE html>
@@ -109,6 +109,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit">Changer le mot de passe</button>
         </form>
     </div>
-
+    <?php if ($success): ?>
+        <script>
+            alert('Votre mot de passe a été mis à jour avec succès.');
+            window.location.href = 'login.php'; // Redirection après la popup
+        </script>
+    <?php endif; ?>
 </body>
 </html>
