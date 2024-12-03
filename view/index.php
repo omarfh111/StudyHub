@@ -10,7 +10,7 @@ if (isset($_COOKIE['studyhub'])) {
   $nom = $userData['nom'];
   $role = $userData['role'];
 
-  echo "Bienvenue, " . $nom . " (" . $role . ")!"; // Afficher le nom et rôle
+  //echo "Bienvenue, " . $nom . " (" . $role . ")!"; // Afficher le nom et rôle
 } else {
   header('Location: login.php');
   exit();
@@ -52,8 +52,8 @@ if (isset($_COOKIE['studyhub'])) {
 </head>
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
-
   <div class="site-wrap">
+
 
     <div class="site-mobile-menu site-navbar-target">
       <div class="site-mobile-menu-header">
@@ -74,7 +74,7 @@ if (isset($_COOKIE['studyhub'])) {
             <a href="#" class="small mr-3"><span class="icon-envelope-o mr-2"></span> StudyHub@gmail.com</a> 
           </div>
           <div class="col-lg-3 text-right">
-            <a href="" class="small mr-3"><span class="icon-user"></span> <?php echo $nom . " (" . $role . ")"; ?></a>
+            <a href="profile.php" class="small mr-3"><span class="icon-user"></span> <?php echo $nom . " (" . $role . ")"; ?></a>
             <a href="logout.php" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-lock"></span> Se Deconnecter</a>
           </div>
         </div>
@@ -99,7 +99,7 @@ if (isset($_COOKIE['studyhub'])) {
                   <a href="about.html" class="nav-link text-left">About Us</a>
                   <ul class="dropdown">
                     <li><a href="prof.php">Nos Proffesseurs</a></li>
-                    <li><a href="about.html">Notre academie</a></li>
+                    <li><a href="chatgpt.php">Notre assistance AI</a></li>
                   </ul>
                 </li>
                 <li>

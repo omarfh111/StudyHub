@@ -8,6 +8,23 @@ function encryptPassword($password, $key) {
     $encryptedPassword = openssl_encrypt($password, $cipherMethod, $key, 0, $iv);
     return base64_encode($iv . $encryptedPassword);
 }
+function decryptPassword($encryptedPassword, $key) {
+
+    $cipherMethod = 'AES-256-CBC';
+
+    // Decode the base64 encoded string
+    $data = base64_decode($encryptedPassword);
+
+    // Extract the initialization vector and encrypted password
+    $ivLength = openssl_cipher_iv_length($cipherMethod);
+    $iv = substr($data, 0, $ivLength);
+    $encryptedPassword = substr($data, $ivLength);
+
+    // Decrypt the password
+    $decryptedPassword = openssl_decrypt($encryptedPassword, $cipherMethod, $key, 0, $iv);
+
+    return $decryptedPassword;
+}
 // Vérifiez si un ID d'utilisateur est passé dans l'URL
 if (!isset($_GET['idu']) || empty($_GET['idu'])) {
     die("ID utilisateur manquant.");
@@ -40,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         new DateTime($_POST['naissance']),
         $_POST['tel'],
         encryptPassword($_POST['mdp'], $key), // Gardez l'ancien mot de passe s'il n'est pas modifié
-        $_POST['metier'],
+        $user['metier'],
         $_POST['role']
     );
 
@@ -48,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userC->updateuser($updatedUser, $id);
 
     // Redirection vers la liste après la mise à jour
-    header('Location: http://localhost/login6/view/back/university/students.php');
+    header('Location: profile.php');
     exit();
 }
 ?>
@@ -122,18 +139,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <label for="tel">Téléphone</label>
     <input type="text" id="tel" name="tel" value="<?= htmlspecialchars($user['tel']); ?>" required>
 
-    <label for="metier">Métier</label>
-    <input type="text" id="metier" name="metier" value="<?= htmlspecialchars($user['metier']); ?>" required>
-
     <label for="new_password">Nouveau mot de passe</label>
-    <input type="password" id="mdp" name="mdp"  value="<?= htmlspecialchars($user['mdp']); ?>" placeholder="Laissez vide pour conserver l'ancien mot de passe">
+    <input type="password" id="mdp" name="mdp"  value="<?= htmlspecialchars(decryptPassword($user['mdp'], $key)); ?>" placeholder="Laissez vide pour conserver l'ancien mot de passe">
 
     <label for="role">Rôle</label>
-    <select id="role" name="role" required>
-        <option value="admin" <?= $user['rol'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
-        <option value="prof" <?= $user['rol'] === 'prof' ? 'selected' : ''; ?>>Prof</option>
-        <option value="etudiant" <?= $user['rol'] === 'etudiant' ? 'selected' : ''; ?>>Etudiant</option>
-    </select>
+    <input type="text" id="role" name="role" value="<?= htmlspecialchars($user['rol']); ?>" readonly>
 
     <button type="submit">Mettre à jour</button>
 </form>

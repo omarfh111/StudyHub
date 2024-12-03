@@ -82,8 +82,22 @@ class UserController {
         echo "Error: " . $e->getMessage(); 
     }
 }
+public function getUserById($idu)
+{
+    $sql = "SELECT * FROM user WHERE idu = :idu";
+    $db = config::getConnexion();
+    try {
+        $query = $db->prepare($sql);
+        $query->bindValue(':idu', $idu, PDO::PARAM_INT);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        die('Error: ' . $e->getMessage());
+    }
+}
 public function generateUserPDF()
 {
+    ob_start();
     // Fetch user data
     $sql = "SELECT * FROM user";
     $db = config::getConnexion();
@@ -145,6 +159,7 @@ public function generateUserPDF()
 
     // Close and output PDF document
     $pdf->Output('user_list.pdf', 'D'); // 'D' for download, 'I' for inline view
+    ob_end_flush();
 }
 }
 
