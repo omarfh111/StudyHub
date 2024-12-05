@@ -1,8 +1,8 @@
 <?php
-require_once 'C:\xampp\htdocs\StudyHub\Controller\CoursController.php';
+require_once 'C:\xampp\htdocs\StudyHub\Controller\CertifController.php';
 
-$CoursController = new CoursController();
-$list = $CoursController->getAllCours();
+$CertifController = new CertifController();
+$list = $CertifController->getAllCertif();
 
 ?>
 
@@ -11,7 +11,7 @@ $list = $CoursController->getAllCours();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Cours</title>
+    <title>Liste des Certifications</title>
    
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -86,7 +86,6 @@ $list = $CoursController->getAllCours();
          transform: translateY(-2px);
          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
-        
     </style>
 </head>
 <body>
@@ -95,7 +94,7 @@ $list = $CoursController->getAllCours();
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="w-100 text-center">
-                <h1 class="page-title">Liste des Cours</h1>
+                <h1 class="page-title">Liste des Certifications</h1>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Ericsson</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Liste des Cours</li>
@@ -116,7 +115,7 @@ $list = $CoursController->getAllCours();
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h2 class="mb-0">Liste des Cours</h2>
+                <h2 class="mb-0">Liste des Certifications</h2>
                 <input type="text" class="form-control w-25" placeholder="Rechercher un cours..." id="searchInput">
             </div>
             <div class="card-body">
@@ -124,35 +123,27 @@ $list = $CoursController->getAllCours();
                     <table class="table table-hover table-striped align-middle">
                         <thead class="table-primary">
                             <tr>
-                                <th class="sortable" onclick="sortTable(0)">Titre <i class="fas fa-sort"></i></th>
-                                <th class="sortable" onclick="sortTable(1)">Description <i class="fas fa-sort"></i></th>
-                                <th class="sortable" onclick="sortTable(2)">Niveau <i class="fas fa-sort"></i></th>
-                                <th class="sortable" onclick="sortTable(3)">Nombre de consultations <i class="fas fa-sort"></i></th>
-                                <th class="sortable" onclick="sortTable(4)">Durée <i class="fas fa-sort"></i></th>
-                                <th>Contenu</th>
-                                <th>Position</th>
+                                
+                                <th class="sortable" onclick="sortTable(0)">Details de la certification <i class="fas fa-sort"></i></th>
+                                <th class="sortable" onclick="sortTable(1)">URL de la certification <i class="fas fa-sort"></i></th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="courseTable">
+                        <tbody id="certifTable">
                             <?php if (!empty($list)): ?>
-                                <?php foreach ($list as $course): ?>
+                                <?php foreach ($list as $certif): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($course['titre_c']); ?></td>
-                                        <td><?= htmlspecialchars($course['description_c']); ?></td>
-                                        <td><?= htmlspecialchars($course['niveau']); ?></td>
-                                        <td><?= htmlspecialchars($course['nombre_consultation']); ?></td>
-                                        <td><?= htmlspecialchars($course['duree']); ?> </td>
-                                        <td><?= htmlspecialchars($course['contenu']); ?></td>
-                                        <td><?= htmlspecialchars($course['position']); ?></td>
+                                        <td><?= htmlspecialchars($certif['detail']); ?></td>
+                                        <td><?= htmlspecialchars($certif['certif_url']); ?></td>
+                                       
                                         <td>
-                                            <a href="modif.php?idc=<?= $course['idc']; ?>" class="btn btn-warning btn-sm" title="Modifier">
+                                            <a href="modifc.php?id_certif=<?= $certif['id_certif']; ?>" class="btn btn-warning btn-sm" title="Modifier">
                                                 <i class="fas fa-edit"></i> Modifier
                                             </a>
-                                            <a href="supprimer.php?idc=<?= $course['idc']; ?>" 
+                                            <a href="supprimerc.php?id_certif=<?= $certif['id_certif']; ?>" 
                                                class="btn btn-danger btn-sm" 
                                                title="Supprimer" 
-                                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')">
+                                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette certification ?')">
                                                 <i class="fas fa-trash"></i> Supprimer
                                             </a>
                                         </td>
@@ -160,7 +151,7 @@ $list = $CoursController->getAllCours();
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="8" class="text-center text-muted">Aucun cours trouvé.</td>
+                                    <td colspan="8" class="text-center text-muted">Aucune certification trouvé.</td>
                                 </tr>
                             <?php endif; ?>
 
@@ -169,9 +160,9 @@ $list = $CoursController->getAllCours();
                 </div>
             </div>
             </a>
-        <!-- Nouveau bouton "Ajouter un cours" -->
-        <a href="ajoutcours.php" class="btn btn-add-course shadow-sm px-4 py-2">
-        <i class="fas fa-plus"></i> Ajouter un cours
+        <!-- Nouveau bouton "Ajouter une certification" -->
+        <a href="ajoutcertif.php" class="btn btn-add-course shadow-sm px-4 py-2">
+        <i class="fas fa-plus"></i> Ajouter une certification
         </a>
         </div>
         
@@ -192,11 +183,11 @@ $list = $CoursController->getAllCours();
     <script>
         // Recherche dans le tableau
         const searchInput = document.getElementById('searchInput');
-        const courseTable = document.getElementById('courseTable');
+        const certifTable = document.getElementById('certifTable');
 
         searchInput.addEventListener('keyup', function () {
             const filter = searchInput.value.toLowerCase();
-            const rows = courseTable.getElementsByTagName('tr');
+            const rows = certifTable.getElementsByTagName('tr');
             
             for (const row of rows) {
                 const cells = row.getElementsByTagName('td');
@@ -207,7 +198,7 @@ $list = $CoursController->getAllCours();
         });
         // Tri du tableau
         function sortTable(columnIndex) {
-            const table = document.getElementById("courseTable");
+            const table = document.getElementById("certifTable");
             const rows = Array.from(table.getElementsByTagName("tr"));
             const isAscending = table.dataset.sortDirection === "asc";
 
@@ -230,7 +221,6 @@ $list = $CoursController->getAllCours();
                 table.appendChild(row);
             }
         }
-        
     </script>
 </body>
 </html>
