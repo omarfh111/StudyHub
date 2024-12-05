@@ -3,6 +3,10 @@ require_once 'C:/xampp/htdocs/WebProject/Controller/reclamationC.php';
 require_once 'C:/xampp/htdocs/WebProject/Controller/reponseC.php';
 
 
+
+// Création de l'instance du contrôleur
+$controller = new ReclamationController();
+
 if (isset($_GET['message'])) {
     if ($_GET['message'] === 'success') {
         echo "<p class='success-message'>Réclamation supprimée avec succès !</p>";
@@ -11,7 +15,9 @@ if (isset($_GET['message'])) {
     }
 }
 
+
 ?>
+
 
 <!doctype html>
 <html lang="en" dir="ltr">
@@ -29,6 +35,18 @@ if (isset($_GET['message'])) {
 
 <!-- Core css -->
 <link rel="stylesheet" href="../assets/css/style.min.css"/>
+<style>
+    .bg-dark {
+        background-color: #343a40 !important;
+        color: white;
+    }
+
+    .text-white {
+        color: white;
+    }
+</style>
+
+
 </head>
 
 <body class="font-muli theme-blush">
@@ -880,59 +898,14 @@ if (isset($_GET['message'])) {
                                     <a class="dropdown-item" href="#"><img class="w20 mr-2" src="../assets/images/flags/bl.svg" alt="">France</a>
                                 </div>
                             </div>
-                            <div class="dropdown d-flex">
-                                <a class="nav-link icon d-none d-md-flex btn btn-default btn-icon ml-1" data-toggle="dropdown"><i class="fa fa-envelope"></i><span class="badge badge-success nav-unread"></span></a>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                    <ul class="right_chat list-unstyled w350 p-0">
-                                        <li class="online">
-                                            <a href="javascript:void(0);" class="media">
-                                                <img class="media-object" src="../assets/images/xs/avatar4.jpg" alt="">
-                                                <div class="media-body">
-                                                    <span class="name">Donald Gardner</span>
-                                                    <div class="message">It is a long established fact that a reader</div>
-                                                    <small>11 mins ago</small>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="online">
-                                            <a href="javascript:void(0);" class="media">
-                                                <img class="media-object " src="../assets/images/xs/avatar5.jpg" alt="">
-                                                <div class="media-body">
-                                                    <span class="name">Wendy Keen</span>
-                                                    <div class="message">There are many variations of passages of Lorem Ipsum</div>
-                                                    <small>18 mins ago</small>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </a>                            
-                                        </li>
-                                        <li class="offline">
-                                            <a href="javascript:void(0);" class="media">
-                                                <img class="media-object " src="../assets/images/xs/avatar2.jpg" alt="">
-                                                <div class="media-body">
-                                                    <span class="name">Matt Rosales</span>
-                                                    <div class="message">Contrary to popular belief, Lorem Ipsum is not simply</div>
-                                                    <small>27 mins ago</small>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </a>                            
-                                        </li>
-                                        <li class="online">
-                                            <a href="javascript:void(0);" class="media">
-                                                <img class="media-object " src="../assets/images/xs/avatar3.jpg" alt="">
-                                                <div class="media-body">
-                                                    <span class="name">Phillip Smith</span>
-                                                    <div class="message">It has roots in a piece of classical Latin literature from 45 BC</div>
-                                                    <small>33 mins ago</small>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </a>                            
-                                        </li>                        
-                                    </ul>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="javascript:void(0)" class="dropdown-item text-center text-muted-dark readall">Mark all as read</a>
-                                </div>
-                            </div>
+                            <?php
+
+?>
+
+<!-- ajouter ici notif -->
+
+
+
                             <div class="dropdown d-flex">
                                 <a class="nav-link icon d-none d-md-flex btn btn-default btn-icon ml-1" data-toggle="dropdown"><i class="fa fa-bell"></i><span class="badge badge-primary nav-unread"></span></a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -1002,6 +975,11 @@ if (isset($_GET['message'])) {
                             <li class="breadcrumb-item"><a href="#">StudyHub</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Reclamation</li>
                         </ol>
+                        <form method="GET" action="app-contact.php">
+                            <input type="text" name="search" placeholder="Rechercher par nom" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                            <button type="submit">Rechercher</button>
+                        </form>
+
                     </div>
                     
                     <!-- Icône pour afficher toutes les réponses -->
@@ -1038,16 +1016,33 @@ if (isset($_GET['message'])) {
                         <div class="alert alert-danger">Une erreur s'est produite lors de la suppression de la réclamation.</div>
                     <?php endif; ?>
                 <?php endif; ?>
-
                 <div class="table-responsive" id="users">
                     <table class="table table-hover table-vcenter text-nowrap table_custom list">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                            <th>
+                                ID
+                                <a href="?order_id=asc">
+                                    <span>&#8593;</span>
+                                </a>
+                                <a href="?order_id=desc">
+                                    <span>&#8595;</span>
+                                </a>
+                            </th>
                                 <th>Nom</th>
                                 <th>Prénom</th>
                                 <th>Email</th>
-                                <th>Date</th>
+                                <th>
+                                    Date
+                                    <a href="?order_date=asc">
+                                        <span>&#8593;</span>
+                                    </a>
+                                    <a href="?order_date=desc">
+                                        <span>&#8595;</span>
+                                    </a>
+                                    
+                                </th>
+
                                 <th>Objet</th>
                                 <th>Message</th>
                                 <th>Action</th>
@@ -1055,19 +1050,16 @@ if (isset($_GET['message'])) {
                         </thead>
                         <tbody>
                             <?php
-                            $controller = new ReclamationController();
                             
-                            $reclamations = $controller->getAllReclamations();
-                            foreach ($reclamations as $reclamation) {
-                                /*$ok = 0; // Par défaut, la réclamation n'est pas traitée
-                                $reponse = $ReclamationController->getReponseById($reclamation->id_rec); // Récupérer la réponse associée
-        
-                                if ($reponse && $reponse['ok'] == 1) {
-                                     $ok = 1; // Réclamation traitée
-                                }
+                            $order_id = isset($_GET['order_id']) ? $_GET['order_id'] : 'asc';
+                            $order_date = isset($_GET['order_date']) ? $_GET['order_date'] : 'asc';
+                            $search = isset($_GET['search']) ? $_GET['search'] : ''; 
 
-                                // Définir la couleur en fonction de l'état
-                                $statusColor = $ok ? "green" : "red";*/
+                            $controller = new ReclamationController();
+                            $reclamations = $controller->getReclamationsWithSearch($order_id, $order_date, $search);
+                            
+                            foreach ($reclamations as $reclamation) {
+                               
                                 echo "<tr>
                                     <td>{$reclamation->id_rec}</td>
                                     <td>{$reclamation->nom}</td>

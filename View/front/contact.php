@@ -18,6 +18,13 @@ require_once 'C:/xampp/htdocs/WebProject/Controller/reclamationC.php';
   exit;
 }*/
 
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    // Générer un ID utilisateur unique pour cette session
+    $_SESSION['user_id'] = uniqid('user_');
+}
+
 
 ?>
 
@@ -52,6 +59,8 @@ require_once 'C:/xampp/htdocs/WebProject/Controller/reclamationC.php';
   <link href="css/jquery.mb.YTPlayer.min.css" media="all" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="css/style1.css?v=1.0">
   <link rel="stylesheet" href="css/style.css?">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   
 
 
@@ -155,8 +164,22 @@ require_once 'C:/xampp/htdocs/WebProject/Controller/reclamationC.php';
         <a href="index.html">Accueil</a>
         <span class="mx-3 icon-keyboard_arrow_right"></span>
         <span class="current">Reclamation</span>
+        <div style="position: relative; display: inline-block;">
+    <a href="afficher_reclamation.php" style="text-decoration: none;">
+        <i class="fa fa-bell" style="font-size: 24px; color: orange;"></i>
+        <?php if (isset($_SESSION['new_notification']) && $_SESSION['new_notification']): ?>
+            <span style="position: absolute; top: -5px; right: -10px; background: red; color: white; 
+                         border-radius: 50%; padding: 5px; font-size: 12px;">
+                !
+            </span>
+        <?php endif; ?>
+    </a>
+</div>
       </div>
     </div>
+    
+
+
     
     <div class="site-section">
     <div class="formulaire-conteneur">

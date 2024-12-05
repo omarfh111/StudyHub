@@ -20,6 +20,13 @@ if (isset($_GET['message']) && $_GET['message'] == 'success_update'): ?>
     </div>
 <?php endif; 
 $nombreDeReponses = $reponseC->compterToutesReponses();
+$query = $pdo->prepare("
+    SELECT r.id_rsp, r.date_rep, r.reponse, rec.objet 
+    FROM reponse r
+    JOIN reclamation rec ON r.id_rec = rec.id_rec
+");
+$query->execute();
+$reponses = $query->fetchAll(PDO::FETCH_ASSOC);
 
 
 ?>
@@ -1014,6 +1021,10 @@ $nombreDeReponses = $reponseC->compterToutesReponses();
                             <li class="breadcrumb-item"><a href="#">Admin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Reponse</li>
                         </ol>
+                        <form method="GET" action="view-reponse.php">
+                            <input type="text" name="search" placeholder="Rechercher par objet" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                            <button type="submit">Rechercher</button>
+                        </form>
                         <div class="header-action">
                 <!--<h1 class="page-title">Réponses à la réclamation #<?= htmlspecialchars($id_rec); ?></h1>-->
             </div>
@@ -1034,13 +1045,8 @@ $nombreDeReponses = $reponseC->compterToutesReponses();
         <div class="row">
             <div class="col-lg-12 col-md-12">
                 <div class="card">
-                    <div class="card-header bline">
-                        <h3 class="card-title"></h3>
-                    </div>
-                    <div class="card-body">
-                        <!-- Table displaying the responses -->
-                        
-                    </div>
+                   
+                   
                 </div>
             </div>
         </div>
@@ -1056,32 +1062,53 @@ $nombreDeReponses = $reponseC->compterToutesReponses();
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header bline">
-                        <h3 class="card-title">Réponses</h3>
+                    <?php
+                        $order_date = isset($_GET['order_date']) ? $_GET['order_date'] : 'asc';
+                        $search = isset($_GET['search']) ? $_GET['search'] : '';
+
+                        // Créez l'instance du contrôleur des réponses
+                        $controller = new ReponseC();
+
+                        // Récupérer les réponses triées et filtrées
+                        $reponses = $controller->getReponsesWithSearchAndOrder($order_date, $search);
+                    ?>
+                    <h3 class="card-title">Réponses</h3>
                     </div>
                     <div class="card-body">
                         <!-- Affichage des réponses -->
                         <table class="table">
-    <thead>
-        <tr>
-            <th>ID Réponse</th>
-            <th>Date de Réponse</th>
-            <th>Contenu</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if (!empty($reponses)): ?>
-            <?php foreach ($reponses as $reponse): ?>
-                <tr>
-                    <td><?= htmlspecialchars($reponse['id_rsp']); ?></td>
-                    <td><?= htmlspecialchars($reponse['date_rep']); ?></td>
-                    <td><?= htmlspecialchars($reponse['reponse']); ?></td>
-                    <td>
+                        <thead>
+                        <tr>
+                            <th>ID Réponse</th>
+                            <th>
+                                Date de Réponse
+                                <a href="?order_date=asc">
+                                    <span>&#8593;</span>
+                                 </a>
+                                <a href="?order_date=desc">
+                                    <span>&#8595;</span>
+                                </a>
+                            </th>
+                            <th>Objet</th>
+                            <th>Contenu</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                    <tbody>
+                        <?php if (!empty($reponses)): ?>
+                        <?php foreach ($reponses as $reponse): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($reponse['id_rsp']); ?></td>
+                                <td><?= htmlspecialchars($reponse['date_rep']); ?></td>
+                                <td><?= htmlspecialchars($reponse['objet']); ?></td>
+                                <td><?= htmlspecialchars($reponse['reponse']); ?></td>
+                                <td>
                         <!-- Bouton Mettre à jour -->
                         <a href="update-reponse.php?id=<?php echo $reponse['id_rsp']; ?>" 
-                                    class="edit-icon" 
-                                    style="margin-right: 10px; color: blue;">
-                                    <i class="fas fa-edit"></i>
+                                       class='btn btn-icon btn-sm text-info' 
+                                       data-toggle='tooltip' 
+                                       title='Mettre à jour cette réclamation'>
+                                       <i class='fa fa-edit'></i>
                         </a>
                         
                         <!-- Bouton Supprimer -->

@@ -59,3 +59,70 @@
     background-color: #357a4f; /* Fond vert */
     color: white; /* Texte blanc */
   }
+
+  /* Conteneur du tableau centré */
+.table-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh; /* Centre verticalement dans la fenêtre */
+}
+
+/* Tableau avec fond vert et petite largeur */
+.success-table {
+  width: 50%; /* Largeur réduite */
+  min-width: 400px; /* Largeur minimale pour ne pas trop rétrécir */
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px; /* Coins arrondis */
+}
+
+/* Style pour les en-têtes du tableau */
+.success-table th {
+  color: #155724;
+}
+
+/* Bouton centré avec changement de couleur au survol */
+.success-button {
+  text-decoration: none;
+  padding: 12px 30px;
+  background-color: #28a745;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 20px;
+  transition: background-color 0.3s ease; /* Effet de transition */
+}
+
+/* Effet de survol sur le bouton */
+.success-button:hover {
+  background-color: white;
+  color: #28a745;
+  border: 1px solid #28a745;
+}
+
+/* NOTIFICATION */
+
+.notification {
+  background-color: #28a745; /* Vert */
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notification p {
+  margin: 0;
+}

@@ -5,14 +5,14 @@ require_once 'C:/xampp/htdocs/WebProject/Controller/reponseC.php';
 
 // Vérifier si l'ID est passé dans l'URL
 if (isset($_GET['id']) && !empty($_GET['id'])) {
-    $id_rec = $_GET['id']; // Récupérer l'ID de réclamation
+    $id_rec = $_GET['id']; 
 } else {
     die("Erreur : ID de réclamation non fourni !");
 }
 
 // Créer une instance du contrôleur et récupérer la réponse
 $reponseC = new ReponseC();
-$reponse = $reponseC->recupererReponseParReclamation($id_rec);
+$reponses = $reponseC->recupererReponseParReclamation($id_rec);
 ?>
 
 
@@ -1057,12 +1057,14 @@ $reponse = $reponseC->recupererReponseParReclamation($id_rec);
             </tr>
         </thead>
         <tbody>
-        <?php if ($reponse): ?>
-            <tr>
-                <td><?= htmlspecialchars($reponse['id_rsp']); ?></td>
-                <td><?= htmlspecialchars($reponse['date_rep']); ?></td>
-                <td><?= nl2br(htmlspecialchars($reponse['reponse'])); ?></td>
-            </tr>
+        <?php if ($reponses && count($reponses) > 0): ?>
+            <?php foreach ($reponses as $reponse): ?>
+                <tr>
+                    <td><?= htmlspecialchars($reponse['id_rsp']); ?></td>
+                    <td><?= htmlspecialchars($reponse['date_rep']); ?></td>
+                    <td><?= nl2br(htmlspecialchars($reponse['reponse'])); ?></td>
+                </tr>
+            <?php endforeach; ?>
         <?php else: ?>
             <tr>
                 <td colspan="3" class="text-center">Aucune réponse trouvée pour cette réclamation.</td>

@@ -6,6 +6,24 @@ require_once 'C:/xampp/htdocs/WebProject/Controller/reponseC.php';
 
 $pdo = config::getConnexion();
 
+// Vérifier si le message est passé dans l'URL
+if (isset($_GET['message'])) {
+    if ($_GET['message'] == 'success') {
+        echo "<div class='alert alert-success text-center' role='alert' style='position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;'>
+                 La réponse a été ajoutée avec succès !
+              </div>";
+    } elseif ($_GET['message'] == 'error_fields') {
+        echo "<div class='alert alert-danger text-center' role='alert' style='position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;'>
+                 Veuillez remplir tous les champs du formulaire.
+              </div>";
+    } elseif ($_GET['message'] == 'email_error') {
+        echo "<div class='alert alert-danger text-center' role='alert' style='position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;'>
+                 Erreur lors de l'envoi de l'email. Veuillez réessayer.
+              </div>";
+    }
+}
+
+
 if (isset($_GET['id'])) {
     $id_rec = intval($_GET['id']); 
     
@@ -15,37 +33,30 @@ if (isset($_GET['id'])) {
     
     if (!$reclamation) {
         echo "Réclamation introuvable.";
+        
         exit();
     }
 }
 
 $id_rec = isset($_GET['id']) ? intval($_GET['id']) : null;
 
-
-
-
-
-// Récupérer les informations de la réclamation si nécessaire
 $query = $pdo->prepare("SELECT * FROM reclamation WHERE id_rec = :id_rec");
 $query->execute(['id_rec' => $id_rec]);
 $reclamation = $query->fetch(PDO::FETCH_ASSOC);
 
-if (!$reclamation) {
-    echo "Réclamation introuvable.";
-    exit;
-}
+
 
 // Si une réponse est ajoutée via le formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $contenu = $_POST['contenu'];
-    $date_reponse = date('Y-m-d H:i:s'); // Date actuelle
+    $reponse = $_POST['reponse'];
+    $date_rep = date('Y-m-d H:i:s'); // Date actuelle
 
     // Insérer une nouvelle réponse
     $stmt = $pdo->prepare("INSERT INTO reponse (id_rec, reponse, date_rep) VALUES (:id_rec, :reponse, :date_rep)");
     $stmt->execute([
         'id_rec' => $id_rec,
-        'reponse' => $contenu,
-        'date_rep' => $date_reponse
+        'reponse' => $reponse,
+        'date_rep' => $date_rep
     ]);
 
     echo "Réponse ajoutée avec succès !";
@@ -72,9 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- Core css -->
 <link rel="stylesheet" href="../assets/css/style.min.css"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
-
-
 
 </head>
 
@@ -1058,17 +1066,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="actions">
         
         
-        <!-- Bouton Mettre à jour 
-         
-        <a href="update-reponse.php?id_rsp=<?= $reponse['id_rsp']; ?>" class="btn btn-icon btn-sm text-info" data-toggle="tooltip" title="Mettre à jour cette réponse">
-            <i class="fas fa-edit"></i> <!-- Mettre à jour 
-        </a>
-
-
-         Bouton Supprimer 
-        <a href="delete-reponse.php?id_rsp=<?= $reponse['id_rsp']; ?>" class="btn btn-icon btn-sm text-danger" data-toggle="tooltip" title="Supprimer cette réponse" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ?');">
-            <i class="fas fa-trash-alt"></i> <!-- Supprimer 
-        </a>-->
+        
 
     </div>
 </ul>
@@ -1090,18 +1088,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
 
                         <h4>Répondre à la Réclamation #<?= htmlspecialchars($id_rec); ?></h4>
-                        <form action="" method="post" class="form-container">
+                        <form action="/WebProject/Controller/send.php" method="post" class="form-container">
+                        
     <!-- Label et champ pour la date -->
-    <label for="date_reponse" class="label-date">Date de réponse :</label>
-    <input type="text" id="date_reponse" name="date_reponse" value="<?= date('Y-m-d H:i:s'); ?>" readonly>
+    <label for="date_rep" class="label-date">Date de réponse :</label>
+    <input type="text" id="date_rep" name="date_rep" value="<?= date('Y-m-d H:i:s'); ?>" readonly>
 
     <!-- Label et champ pour la réponse (disposition horizontale) -->
-    <label for="contenu" class="label-reponse">Réponse :</label>
-    <textarea id="contenu" name="contenu" rows="4" required class="horizontal-input"></textarea>
+    <label for="reponse" class="label-reponse">Réponse :</label>
+    <textarea id="reponse" name="reponse" rows="4" required class="horizontal-input"></textarea>
 
     <input type="hidden" name="id_rec" value="<?= htmlspecialchars($id_rec); ?>">
     <button type="submit" class="btn-submit">Envoyer</button>
 </form>
+
 <!-- Affichage des réponses existantes -->
 
     </ul>

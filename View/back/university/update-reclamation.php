@@ -3,26 +3,29 @@ require_once 'C:\xampp\htdocs\WebProject\config.php';
 require_once 'C:\xampp\htdocs\WebProject\Controller\reclamationC.php';
 
 
+// Initialiser le contrôleur
+// Initialiser le contrôleur
+$controller = new ReclamationController();
+
+// Vérifier si l'ID est passé dans l'URL
 if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    
-    $controller = new ReclamationController();
-    $reclamation = $controller->getReclamationById($id);  // Récupérer la réclamation depuis la base de données
+    $id = intval($_GET['id']); // Sécuriser l'entrée
+    $reclamation = $controller->getReclamationById($id); // Charger la réclamation correspondante
+
     if (!$reclamation) {
-        // Si la réclamation n'existe pas, rediriger vers la page d'erreur
+        // Redirection si la réclamation n'existe pas
         header("Location: app-contact.php?message=notfound");
         exit();
     }
 } else {
-    // Rediriger si l'ID est manquant
+    // Redirection si l'ID est manquant
     header("Location: app-contact.php?message=error");
     exit();
 }
 
-// Vérifier si les données du formulaire ont été envoyées
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Créer l'objet de réclamation et le remplir avec les données
-    $reclamation = new Reclamation();
+// Vérifier si le formulaire est soumis
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Mettre à jour les valeurs dans l'objet réclamation avec les données soumises
     $reclamation->setNom($_POST['nom']);
     $reclamation->setPrenom($_POST['prenom']);
     $reclamation->setEmail($_POST['email']);
@@ -30,15 +33,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $reclamation->setObjet($_POST['objet']);
     $reclamation->setMessage($_POST['message']);
 
-    // Valider la réclamation avant de la mettre à jour
     try {
+        // Valider les données avant de les enregistrer
         $reclamation->validate();
+
+        // Mettre à jour la réclamation dans la base de données
         $controller->updateReclamation($reclamation, $id);
+
+        // Redirection en cas de succès
+        header("Location: app-contact.php?message=success");
+        exit();
     } catch (InvalidArgumentException $e) {
-        // Afficher un message d'erreur si la validation échoue
-        echo $e->getMessage();
+        // Afficher un message d'erreur si les données sont invalides
+        echo "Erreur : " . $e->getMessage();
+    } catch (Exception $e) {
+        // Gérer toute autre erreur
+        echo "Une erreur inattendue s'est produite : " . $e->getMessage();
     }
 }
+
+
 
 
 ?>
@@ -101,37 +115,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </style>
 </head>
 <body>
-
+   
 <div class="container">
     <h2>Mettre à jour la réclamation</h2>
-    <form action="update-reclamation.php?id=<?php echo $id; ?>" method="POST">
+    <form action="update-reclamation.php?id=<?php echo $reclamation->getIdRec(); ?>" method="POST">
         <div class="form-group">
             <label for="nom">Nom</label>
-            <input type="text" class="form-control" id="nom" name="nom" value="<?php echo isset($reclamation) ? $reclamation->getNom() : ''; ?>" required>
+            <input type="text" class="form-control" id="nom" name="nom" value="<?php echo htmlspecialchars($reclamation->getNom()); ?>" required>
         </div>
         <div class="form-group">
             <label for="prenom">Prénom</label>
-            <input type="text" class="form-control" id="prenom" name="prenom" value="<?php echo isset($reclamation) ? $reclamation->getPrenom() : ''; ?>" required>
+            <input type="text" class="form-control" id="prenom" name="prenom" value="<?php echo htmlspecialchars($reclamation->getPrenom()); ?>" required>
         </div>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="<?php echo isset($reclamation) ? $reclamation->getEmail() : ''; ?>" required>
+            <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($reclamation->getEmail()); ?>" required>
         </div>
         <div class="form-group">
             <label for="date">Date</label>
-            <input type="date" class="form-control" id="date" name="date" value="<?php echo isset($reclamation) && $reclamation->getDate() ? $reclamation->getDate()->format('Y-m-d') : ''; ?>" required>
+            <input type="date" class="form-control" id="date" name="date" value="<?php echo htmlspecialchars($reclamation->getDate()->format('Y-m-d')); ?>" required>
         </div>
         <div class="form-group">
             <label for="objet">Objet</label>
-            <input type="text" class="form-control" id="objet" name="objet" value="<?php echo isset($reclamation) ? $reclamation->getObjet() : ''; ?>" required>
+            <input type="text" class="form-control" id="objet" name="objet" value="<?php echo htmlspecialchars($reclamation->getObjet()); ?>" required>
         </div>
         <div class="form-group">
             <label for="message">Message</label>
-            <textarea class="form-control" id="message" name="message" rows="4" required><?php echo isset($reclamation) ? $reclamation->getMessage() : ''; ?></textarea>
+            <textarea class="form-control" id="message" name="message" rows="4" required><?php echo htmlspecialchars($reclamation->getMessage()); ?></textarea>
         </div>
         <button type="submit">Mettre à jour</button>
     </form>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -7,36 +7,36 @@ $reponseC = new ReponseC();
 // Variable pour stocker l'ID de la réponse
 $id_rsp = null;
 
-// Vérifiez si l'ID est transmis via GET ou POST
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
-    $id_rsp = $_GET['id']; // Récupérer l'ID via l'URL
+    $id_rsp = $_GET['id']; 
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_rsp'])) {
-    $id_rsp = $_POST['id_rsp']; // Récupérer l'ID via le formulaire
+    $id_rsp = $_POST['id_rsp'];
 } else {
     die("Erreur : l'ID de la réponse est manquant dans l'URL ou le formulaire.");
 }
 
-// Récupérer les données de la réponse
+
 $response = $reponseC->recupererReponse($id_rsp);
 if (!$response) {
     die("Erreur : aucune réponse trouvée avec l'ID spécifié.");
 }
 
-// Traiter la soumission du formulaire pour la mise à jour
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupérer les données du formulaire
-    $nouveauContenu = $_POST['reponse']; // Nouveau contenu de la réponse
 
-    // Vérifier si les données nécessaires sont présentes
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    $nouveauContenu = $_POST['reponse']; 
+
+    
     if (empty($id_rsp) || empty($nouveauContenu)) {
         die("Tous les champs requis ne sont pas remplis.");
     }
 
-    // Mettre à jour la réponse
+    
     $success = $reponseC->modifierReponse($id_rsp, $nouveauContenu);
 
     if ($success) {
-        // Rediriger avec un message de succès
+        
         header('Location: view-reponse.php?message=success_update');
         exit();
     } else {
