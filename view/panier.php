@@ -1,67 +1,17 @@
 <?php
-
-require_once '../controller/offercontroller.php'; // Adjust the path as necessary
+// Connexion à la base de données
 require_once 'C:\xampp\htdocs\project\config.php';
-$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1; // Default page is 1
-$limit = 6; // Max 6 products per page
 
-// Instantiate the controller and fetch the products with pagination
-$controller = new OfferController();
-$result = $controller->affichee($page, $limit);
-$offers = $result['data'];
-$totalPages = $result['totalPages'];
-try {
-  // Get the PDO connection
-  $pdo = config::getConnexion();
+// Connexion à la base de données
+$conn = Config::getConnexion();
 
-  // Query to get the count of products
-  $query = "SELECT COUNT(*) AS total FROM produit";
-  $stmt = $pdo->query($query);
-  $result = $stmt->fetch();
-  $countall = $result['total'];
-} catch (Exception $e) {
-  echo "Error: " . $e->getMessage();
-  exit;
-}
-try {
-  // Get the PDO connection
-  $pdo = config::getConnexion();
-
-  // Query to get the count of products
-  $query = "SELECT COUNT(*) AS total FROM produit where types='info'";
-  $stmt = $pdo->query($query);
-  $result = $stmt->fetch();
-  $countinf = $result['total'];
-} catch (Exception $e) {
-  echo "Error: " . $e->getMessage();
-  exit;
-}
-try {
-  // Get the PDO connection
-  $pdo = config::getConnexion();
-
-  // Query to get the count of products
-  $query = "SELECT COUNT(*) AS total FROM produit where types='scolaire'";
-  $stmt = $pdo->query($query);
-  $result = $stmt->fetch();
-  $countsc = $result['total'];
-} catch (Exception $e) {
-  echo "Error: " . $e->getMessage();
-  exit;
-}
-try {
-  // Get the PDO connection
-  $pdo = config::getConnexion();
-
-  // Query to get the count of products
-  $query = "SELECT COUNT(*) AS total FROM produit where types='bureaux'";
-  $stmt = $pdo->query($query);
-  $result = $stmt->fetch();
-  $countbur = $result['total'];
-} catch (Exception $e) {
-  echo "Error: " . $e->getMessage();
-  exit;
-}
+// Récupérer les produits dans le panier
+$sql = "SELECT cart.idc, cart.idp, cart.nompp, cart.price, cart.quantite, produit.nomp AS produit_nom
+        FROM cart
+        INNER JOIN produit ON cart.idp = produit.idp";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -73,8 +23,8 @@ try {
   <title>Academics &mdash; Website by Colorlib</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Inclure jQuery -->
+  <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
   <link rel="stylesheet" href="fonts/icomoon/style.css">
 
@@ -201,16 +151,7 @@ try {
         <span class="mx-3 icon-keyboard_arrow_right"></span>
         <span class="current">News</span>
       </div>
-      <nav class="sidebar">
-        <ul>
-            <li> All <?php echo htmlspecialchars($countall); ?></a></li>
-            <li><a href="info.php">Info <?php echo htmlspecialchars($countinf); ?></a></li>
-            <li><a href="bureaux.php">Bureaux <?php echo htmlspecialchars($countbur); ?></a></li>
-            <li><a href="scolaire.php">Scolaire <?php echo htmlspecialchars($countsc); ?></a></li>
-            <li><a href="enstock.php">en stock</a></li>
-            <li><a href="panier.php" class="active"> Votre Panier </li>
-        </ul>
-    </nav>
+      
     </div>
 
     <div class="site-section">
@@ -221,84 +162,110 @@ try {
     
         <div class="col-md-9 mb-4">
         <div class="pagination">
-        <?php for ($page = 1; $page <= $totalPages; $page++) : ?>
-                        <a href="?page=<?php echo $page; ?>" class="page-link"><?php echo $page; ?></a>
-                    <?php endfor; ?>
+        
 </div>
 <br>
-<?php foreach ($offers as $produit) : ?>
-    <div class="product-card">
-        <!-- Left Section -->
-        <div class="product-info">
-            <h4><?php echo htmlspecialchars($produit['nomp']); ?></h4>
-            <p class="price">Prix: <?php echo htmlspecialchars($produit['prix_p']); ?> DT</p>
-            <p>prix finale: <?php echo htmlspecialchars($produit['fin_prix']); ?> DT</p>
-            <p>Description: </p>
-            <p class="quantite">
+<h1>Votre Panier</h1>
+
+    <?php if (count($cartItems) > 0): ?>
+        <table>
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Quantité</th>
+                    <th>Prix Unitaire</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($cartItems as $item): ?>
+                    <tr data-idc="<?php echo htmlspecialchars($item['idc']); ?>">
+                        <td><?php echo htmlspecialchars($item['produit_nom']); ?></td>
+                        <td>
+                            <input type="number" class="quantite" value="<?php echo htmlspecialchars($item['quantite']); ?>" min="1">
+                        </td>
+                        <td><?php echo htmlspecialchars($item['price']); ?> DT</td>
+                        <td class="total-price"><?php echo htmlspecialchars($item['price'] * $item['quantite']); ?> DT</td>
+                        <td>
+                            <input type="button" value="update" class="update-quantite">
+                        </td>
+                        <td>
+                            <a href="supp.php?idc=<?php echo htmlspecialchars($item['idc']); ?>">Supprimer</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <div class="total">
+            <p>Total: 
                 <?php 
-                    if ($produit['quantite'] > 0) {
-                        echo '<span class="in-stock">en stock</span>';
-                    } else {
-                        echo '<span class="out-of-stock">out of stock</span>';
+                    $total = 0;
+                    foreach ($cartItems as $item) {
+                        $total += $item['price'] * $item['quantite'];
                     }
+                    echo $total . " DT";
                 ?>
             </p>
         </div>
-        
-        <!-- Right Section -->
-        <div class="action-buttons">
-        <button 
-    class="add-to-cart" 
-    data-idp="<?= $produit['idp'] ?>" 
-    data-nomp="<?= $produit['nomp'] ?>" 
-    data-price="<?= $produit['fin_prix'] ?>" 
-    data-quantite="<?= $produit['quantite'] ?>" 
-    <?php if ($produit['quantite'] < 1) { echo 'disabled'; } ?>>
-    Add to Cart
-</button>
 
-            <a href="product_detail.php?idp=<?php echo htmlspecialchars($produit['idp']); ?>">See More</a>
-        </div>
-    </div>
-<?php endforeach; ?>
+    <?php else: ?>
+        <p>Votre panier est vide.</p>
+    <?php endif; ?>
+
+    <div class="checkout">
+        <a href="checkout.php">Passer à la caisse</a>
     </div>
 
     <script>
-    $(document).ready(function() {
-    $('.add-to-cart').click(function() {
-        var product = $(this);
-        var idp = product.data('idp');
-        var nomp = product.data('nomp');
-        var price = product.data('price');
-        var quantite = product.data('quantite');
+        // AJAX pour mettre à jour la quantité
+        $(document).ready(function() {
+    $('.update-quantite').click(function() {
+        // Récupérer les données de la ligne sélectionnée
+        var row = $(this).closest('tr');
+        var idc = row.data('idc');
+        var quantite = row.find('.quantite').val();
+        var priceText = row.find('td:nth-child(3)').text().trim();  // Récupérer le prix depuis la troisième cellule
+        
+        // Nettoyer le prix et le convertir en nombre
+        var price = parseFloat(priceText.replace('DT', '').trim());
 
-        // Si la quantité est 0 ou inférieure, empêcher l'ajout au panier
-        if (quantite < 1) {
-            alert("Le produit est en rupture de stock.");
+        // Vérifier que la quantité et le prix sont valides
+        if (quantite <= 0) {
+            alert("La quantité doit être supérieure à 0.");
+            return;
+        }
+        if (isNaN(price) || price <= 0) {
+            alert("Le prix n'est pas valide.");
             return;
         }
 
+        // Calculer le total
+        var total = quantite * price;
+
+        // Effectuer l'appel AJAX pour mettre à jour la quantité
         $.ajax({
-            url: 'add_to_cart.php', // La page PHP qui ajoute le produit au panier
+            url: 'update_quantity.php',
             type: 'POST',
             data: {
-                idp: idp,
-                nomp: nomp,
-                price: price,
-                quantite: 1 // Quantité par défaut
+                idc: idc,
+                quantite: quantite
             },
             success: function(response) {
-                
-                // Optionnel: vous pouvez mettre à jour une icône de panier, ou autre, ici
+                // Mettre à jour la quantité et le prix total dans l'interface sans recharger la page
+                row.find('.total-price').text(total.toFixed(2) + " DT");  // Mettre à jour le total avec 2 décimales
+                //alert(response);  // Afficher un message de succès
             },
             error: function(xhr, status, error) {
                 console.error(error);
-                alert("Erreur lors de l'ajout au panier.");
+                alert("Erreur lors de la mise à jour de la quantité.");
             }
         });
     });
 });
     </script>
+
     
 
 

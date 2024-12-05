@@ -4,7 +4,7 @@ require_once 'C:\xampp\htdocs\project\controller\offercontroller.php';
 require_once 'C:\xampp\htdocs\project\model\produitmodel.php';
 
 $OfferController = new OfferController();
-$list = $OfferController->affichee();
+$list = $OfferController->affichead();
 ?>
 
 <!doctype html>
@@ -1017,7 +1017,7 @@ $list = $OfferController->affichee();
                                         <th>Name</th>
                                         <th>Quantity</th>
                                         <th>Price</th>
-                                        <th>Reduction</th>
+                                        <th>Prix final</th>
                                         <th>types</th>
                                         
                                     </tr>
@@ -1028,7 +1028,7 @@ $list = $OfferController->affichee();
                                             <td><?php echo $produit['nomp']; ?> </td>
                                             <td><?php echo $produit['quantite']; ?> </td>
                                             <td><?php echo $produit['prix_p']; ?> </td>
-                                            <td><?php echo $produit['reduction']; ?> </td>
+                                            <td><?php echo $produit['fin_prix']; ?> </td>
                                             <td><?php echo $produit['types']; ?> </td> 
 
                                             <td><a title="delete" href="delete.php?idp=<?php echo $produit['idp']; ?>">Delete</a></td>
@@ -1116,8 +1116,8 @@ $list = $OfferController->affichee();
                         <input type="number" id="quantite" name="quantite" class="form-control"><br><br>
                         <label for="product-price">Product Price:</label>
                         <input type="number" id="price" name="prix_p" class="form-control"><br><br>
-                        <label for="price-reduction">Price Reduction:</label>
-                        <input type="number" id="reduction" name="reduction" class="form-control"><br><br>
+                        <label for="price-reduction">Final price:</label>
+                        <input type="number" id="reduction" name="fin_prix" class="form-control"><br><br>
                         <label for="description" id="description">Description:</label>
                         <textarea name="descri" id="description" cols="80" rows="10" class="form-control"></textarea><br><br>
                         <select id="type" name="types" required class="form-control">

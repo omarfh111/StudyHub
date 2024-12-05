@@ -1,9 +1,8 @@
-<?php
-require_once 'C:\xampp\htdocs\project\config.php';
-require_once 'C:\xampp\htdocs\project\model\produitmodel.php';
-$OfferController = new OfferController();
-$list = $OfferController->affichee();
-?>
+
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +26,7 @@ $list = $OfferController->affichee();
                 <th>Name</th>
                 <th>Quantity</th>
                 <th>Price</th>
-                <th>Reduction</th>
+                <th>prix final</th>
                 <th>types</th>
                 
             </tr>
@@ -38,7 +37,7 @@ $list = $OfferController->affichee();
                     <td><?php echo $produit['nomp']; ?> </td>
                     <td><?php echo $produit['quantite']; ?> </td>
                     <td><?php echo $produit['prix_p']; ?> </td>
-                    <td><?php echo $produit['reduction']; ?> </td>
+                    <td><?php echo $produit['fin_prix']; ?> </td>
                     <td><?php echo $produit['types']; ?> </td>
                     <td><a title="delete" href="delete.php?idp=<?php echo $produit['idp']; ?>">Delete</a></td>
                 </tr>

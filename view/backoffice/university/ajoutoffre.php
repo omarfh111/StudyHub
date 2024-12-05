@@ -7,14 +7,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $nomp = $_POST['nomp'];
   $quantite = $_POST['quantite'];
   $prix_p = $_POST['prix_p'];
-  $reduction = $_POST['reduction'];
+  $fin_prix = $_POST['fin_prix'];
   $descri=$_POST['descri'];
   $types = $_POST['types'];
 
   // Basic validation
 
       $OfferController = new OfferController();
-      $result = $OfferController->addproduct($nomp,$quantite,$prix_p,$reduction,$descri,$types);
+      $result = $OfferController->addproduct($nomp,$quantite,$prix_p,$fin_prix,$descri,$types);
 
       if ($result) {
           header('Location:library.php');

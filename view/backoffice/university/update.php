@@ -17,7 +17,7 @@ if ($id === null) {
 }
 
 // Get the product details by ID
-$list = $offerController->affichee();
+$list = $offerController->affichaa();
 $pr = null;
 foreach ($list as $row) {
     if ($row['idp'] == $id) {
@@ -27,15 +27,18 @@ foreach ($list as $row) {
 }
 
 // Check if the form is submitted and handle the update
-if (isset($_POST["nomp"]) && isset($_POST["quantite"]) && isset($_POST["prix_p"]) && isset($_POST["reduction"]) && isset($_POST["descri"]) && isset($_POST["types"])) {
+if (isset($_POST["nomp"]) && isset($_POST["quantite"]) && isset($_POST["prix_p"]) && isset($_POST["fin_prix"]) && isset($_POST["descri"]) && isset($_POST["types"])) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        
+        if(empty($_POST['nomp']) || ($_POST['quantite'])<0 || empty($_POST['prix_p']) || empty($_POST['fin_prix']) || empty($_POST['descri']) || empty($_POST['types'])){
+            echo("Please fill in all fields.");
+        }
+        else{
         // Create the ProductModel object from POST data
         $produit = new ProductModel(
             $_POST['nomp'],
             $_POST['quantite'],
             $_POST['prix_p'],
-            $_POST['reduction'],
+            $_POST['fin_prix'],
             $_POST['descri'],
             $_POST['types']
         );
@@ -44,10 +47,10 @@ if (isset($_POST["nomp"]) && isset($_POST["quantite"]) && isset($_POST["prix_p"]
         $offerController->updateOffer($produit, $id);
         header("Location:library.php");
         exit;
-    } else {
-        $error = "Missing information";
+    }
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +63,8 @@ if (isset($_POST["nomp"]) && isset($_POST["quantite"]) && isset($_POST["prix_p"]
         <meta name="description" content="">
         <meta name="author" content="">
     
-        
+        <link href="cssss.css?v=1.0" rel="stylesheet">
+
     
         <!-- Custom fonts for this template-->
         <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -99,12 +103,10 @@ if (isset($_POST["nomp"]) && isset($_POST["quantite"]) && isset($_POST["prix_p"]
                 <div id="content">
     
                     <!-- Topbar -->
-                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                   
     
                         <!-- Sidebar Toggle (Topbar) -->
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
+                       
     
                        
     
@@ -140,8 +142,8 @@ if (isset($_POST["nomp"]) && isset($_POST["quantite"]) && isset($_POST["prix_p"]
                                                 <input class="form-control form-control-user" type="number" id="return_date" name="prix_p" value="<?php echo $pr['prix_p'] ?>">
                                                 <span id="return_date_error"></span><br>
                                         
-                                                <label for="reduction">reduction :</label><br>
-                                                <input class="form-control form-control-user"  type="number" id="price" name="reduction"  value="<?php echo $pr['reduction'] ?>">
+                                                <label for="reduction">prix final</label><br>
+                                                <input class="form-control form-control-user"  type="number" id="price" name="fin_prix"  value="<?php echo $pr['fin_prix'] ?>">
                                                 <span id="price_error"></span><br>
                                         
                                                 <label for="descri">description</label>
@@ -167,9 +169,7 @@ if (isset($_POST["nomp"]) && isset($_POST["quantite"]) && isset($_POST["prix_p"]
                                                 >Add Offer</button> -->
                                                 <input type="reset">
                                             </form>
-                                            <?php
-    
-    ?>
+                                            <?php ?>
                                         </div>
                                     </div>
                                 </div>

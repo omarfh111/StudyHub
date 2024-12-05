@@ -6,15 +6,15 @@ class ProductModel
     private $nomp;
     private $quantite;
     private $prix_p;
-    private $reduction;
+    private $fin_prix;
     private $descri;
     private $types;
-    public function __construct($nomp,$quantite,$prix_p,$reduction,$descri,$types)
+    public function __construct($nomp,$quantite,$prix_p,$fin_prix,$descri,$types)
     {
         $this->nomp =$nomp;
         $this->quantite =$quantite;
         $this->prix_p =$prix_p;
-        $this->reduction =$reduction; 
+        $this->fin_prix =$fin_prix; 
         $this->descri=$descri;   
         $this->types=$types;
 
@@ -38,11 +38,11 @@ class ProductModel
     public function setprix_p($prix_p) {
         $this->prix_p = $prix_p;
     }
-    public function getreduction() {
-        return $this->reduction; 
+    public function getfin_prix() {
+        return $this->fin_prix; 
     }
-    public function setreduction($reduction) {
-        $this->reduction = $reduction;
+    public function setfin_prix($fin_prix) {
+        $this->fin_prix = $fin_prix;
     }
     public function getdescri() {
         return $this->descri;
@@ -50,7 +50,7 @@ class ProductModel
     public function setdescri($descri) {
         $this->descri = $descri;
     }
-  
+    
     public function gettypes() {
         return $this->types; 
     }
@@ -61,14 +61,14 @@ class ProductModel
     public function save() {
         $conn = Config::getConnexion();
         try {
-            $sql = "INSERT INTO produit (nomp, quantite, prix_p,reduction,descri, types) 
-                    VALUES (:nomp, :quantite, :prix_p, :reduction,:descri, :types)";
+            $sql = "INSERT INTO produit (nomp, quantite, prix_p,fin_prix,descri, types) 
+                    VALUES (:nomp, :quantite, :prix_p, :fin_prix,:descri, :types)";
             $stmt = $conn->prepare($sql);
             $result = $stmt->execute([
                 ':nomp' => $this->nomp,
                 ':quantite' => $this->quantite,
                 ':prix_p' => $this->prix_p,
-                ':reduction' => $this->reduction,
+                ':fin_prix' => $this->fin_prix,
                 ':descri' => $this->descri,
                 ':types' => $this->types,
                 

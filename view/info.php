@@ -68,8 +68,6 @@ try {
 <html lang="en">
 
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="addToCart.js" defer></script>
   <title>Academics &mdash; Website by Colorlib</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -202,9 +200,11 @@ try {
         <span class="current">News</span>
       </div>
       <nav class="sidebar">
-        <ul>
-            <li> All <?php echo htmlspecialchars($countall); ?></a></li>
+      <ul>
+            <li><a href="affichage.php"> All <?php echo htmlspecialchars($countall); ?></a></li>
+                 
             <li><a href="info.php">Info <?php echo htmlspecialchars($countinf); ?></a></li>
+            
             <li><a href="bureaux.php">Bureaux <?php echo htmlspecialchars($countbur); ?></a></li>
             <li><a href="scolaire.php">Scolaire <?php echo htmlspecialchars($countsc); ?></a></li>
             <li><a href="enstock.php">en stock</a></li>
@@ -226,80 +226,61 @@ try {
                     <?php endfor; ?>
 </div>
 <br>
-<?php foreach ($offers as $produit) : ?>
-    <div class="product-card">
-        <!-- Left Section -->
-        <div class="product-info">
-            <h4><?php echo htmlspecialchars($produit['nomp']); ?></h4>
-            <p class="price">Prix: <?php echo htmlspecialchars($produit['prix_p']); ?> DT</p>
-            <p>prix finale: <?php echo htmlspecialchars($produit['fin_prix']); ?> DT</p>
-            <p>Description: </p>
-            <p class="quantite">
-                <?php 
-                    if ($produit['quantite'] > 0) {
-                        echo '<span class="in-stock">en stock</span>';
-                    } else {
-                        echo '<span class="out-of-stock">out of stock</span>';
-                    }
-                ?>
-            </p>
-        </div>
-        
-        <!-- Right Section -->
-        <div class="action-buttons">
-        <button 
-    class="add-to-cart" 
-    data-idp="<?= $produit['idp'] ?>" 
-    data-nomp="<?= $produit['nomp'] ?>" 
-    data-price="<?= $produit['fin_prix'] ?>" 
-    data-quantite="<?= $produit['quantite'] ?>" 
-    <?php if ($produit['quantite'] < 1) { echo 'disabled'; } ?>>
-    Add to Cart
-</button>
-
-            <a href="product_detail.php?idp=<?php echo htmlspecialchars($produit['idp']); ?>">See More</a>
-        </div>
-    </div>
-<?php endforeach; ?>
+            <?php foreach ($offers as $produit) : ?>
+                <div class="product-card">
+                    <!-- Left Section -->
+                    <div class="product-info">
+                        <h4><?php echo htmlspecialchars($produit['nomp']); ?></h4>
+                        <p class="price">Prix: <?php echo htmlspecialchars($produit['prix_p']); ?> DT</p>
+                        <p>prix finale: <?php echo htmlspecialchars($produit['fin_prix']); ?>DT</p>
+                        <p>Description: </p>
+                        <p class="quantite">
+                            <?php 
+                                if ($produit['quantite'] > 0) {
+                                    echo '<span class="in-stock">en stock</span>';
+                                } else {
+                                    echo '<span class="out-of-stock">out of stock</span>';
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    
+                    <!-- Right Section -->
+                    <div class="action-buttons">
+                        <input type="button" value="Add to Cart" class="add-to-cart" <?php if ($produit['quantite'] < 1) { echo 'disabled'; } ?>  >
+                        <a href="product_detail.php?idp=<?php echo htmlspecialchars($produit['idp']); ?>">See More</a>
+                    </div>
+                    
+                </div>
+                
+            <?php endforeach; ?>
+            <div class="modal" id="cart-modal">
+        <h4 id="modal-product-name"></h4>
+        <p id="modal-product-price"></p>
+        <button class="continue-btn">Continue</button>
+        <button class="command-btn">Command</button>
     </div>
 
     <script>
-    $(document).ready(function() {
-    $('.add-to-cart').click(function() {
-        var product = $(this);
-        var idp = product.data('idp');
-        var nomp = product.data('nomp');
-        var price = product.data('price');
-        var quantite = product.data('quantite');
+        // Handle Add to Cart button click
+        document.querySelector('.add-to-cart-btn').addEventListener('click', function () {
+            // Get product details from data attributes
+            const productName = this.getAttribute('data-name');
+            const productPrice = this.getAttribute('data-price');
 
-        // Si la quantité est 0 ou inférieure, empêcher l'ajout au panier
-        if (quantite < 1) {
-            alert("Le produit est en rupture de stock.");
-            return;
-        }
+            // Update modal content
+            document.getElementById('modal-product-name').innerText = `Product: ${productName}`;
+            document.getElementById('modal-product-price').innerText = `Price: ${productPrice} DT`;
 
-        $.ajax({
-            url: 'add_to_cart.php', // La page PHP qui ajoute le produit au panier
-            type: 'POST',
-            data: {
-                idp: idp,
-                nomp: nomp,
-                price: price,
-                quantite: 1 // Quantité par défaut
-            },
-            success: function(response) {
-                
-                // Optionnel: vous pouvez mettre à jour une icône de panier, ou autre, ici
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-                alert("Erreur lors de l'ajout au panier.");
-            }
+            // Show modal
+            document.getElementById('cart-modal').classList.add('active');
         });
-    });
-});
     </script>
-    
+            <div class="pagination">
+    <?php for ($page = 1; $page <= $totalPages; $page++) : ?>
+        <a href="?page=<?php echo $page; ?>" class="page-link"><?php echo $page; ?></a>
+    <?php endfor; ?>
+</div>
 
 
 
