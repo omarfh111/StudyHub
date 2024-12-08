@@ -100,35 +100,38 @@ if (!$user) {
       <div class="container">
         <div class="d-flex align-items-center">
           <div class="site-logo">
-            <a href="index.html" class="d-block">
+            <a href="index.php" class="d-block">
               <img src="images/logo.jpg" alt="Image" class="img-fluid">
             </a>
           </div>
           <div class="mr-auto">
-            <nav class="site-navigation position-relative text-right" role="navigation">
+          <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                <li>
-                  <a href="index.html" class="nav-link text-left">Home</a>
+                <li class="active">
+                  <a href="index.php" class="nav-link text-left">Accueil</a>
                 </li>
                 <li class="has-children">
                   <a href="about.html" class="nav-link text-left">About Us</a>
                   <ul class="dropdown">
-                    <li><a href="teachers.html">Our Teachers</a></li>
-                    <li><a href="about.html">Our School</a></li>
+                    <li><a href="prof.php">Nos Proffesseurs</a></li>
+                    <li><a href="chatgpt.php">Notre assistance AI</a></li>
                   </ul>
                 </li>
                 <li>
-                  <a href="admissions.html" class="nav-link text-left">Admissions</a>
+                  <a href="Offres.html" class="nav-link text-left">offres</a>
                 </li>
-                <li>
+                <li class="has-children">
                   <a href="courses.html" class="nav-link text-left">Courses</a>
+                  <ul class="dropdown">
+                    <li><a href="courses.html">cours</a></li>
+                    <li><a href="evaluation.html">evaluation</a></li>
+                  </ul>
                 </li>
                 <li>
-                    <a href="contact.html" class="nav-link text-left">Contact</a>
+                    <a href="contact.html" class="nav-link text-left">Reclamations</a>
                   </li>
               </ul>                                                                                                                                                                                                                                                                                          </ul>
             </nav>
-
           </div>
           <div class="ml-auto">
             <div class="social-wrap">
@@ -170,9 +173,13 @@ if (!$user) {
         <div class="container">
             <div class="row">
                 <div class="col-md-6 mb-4">
-                    <p>
-                        <img src="images/course_5.jpg" alt="Image" class="img-fluid">
-                    </p>
+                  <div style="text-align: center; margin-bottom: 20px;">
+                    <?php if (!empty($user['pdp_url'])): ?>
+                        <img src="<?= htmlspecialchars($user['pdp_url']) ?>" alt="Photo de profil" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover;">
+                    <?php else: ?>
+                        <img src="/default-avatar.png" alt="Photo par défaut" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                    <?php endif; ?>
+                  </div>
                 </div>
                 <div class="col-lg-5 ml-auto align-self-center">
                 <h2>Profil de <?= htmlspecialchars($user['nom']) ?> <?= htmlspecialchars($user['prenom']) ?></h2>
@@ -183,7 +190,8 @@ if (!$user) {
                     <p><strong>Rôle :</strong> <?= htmlspecialchars($user['rol']) ?></p>
                 </div>
                 <a href="editvu.php?idu=<?= $user['idu']; ?>" class="btn btn-primary rounded-0 btn-lg px-5">modifier votre profile</a>
-            </div>
+                <a href="uploadimage.php?idu=<?= $user['idu']; ?>" class="btn btn-primary rounded-0 btn-lg px-5">modifier votre pdp</a>     
+              </div>
         </div>
     </div>
 

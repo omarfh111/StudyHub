@@ -46,8 +46,17 @@ class UserController {
             die('Error: ' . $e->getMessage());
         }
     }
-    function updateuser($user, $idu)
-{
+    public function updateUserPdpUrl($userId, $pdpUrl) {
+        try {
+            $pdo = config::getConnexion();
+            $stmt = $pdo->prepare("UPDATE user SET pdp_url = :pdp_url WHERE idu = :idu");
+            $stmt->execute(['pdp_url' => $pdpUrl, 'idu' => $userId]);
+        } catch (PDOException $e) {
+            die('Erreur lors de la mise à jour de la photo de profil : ' . $e->getMessage());
+        }
+    }
+    
+    function updateuser($user, $idu){
     var_dump($user);
     try {
         $db = config::getConnexion();

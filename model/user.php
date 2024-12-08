@@ -11,6 +11,7 @@ class User {
     private $mdp;
     private $metier;
     private $rol;
+    private $pdp_url;
 
 
     public function __construct($nom, $prenom, $email, $naissance, $tel, $mdp, $metier, $rol) {
@@ -94,7 +95,14 @@ class User {
     public function setrol($rol) {        
         $this->rol = $rol;
     }
-
+    public function getPdpUrl() {
+        return $this->pdp_url;
+    }
+    
+    public function setPdpUrl($pdp_url) {
+        $this->pdp_url = $pdp_url;
+    }
+    
 
     // Save method to insert a new user into the database
     public function save() {
