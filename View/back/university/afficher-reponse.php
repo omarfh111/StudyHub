@@ -34,6 +34,7 @@ $reponses = $reponseC->recupererReponseParReclamation($id_rec);
 <!-- Core css -->
 <link rel="stylesheet" href="../assets/css/style.min.css"/>
 <!--<link rel="stylesheet" href="/WebProject/View/back/assets/css/app-chat.css">-->
+
 </head>
 
 <body class="font-muli theme-blush">

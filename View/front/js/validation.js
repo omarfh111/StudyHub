@@ -13,87 +13,84 @@ document.addEventListener("DOMContentLoaded", function () {
     return emailRegex.test(email);
   }
 
-  // Fonction pour vérifier si la date est valide
+  // Fonction de validation de la date
   function validateDate(date) {
     return date && !isNaN(new Date(date).getTime()); // Vérifie si la date est non vide et valide
   }
 
-  // Fonction pour vérifier si le nom ou prénom sont valides
+  // Fonction de validation du nom
   function validateName(name) {
     const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{2,30}$/; // Lettres uniquement, avec accents, espaces, et longueurs entre 2 et 30
     return nameRegex.test(name);
   }
 
-  // Fonction pour vérifier si tous les champs sont vides
-  function areFieldsEmpty() {
-    return !fnameInput.value && !lnameInput.value && !emailInput.value && !messageInput.value && !dateInput.value;
+  // Vérifier si un champ est vide et afficher le message d'erreur
+  function showError(input, message) {
+    const errorElement = input.nextElementSibling; // Trouver le <small> associé à l'input
+    errorElement.textContent = message;
+    errorElement.style.display = "block"; // Affiche l'erreur
   }
 
-  // Gestionnaire de soumission du formulaire
+  // Cacher les messages d'erreur
+  function clearError(input) {
+    const errorElement = input.nextElementSibling;
+    errorElement.textContent = "";
+    errorElement.style.display = "none";
+  }
+
+  // Fonction de validation générale
   submitButton.addEventListener("click", function (event) {
     let isValid = true;
-    let errorMessage = '';
 
-    // Vérifier si le prénom est vide
+    // Vérifier le prénom
     if (!lnameInput.value) {
+      showError(lnameInput, "* Veuillez entrer votre prénom.");
       isValid = false;
-      errorMessage = "Veuillez entrer votre prénom.";
-      alert(errorMessage); // Affiche le message d'erreur pour le prénom vide
-      return; // Si prénom vide, on arrête l'exécution et on ne continue pas
+    } else {
+      clearError(lnameInput);
     }
 
-    // Vérifier si le nom est vide
+    // Vérifier le nom
     if (!fnameInput.value) {
+      showError(fnameInput, "* Veuillez entrer votre nom.");
       isValid = false;
-      errorMessage = "Veuillez entrer votre nom.";
-      alert(errorMessage); // Affiche le message d'erreur pour le nom vide
-      return; // Si nom vide, on arrête l'exécution et on ne continue pas
+    } else {
+      clearError(fnameInput);
     }
 
-    // Validation de l'email
+    // Vérifier l'email
     if (!emailInput.value) {
+      showError(emailInput, "* Veuillez entrer votre email.");
       isValid = false;
-      errorMessage = "Veuillez entrer votre email.";
-      alert(errorMessage); // Affiche le message d'erreur pour l'email vide
-      return; // Si email vide, on arrête l'exécution et on ne continue pas
     } else if (!validateEmail(emailInput.value)) {
+      showError(emailInput, "Veuillez entrer un email valide.");
       isValid = false;
-      errorMessage = "Veuillez entrer un email valide.";
-      alert(errorMessage); // Affiche le message d'erreur si l'email est invalide
-      return; // Si email invalide, on arrête l'exécution et on ne continue pas
+    } else {
+      clearError(emailInput);
     }
 
-    // Validation de la date
+    // Vérifier la date
     if (!dateInput.value) {
+      showError(dateInput, "* Veuillez entrer une date.");
       isValid = false;
-      errorMessage = "Veuillez entrer une date.";
-      alert(errorMessage); // Affiche le message d'erreur pour la date vide
-      return; // Si date vide, on arrête l'exécution et on ne continue pas
     } else if (!validateDate(dateInput.value)) {
+      showError(dateInput, "* Veuillez entrer une date valide.");
       isValid = false;
-      errorMessage = "Veuillez entrer une date valide.";
-      alert(errorMessage); // Affiche le message d'erreur si la date est invalide
-      return; // Si date invalide, on arrête l'exécution et on ne continue pas
+    } else {
+      clearError(dateInput);
     }
 
-    // Validation du message
+    // Vérifier le message
     if (!messageInput.value) {
+      showError(messageInput, "* Veuillez écrire un message.");
       isValid = false;
-      errorMessage = "Veuillez écrire un message.";
-      alert(errorMessage); // Affiche le message d'erreur pour le message vide
-      return; // Si message vide, on arrête l'exécution et on ne continue pas
+    } else {
+      clearError(messageInput);
     }
 
-    // Vérifier si tous les champs sont vides
-    if (areFieldsEmpty()) {
-      isValid = false;
-      errorMessage = "Veuillez remplir tous les champs avant de soumettre.";
-      alert(errorMessage); // Affiche le message d'erreur pour tous les champs vides
-    }
-
-    // Empêcher la soumission si les champs ne sont pas valides
+    // Si tout est valide, soumettre le formulaire, sinon empêcher l'envoi
     if (!isValid) {
-      event.preventDefault();
+      event.preventDefault(); // Empêche l'envoi du formulaire si un champ est vide
     }
   });
 });

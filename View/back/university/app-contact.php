@@ -1,7 +1,7 @@
 <?php
 require_once 'C:/xampp/htdocs/WebProject/Controller/reclamationC.php';
 require_once 'C:/xampp/htdocs/WebProject/Controller/reponseC.php';
-
+require_once 'C:/xampp/htdocs/WebProject/config.php';
 
 
 // Création de l'instance du contrôleur
@@ -14,6 +14,12 @@ if (isset($_GET['message'])) {
         echo "<p class='error-message'>Erreur lors de la suppression de la réclamation.</p>";
     }
 }
+
+
+
+
+
+
 
 
 ?>
@@ -35,17 +41,70 @@ if (isset($_GET['message'])) {
 
 <!-- Core css -->
 <link rel="stylesheet" href="../assets/css/style.min.css"/>
+<link rel="stylesheet" href="/university/assets/css/appContact.css?v=1.0">
+<link rel="stylesheet"href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 <style>
-    .bg-dark {
-        background-color: #343a40 !important;
-        color: white;
+
+.bg-dark {
+    background-color: #343a40 !important;
+    color: white;
+}
+
+.text-white {
+    color: white;
+}
+
+.badge-success {
+background-color: #28a745;
+color: white;
+padding: 5px 10px;
+border-radius: 5px;
+}
+
+.badge-warning {
+background-color: #ffc107;
+color: white;
+padding: 5px 10px;
+border-radius: 5px;
+}
+
+
+/*css bouton rechercher*/
+form {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
     }
 
-    .text-white {
+    input[type="text"] {
+        padding: 8px 12px;
+        border: 2px solid #852e4d; /* Contour rose */
+        border-radius: 5px;
+        font-size: 16px;
+        outline: none;
+        transition: border-color 0.3s ease-in-out;
+    }
+
+    input[type="text"]:focus {
+        border-color: #e7a6bb; /* Couleur plus claire lorsque l'input est actif */
+    }
+
+    button[type="submit"] {
+        padding: 8px 12px;
+        margin-left: 10px;
+        background-color: #852e4d; /* Couleur rose pour le bouton */
+        border: none;
+        border-radius: 5px;
         color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #d05a80; /* Changement de couleur lors du survol */
     }
 </style>
-
 
 </head>
 
@@ -975,10 +1034,10 @@ if (isset($_GET['message'])) {
                             <li class="breadcrumb-item"><a href="#">StudyHub</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Reclamation</li>
                         </ol>
-                        <form method="GET" action="app-contact.php">
-                            <input type="text" name="search" placeholder="Rechercher par nom" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                            <button type="submit">Rechercher</button>
-                        </form>
+                        
+
+
+
 
                     </div>
                     
@@ -1017,7 +1076,7 @@ if (isset($_GET['message'])) {
                     <?php endif; ?>
                 <?php endif; ?>
                 <div class="table-responsive" id="users">
-                    <table class="table table-hover table-vcenter text-nowrap table_custom list">
+                    <table class="table table-hover table-vcenter text-nowrap table_custom list" id="datatableid">
                         <thead>
                             <tr>
                             <th>
@@ -1045,6 +1104,7 @@ if (isset($_GET['message'])) {
 
                                 <th>Objet</th>
                                 <th>Message</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -1059,6 +1119,7 @@ if (isset($_GET['message'])) {
                             $reclamations = $controller->getReclamationsWithSearch($order_id, $order_date, $search);
                             
                             foreach ($reclamations as $reclamation) {
+                                $statut = $reclamation->check ? "<span class='badge badge-success'>Répondu</span>" : "<span class='badge badge-warning'>En attente</span>";
                                
                                 echo "<tr>
                                     <td>{$reclamation->id_rec}</td>
@@ -1068,6 +1129,7 @@ if (isset($_GET['message'])) {
                                     <td>{$reclamation->date}</td>
                                     <td>{$reclamation->objet}</td>
                                     <td>{$reclamation->message}</td>
+                                    <td>{$statut}</td>
                                     <td>
                                     <!-- Bouton Supprimer -->
                                         <a href='/WebProject/View/back/university/delete-reclamation.php?id={$reclamation->id_rec}'
@@ -1329,6 +1391,13 @@ if (isset($_GET['message'])) {
 <!-- Start project main js  and page js -->
 <script src="../assets/js/core.js"></script>
 <script src="assets/js/page/dialogs.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
+<script>
+         $(document).ready(function () {
+         $('#datatableid').DataTable();
+         });
+</script>
 <script>
 $(function() {
     "use strict";
@@ -1353,6 +1422,12 @@ $(function() {
         }
     });
 });
+
+//barre de recherche 
+
+   
+
+
 </script>
 </body>
 </html>

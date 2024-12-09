@@ -1,28 +1,72 @@
 <?php
 require_once 'C:/xampp/htdocs/WebProject/Controller/reclamationC.php';
-//juste pour tester la liste apres la supprimer
-/*if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $reclamation = new Reclamation();
-  $reclamation->setNom($_POST['nom']);
-  $reclamation->setPrenom($_POST['prenom']);
-  $reclamation->setEmail($_POST['email']);
-  $reclamation->setDate(new DateTime($_POST['date']));
-  $reclamation->setObjet($_POST['objet']);
-  $reclamation->setMessage($_POST['message']);
 
-  // Ajouter la réclamation à la base de données
-  $controller->ajouterReclamation($reclamation);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $idu = 9;  
 
-  // Rediriger vers la page afficher_reclamation.php avec un message de succès
-  header("Location: afficher_reclamation.php?success=true");
-  exit;
-}*/
+  $conn = Config::getConnexion();
 
-session_start();
+  $sqlUser = "SELECT nom, prenom, email FROM user WHERE idu = :idu";
 
-if (!isset($_SESSION['user_id'])) {
-    // Générer un ID utilisateur unique pour cette session
-    $_SESSION['user_id'] = uniqid('user_');
+  try {
+      $stmt = $conn->prepare($sqlUser);
+      $stmt->execute([':idu' => $idu]);
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      if ($user) {
+          $nom = $user['nom'];
+          $prenom = $user['prenom'];
+          $email = $user['email'];
+
+          $objet = $_POST['objet'];
+          $message = $_POST['message'];
+          $date = $_POST['date'];
+
+          // Validation des données
+          if (!empty($objet) && !empty($message) && !empty($date)) {
+              // Insertion de la réclamation dans la table
+              $sqlInsert = "INSERT INTO reclamation (idu, nom, prenom, email, date, objet, message) 
+                            VALUES (:idu, :nom, :prenom, :email, :date, :objet, :message)";
+              $stmtInsert = $conn->prepare($sqlInsert);
+              $stmtInsert->execute([
+                  ':idu' => $idu,
+                  ':nom' => $nom,
+                  ':prenom' => $prenom,
+                  ':email' => $email,
+                  ':date' => $date,
+                  ':objet' => $objet,
+                  ':message' => $message
+              ]);
+
+              echo "<p class='text-success'>Réclamation ajoutée avec succès.</p>";
+          } else {
+              echo "<p class='text-danger'>Tous les champs sont obligatoires.</p>";
+          }
+      } else {
+          echo "<p class='text-danger'>Utilisateur non trouvé.</p>";
+      }
+  } catch (PDOException $e) {
+      echo "<p class='text-danger'>Erreur : " . $e->getMessage() . "</p>";
+  }
+}
+
+
+
+$conn = Config::getConnexion();
+
+// Récupérer les informations de l'utilisateur avec une jointure entre user et reclamation
+$sql = "SELECT reclamation.id_rec, reclamation.objet, reclamation.message
+        FROM reclamation
+        WHERE reclamation.idu = :idu"; 
+
+try {
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([':idu' => $idu]); // Récupère les données de l'utilisateur via idu
+    $reclamations = $stmt->fetchAll(PDO::FETCH_ASSOC);  // Récupérer toutes les réclamations
+
+    
+} catch (PDOException $e) {
+    echo "Erreur : " . $e->getMessage();
 }
 
 
@@ -185,49 +229,54 @@ if (!isset($_SESSION['user_id'])) {
     <div class="formulaire-conteneur">
     <div class="container">
         <h3 class="form-title">Formulaire de réclamation</h3>
-        <form action="http://localhost/WebProject/view/front/contact.php" method="POST">
-            <div class="row">
-                <div class="col-md-6 form-group">
-                    <label for="fname">Nom</label>
-                    <input type="text" id="fname" name="nom" class="form-control form-control-lg" placeholder="Votre Nom">
-                    <small id="nom_error" class="text-danger"></small>
-                </div>
-                <div class="col-md-6 form-group">
-                    <label for="lname">Prénom</label>
-                    <input type="text" id="lname" name="prenom" class="form-control form-control-lg" placeholder="Votre Prenom">
-                    <small id="prenom_error" class="text-danger"></small>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 form-group">
-                    <label for="eaddress">Email</label>
-                    <input type="email" id="eaddress" name="email" class="form-control form-control-lg" placeholder="exemple@gmail.com">
-                    <small id="email_error" class="text-danger"></small>
-                </div>
-                <div class="col-md-6 form-group">
-                    <label for="date">Date</label>
-                    <input type="date" id="date" name="date" class="form-control form-control-lg">
-                    <small id="date_error" class="text-danger"></small>
-                </div>
-                <div class="col-md-12 form-group">
-                    <label for="Objet">Objet</label>
-                    <input type="text" id="Objet" name="objet" class="form-control form-control-lg" placeholder="L'objet de votre réclamation">
-                    <small id="objet_error" class="text-danger"></small>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 form-group">
-                    <label for="message">Message</label>
-                    <textarea name="message" id="message" cols="30" rows="10" class="form-control" placeholder="Tapez votre message"></textarea>
-                    <small id="message_error" class="text-danger"></small>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <input type="submit" value="Envoyer" class="btn btn-primary btn-lg px-5">
-                </div>
-            </div>
-        </form>
+        <form action="http://localhost/WebProject/View/front/contact.php" method="POST">
+    <div class="row">
+        <div class="col-md-6 form-group">
+            
+            <label for="fname">Nom</label>
+            <input type="text" id="fname" name="nom" class="form-control form-control-lg" 
+                   placeholder="Votre Nom" value="<?= htmlspecialchars($nom) ?>" readonly>
+            <small id="nom_error" class="text-danger"></small>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="lname">Prénom</label>
+            <input type="text" id="lname" name="prenom" class="form-control form-control-lg" 
+                   placeholder="Votre Prénom" value="<?= htmlspecialchars($prenom) ?>" readonly>
+            <small id="prenom_error" class="text-danger"></small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="eaddress">Email</label>
+            <input type="email" id="eaddress" name="email" class="form-control form-control-lg" 
+                   placeholder="exemple@gmail.com" value="<?= htmlspecialchars($email) ?>" readonly>
+            <small id="email_error" class="text-danger"></small>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" class="form-control form-control-lg">
+            <small id="date_error" class="text-danger"></small>
+        </div>
+        <div class="col-md-12 form-group">
+            <label for="Objet">Objet</label>
+            <input type="text" id="Objet" name="objet" class="form-control form-control-lg" placeholder="L'objet de votre réclamation">
+            <small id="objet_error" class="text-danger"></small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <label for="message">Message</label>
+            <textarea name="message" id="message" cols="30" rows="10" class="form-control" placeholder="Tapez votre message"></textarea>
+            <small id="message_error" class="text-danger"></small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <input type="submit" value="Envoyer" class="btn btn-primary btn-lg px-5">
+        </div>
+    </div>
+</form>
+
     </div>
 </div>
 

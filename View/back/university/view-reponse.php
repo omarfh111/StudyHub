@@ -47,6 +47,11 @@ $reponses = $query->fetchAll(PDO::FETCH_ASSOC);
 
 <!-- Core css -->
 <link rel="stylesheet" href="../assets/css/style.min.css"/>
+<link rel="stylesheet"href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+
+
+
+
 </head>
 
 <body class="font-muli theme-blush">
@@ -1021,10 +1026,8 @@ $reponses = $query->fetchAll(PDO::FETCH_ASSOC);
                             <li class="breadcrumb-item"><a href="#">Admin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Reponse</li>
                         </ol>
-                        <form method="GET" action="view-reponse.php">
-                            <input type="text" name="search" placeholder="Rechercher par objet" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                            <button type="submit">Rechercher</button>
-                        </form>
+                        
+
                         <div class="header-action">
                 <!--<h1 class="page-title">Réponses à la réclamation #<?= htmlspecialchars($id_rec); ?></h1>-->
             </div>
@@ -1076,7 +1079,7 @@ $reponses = $query->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="card-body">
                         <!-- Affichage des réponses -->
-                        <table class="table">
+                        <table class="table" id="datatableid">
                         <thead>
                         <tr>
                             <th>ID Réponse</th>
@@ -1161,6 +1164,13 @@ $reponses = $query->fetchAll(PDO::FETCH_ASSOC);
 
 <!-- Start Main project js, jQuery, Bootstrap -->
 <script src="../assets/bundles/lib.vendor.bundle.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
+<script>
+         $(document).ready(function () {
+         $('#datatableid').DataTable();
+         });
+</script>
 
 <!-- Start project main js  and page js -->
 <script src="../assets/js/core.js"></script>

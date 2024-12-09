@@ -4,15 +4,17 @@ require_once 'C:\xampp\htdocs\WebProject\config.php';
 require_once 'C:\xampp\htdocs\WebProject\Model\reclamationM.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
     // Crée un objet Reclamation avec les données du formulaire
     $reclamation = new Reclamation();
+    
     $reclamation->setNom($_POST['nom']);
     $reclamation->setPrenom($_POST['prenom']);
     $reclamation->setEmail($_POST['email']);
     $reclamation->setDate(new DateTime($_POST['date'])); 
     $reclamation->setObjet($_POST['objet']);
     $reclamation->setMessage($_POST['message']);
-
+    
     
     $controller = new ReclamationController();
     $controller->ajouterReclamation($reclamation);
@@ -21,35 +23,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 class ReclamationController {
 
     // Ajouter réclamation
-    public function ajouterReclamation($reclamation) {
-        
-        $db = config::getConnexion();
-
-        
-        $sql = "INSERT INTO reclamation (nom, prenom, email, date, objet, message) 
-                VALUES (:nom, :prenom, :email, :date, :objet, :message)";
-
+    public function ajouterReclamation(Reclamation $reclamation) {
+        $conn = Config::getConnexion();
+    
         try {
-            $query = $db->prepare($sql);
-            $query->execute([
-                'nom' => $reclamation->getNom(),
-                'prenom' => $reclamation->getPrenom(),
-                'email' => $reclamation->getEmail(),
-                'date' => $reclamation->getDate()->format('Y-m-d'), 
-                'objet' => $reclamation->getObjet(),
-                'message' => $reclamation->getMessage()
+            // Préparer la requête d'insertion dans la base de données
+            $sql = "INSERT INTO reclamation (idu, nom, prenom, email, date, objet, message, `check`) 
+                    VALUES (:idu, :nom, :prenom, :email, :date, :objet, :message, :check)";
+            $stmt = $conn->prepare($sql);
+    
+            // Exécuter la requête avec les données de l'objet Reclamation
+            $stmt->execute([
+                ':idu' => $reclamation->getIdu(),
+                ':nom' => $reclamation->getNom(),
+                ':prenom' => $reclamation->getPrenom(),
+                ':email' => $reclamation->getEmail(),
+                ':date' => $reclamation->getDate()->format('Y-m-d H:i:s'),
+                ':objet' => $reclamation->getObjet(),
+                ':message' => $reclamation->getMessage(),
+                ':check' => $reclamation->getCheck()
             ]);
-            echo "Réclamation envoyée avec succès!";
-            $lastInsertId = $db->lastInsertId();
-
-            $reclamation = $this->getAllReclamations();
-            header("Location: afficher_reclamation.php?id=$lastInsertId");
-            exit();
-
-        } catch (Exception $e) {
-            echo 'Erreur: SQL' . $e->getMessage();  
+    
+            echo "Réclamation ajoutée avec succès.";
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la réclamation: " . $e->getMessage();
         }
     }
+    
+
 
     // Récupérer toutes les réclamations
     public function getAllReclamations() {
@@ -75,7 +76,7 @@ class ReclamationController {
             $queryReponses = $db->prepare($sqlReponses);
             $queryReponses->execute(['id' => $id]);
     
-            
+            $this->updateCheckReclamation($id);
             $sqlReclamation = "DELETE FROM reclamation WHERE id_rec = :id";
             $queryReclamation = $db->prepare($sqlReclamation);
             $queryReclamation->execute(['id' => $id]);
@@ -106,6 +107,7 @@ public function getReclamationById($id) {
         $reclamation->setDate(new DateTime($reclamationData['date'])); // Assurez-vous que la date est bien formatée
         $reclamation->setObjet($reclamationData['objet']);
         $reclamation->setMessage($reclamationData['message']);
+        $reclamation->setCheck($reclamationData['check']);
 
         return $reclamation;
     } else {
@@ -200,6 +202,21 @@ public function getReclamationsWithSearch($order_id = 'asc', $order_date = 'asc'
     $reclamations = $query->fetchAll(PDO::FETCH_OBJ);
     
     return $reclamations;
+}
+
+public function updateCheckReclamation($id_rec) {
+    $db = config::getConnexion();
+    
+    // Vérifie si une réponse existe pour la réclamation donnée
+    $sqlCheck = "SELECT COUNT(*) FROM reponse WHERE id_rec = :id_rec";
+    $queryCheck = $db->prepare($sqlCheck);
+    $queryCheck->execute(['id_rec' => $id_rec]);
+    $hasResponse = $queryCheck->fetchColumn() > 0 ? 1 : 0;
+
+    // Met à jour la colonne 'check' dans la table 'reclamation'
+    $sqlUpdate = "UPDATE reclamation SET `check` = :hasResponse WHERE id_rec = :id_rec";
+    $queryUpdate = $db->prepare($sqlUpdate);
+    $queryUpdate->execute(['hasResponse' => $hasResponse, 'id_rec' => $id_rec]);
 }
 
 

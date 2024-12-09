@@ -19,6 +19,10 @@ class ReponseC {
                 'reponse' => $reponse,  
                 'date_rep' => date('Y-m-d H:i:s')
             ]);
+            $updateCheck = $pdo->prepare(
+                "UPDATE reclamation SET `check` = 1 WHERE id_rec = :id_rec"
+            );
+            $updateCheck->execute(['id_rec' => $id_rec]);
         } catch (Exception $e) {
             die('Erreur: ' . $e->getMessage());
         }
