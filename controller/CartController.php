@@ -20,7 +20,7 @@ class CartController
             if ($product) {
                 $nompp = $product['nomp'];
                 $price = $product['prix_p'];
-
+                
                 // Ajouter le produit au panier
                 $cart = new CartModel($idp, $nompp,  $price, $quantite);
                 return $cart->save();

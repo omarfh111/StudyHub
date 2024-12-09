@@ -119,7 +119,7 @@ try {
           <div class="col-lg-9 d-none d-lg-block">
             <a href="#" class="small mr-3"><span class="icon-question-circle-o mr-2"></span> avez vous une question?</a> 
             <a href="#" class="small mr-3"><span class="icon-phone2 mr-2"></span> 21544247</a> 
-            <a href="#" class="small mr-3"><span class="icon-envelope-o mr-2"></span> hamzafhaiel1004@gmail.com</a> 
+            <a href="#" class="small mr-3"><span class="icon-envelope-o mr-2"></span> hamzaFinfhaiel1004@gmail.com</a> 
           </div>
           <div class="col-lg-3 text-right">
        

@@ -165,6 +165,7 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
 </div>
 <br>
+<a href="affichage.php">Page des Produits</a>
 <h1>Votre Panier</h1>
 
     <?php if (count($cartItems) > 0): ?>
@@ -189,8 +190,7 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td class="total-price"><?php echo htmlspecialchars($item['price'] * $item['quantite']); ?> DT</td>
                         <td>
                             <input type="button" value="update" class="update-quantite">
-                        </td>
-                        <td>
+                        
                             <a href="supp.php?idc=<?php echo htmlspecialchars($item['idc']); ?>">Supprimer</a>
                         </td>
                     </tr>
@@ -215,7 +215,12 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php endif; ?>
 
     <div class="checkout">
-        <a href="checkout.php">Passer à la caisse</a>
+    <a href="validpan.php">Passer à la caisse</a>
+
+        <br>
+        <br>
+        
+        <a href="delete.php">Vider le panier</a>
     </div>
 
     <script>
@@ -256,6 +261,7 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 // Mettre à jour la quantité et le prix total dans l'interface sans recharger la page
                 row.find('.total-price').text(total.toFixed(2) + " DT");  // Mettre à jour le total avec 2 décimales
                 //alert(response);  // Afficher un message de succès
+                alert($produit);
             },
             error: function(xhr, status, error) {
                 console.error(error);
