@@ -1,0 +1,150 @@
+<?php
+
+require_once 'C:\xampp\htdocs\login6\config.php';
+require_once 'C:\xampp\htdocs\login6\model\reclamationM.php';
+
+
+class ReponseC {
+
+    // 1. Ajouter une réponse
+    public function ajouterReponse($id_rec, $reponse) {
+        try {
+            $pdo = config::getConnexion();
+            $stmt = $pdo->prepare(
+                "INSERT INTO reponse (id_rec, reponse, date_rep) 
+                 VALUES (:id_rec, :reponse, :date_rep)"
+            );
+            $stmt->execute([
+                'id_rec' => $id_rec,
+                'reponse' => $reponse,  
+                'date_rep' => date('Y-m-d H:i:s')
+            ]);
+            $updateCheck = $pdo->prepare(
+                "UPDATE reclamation SET `check` = 1 WHERE id_rec = :id_rec"
+            );
+            $updateCheck->execute(['id_rec' => $id_rec]);
+        } catch (Exception $e) {
+            die('Erreur: ' . $e->getMessage());
+        }
+    }
+    
+
+    // 2. Afficher toutes les réponses d'une réclamation
+    public function afficherToutesReponses() {
+            try {
+                $pdo = config::getConnexion();
+                $stmt = $pdo->query("SELECT * FROM reponse");
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                die('Erreur: ' . $e->getMessage());
+            }
+        }
+
+    // 3. Récupérer une réponse spécifique
+    public function recupererReponse($id_rsp) {
+    try {
+        $pdo = config::getConnexion();
+        $sql = "SELECT * FROM reponse WHERE id_rsp = :id_rsp";
+        $query = $pdo->prepare($sql);
+        $query->bindParam(':id_rsp', $id_rsp, PDO::PARAM_INT);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC); // Renvoie un tableau associatif
+    } catch (Exception $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
+}
+
+    // Mettre à jour une réponse
+    public function modifierReponse($id_rsp, $nouveauContenu) {
+        try {
+            
+            $pdo = config::getConnexion();
+            $stmt = $pdo->prepare("UPDATE reponse SET reponse = :reponse WHERE id_rsp = :id_rsp");  
+            
+            $stmt->bindParam(':id_rsp', $id_rsp, PDO::PARAM_INT);  
+            $stmt->bindParam(':reponse', $nouveauContenu, PDO::PARAM_STR);  
+    
+            
+            $stmt->execute();  
+    
+            return true;  
+        } catch (Exception $e) {
+            die('Erreur : ' . $e->getMessage());
+        }
+    }
+    
+    
+
+    // 5. Supprimer une réponse
+    public function supprimerReponse($id_rsp) {
+        try {
+            $pdo = config::getConnexion();
+            $stmt = $pdo->prepare("DELETE FROM reponse WHERE id_rsp = :id_rsp");
+            $stmt->execute(['id_rsp' => $id_rsp]);
+        } catch (Exception $e) {
+            die('Erreur: ' . $e->getMessage());
+        }
+    }
+
+    public function recupererReponseParReclamation($id_rec) {
+        $pdo = config::getConnexion();
+        $query = $pdo->prepare("SELECT * FROM reponse WHERE id_rec = :id_rec");
+        $query->bindParam(':id_rec', $id_rec, PDO::PARAM_INT);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    //6 Fonction qui retourne le nombre de réponses pour une réclamation spécifique
+    public function compterToutesReponses() {
+        
+        $db = config::getConnexion();
+        $sql = "SELECT COUNT(*) FROM reponse";
+        $query = $db->prepare($sql);
+        
+        
+        $query->execute();
+        
+        
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result['COUNT(*)'];
+    }
+
+    public function getReponsesWithSearchAndOrder($order_date = 'asc', $search = '') {
+        $db = config::getConnexion();
+
+        // Si un terme de recherche est fourni, on modifie la requête pour inclure la recherche sur l'objet de la réclamation
+        if ($search) {
+            $sql = "SELECT reponse.*, reclamation.objet 
+                    FROM reponse 
+                    JOIN reclamation ON reponse.id_rec = reclamation.id_rec 
+                    WHERE reclamation.objet LIKE :search 
+                    ORDER BY reponse.date_rep $order_date";
+            $query = $db->prepare($sql);
+            $query->execute(['search' => "%$search%"]);
+        } else {
+            // Si aucun terme de recherche, on retourne toutes les réponses triées
+            $sql = "SELECT reponse.*, reclamation.objet 
+                    FROM reponse 
+                    JOIN reclamation ON reponse.id_rec = reclamation.id_rec 
+                    ORDER BY reponse.date_rep $order_date";
+            $query = $db->prepare($sql);
+            $query->execute();
+        }
+
+        $reponses = $query->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $reponses;
+    }
+    
+    
+    
+
+}
+
+
+
+
+?>
+
+    
