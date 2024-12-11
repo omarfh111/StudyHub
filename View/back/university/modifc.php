@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $error = "Des informations sont manquantes.";
     }
- 
+include 'certif.html'; 
 ?>
 
 <!DOCTYPE html>

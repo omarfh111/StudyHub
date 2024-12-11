@@ -1,34 +1,64 @@
 <?php
-require_once  'C:\xampp\htdocs\StudyHub\Controller\CoursController.php';
+require_once 'C:\xampp\htdocs\StudyHub\Controller\CoursController.php';
 require_once 'C:\xampp\htdocs\StudyHub\config.php';
 
 // Instanciation du contrôleur
-//$CoursController = new CoursController();
+$CoursController = new CoursController();
+$certifications = $CoursController->getAllCertifications();
+
+// Tableau pour stocker les erreurs
+$errors = [];
+$titre_c = $description_c = $niveau = $nombre_consultation = $duree = $contenu = $position = $id_certif = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupération des données du formulaire
-    $titre_c =trim ($_POST['titre_c'] ?? '');
-    $description_c = trim ($_POST['description_c'] ?? '');
-    $niveau = trim ($_POST['niveau'] ?? null);
-    $nombre_consultation = trim ($_POST['nombre_consultation'] ?? '');
-    $duree = trim($_POST['duree'] ?? '');   
-    $contenu = trim ($_POST['contenu'] ?? '');
-    $position = trim ($_POST['position'] ?? ''); 
-    $CoursController = new CoursController();
-    // Validation des données (exemple simple)
-    if (!empty($titre_c) && !empty($description_c) && !empty($niveau) && !empty($duree) && !empty($contenu) && !empty($position)) {
-        // Appeler le contrôleur pour ajouter le cours
-        if ($CoursController->addCours($titre_c, $description_c, $niveau, $nombre_consultation, $duree, $contenu, $position)) {
+    $titre_c = trim($_POST['titre_c'] ?? '');
+    $description_c = trim($_POST['description_c'] ?? '');
+    $niveau = trim($_POST['niveau'] ?? '');
+    $nombre_consultation = trim($_POST['nombre_consultation'] ?? '');
+    $duree = trim($_POST['duree'] ?? '');
+    $contenu = trim($_POST['contenu'] ?? '');
+    $position = trim($_POST['position'] ?? '');
+    $id_certif = trim($_POST['id_certif'] ?? '');
+
+    // Validation des données
+    if (empty($titre_c)) {
+        $errors['titre_c'] = "Le titre est obligatoire.";
+    }
+    if (empty($description_c)) {
+        $errors['description_c'] = "La description est obligatoire.";
+    }
+    if (empty($niveau)) {
+        $errors['niveau'] = "Le niveau est obligatoire.";
+    }
+    if (empty($duree)) {
+        $errors['duree'] = "La durée est obligatoire.";
+    }
+    if (empty($contenu)) {
+        $errors['contenu'] = "Le contenu est obligatoire.";
+    }
+    if (empty($position)) {
+        $errors['position'] = "La position est obligatoire.";
+    }
+    if (empty($id_certif)) {
+        $errors['id_certif'] = "Veuillez choisir une certification.";
+    }
+
+    // Si aucune erreur, ajouter le cours
+    if (empty($errors)) {
+        if ($CoursController->addCours($titre_c, $description_c, $niveau, $nombre_consultation, $duree, $contenu, $position, $id_certif)) {
             header("Location: listecoursB.php");
             exit();
         } else {
-            echo "Erreur lors de l'ajout du cours.";
+            $errors['general'] = "Erreur lors de l'ajout du cours.";
         }
-    } else {
-        echo "Tous les champs marqués d'un * sont obligatoires.";
     }
 }
+
+include 'courses.html';
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -101,60 +131,97 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <form action="" method="POST" class="card-body">
                     <!-- Titre -->
-                    <div class="form-group row form-section">
-                        <label class="col-md-4 col-form-label">Titre du Cours <span class="text-danger">*</span></label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" id="titre_c" name="titre_c"  placeholder="Entrez le titre du cours">
-                        </div>
-                    </div>
-                    <!-- Description -->
-                    <div class="form-group row form-section">
-                        <label class="col-md-4 col-form-label">Description <span class="text-danger">*</span></label>
-                        <div class="col-md-8">
-                            <textarea class="form-control" id="description_c" name="description_c" rows="3"  placeholder="Ajoutez une description"></textarea>
-                        </div>
-                    </div>
-                    <!-- Niveau -->
-                    <div class="form-group row form-section">
-                        <label class="col-md-4 col-form-label">Niveau <span class="text-danger">*</span></label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" id="niveau" name="niveau"  placeholder="Niveau requis">
-                        </div>
-                    </div>
-                    <!-- Nombre de consultations -->
-                    <div class="form-group row form-section">
-                        <label class="col-md-4 col-form-label">Nombre de consultations <span class="text-danger">*</span></label>
-                        <div class="col-md-8">
-                            <input type="number" class="form-control" id="nombre_consultation" name="nombre_consultation"  placeholder="Nombre de consultations">
-                        </div>
-                    </div>
-                    <!-- Durée -->
-                    <div class="form-group row form-section">
-                        <label class="col-md-4 col-form-label">Durée <span class="text-danger">(en heure)*</span></label>
-                        <div class="col-md-8">
-                            <input type="number" class="form-control" id="duree" name="duree" value="0"  placeholder="Durée du cours">
-                        </div>
-                    </div>
-                    <!-- Contenu -->
-                    <div class="form-group row form-section">
-                        <label class="col-md-4 col-form-label">Contenu</label>
-                        <div class="col-md-8">
-                            <textarea class="form-control" id="contenu" name="contenu" rows="3"  placeholder="Ajoutez un contenu pour le cours"></textarea>
-                        </div>
-                    </div>
-                    <!-- Position -->
-                    <div class="form-group row form-section">
-                        <label class="col-md-4 col-form-label">Position</label>
-                        <div class="col-md-8">
-                            <input type="number" class="form-control" id="position" name="position" value="0"  placeholder="Position du cours">
-                        </div>
-                    </div>
+                   <!-- Titre -->
+<div class="form-group row form-section">
+    <label class="col-md-4 col-form-label">Titre du Cours <span class="text-danger">*</span></label>
+    <div class="col-md-8">
+        <input type="text" class="form-control" id="titre_c" name="titre_c" value="<?= htmlspecialchars($titre_c) ?>" placeholder="Entrez le titre du cours">
+        <?php if (isset($errors['titre_c'])): ?>
+            <small class="text-danger"><?= $errors['titre_c'] ?></small>
+        <?php endif; ?>
+    </div>
+</div>
+
+<!-- Description -->
+<div class="form-group row form-section">
+    <label class="col-md-4 col-form-label">Description <span class="text-danger">*</span></label>
+    <div class="col-md-8">
+        <textarea class="form-control" id="description_c" name="description_c" rows="3" placeholder="Ajoutez une description"><?= htmlspecialchars($description_c) ?></textarea>
+        <?php if (isset($errors['description_c'])): ?>
+            <small class="text-danger"><?= $errors['description_c'] ?></small>
+        <?php endif; ?>
+    </div>
+</div>
+
+<!-- Niveau -->
+<div class="form-group row form-section">
+    <label class="col-md-4 col-form-label">Niveau <span class="text-danger">*</span></label>
+    <div class="col-md-8">
+        <input type="text" class="form-control" id="niveau" name="niveau" value="<?= htmlspecialchars($niveau) ?>" placeholder="Niveau requis">
+        <?php if (isset($errors['niveau'])): ?>
+            <small class="text-danger"><?= $errors['niveau'] ?></small>
+        <?php endif; ?>
+    </div>
+</div>
+
+<!-- Durée -->
+<div class="form-group row form-section">
+    <label class="col-md-4 col-form-label">Durée <span class="text-danger">(en heure)*</span></label>
+    <div class="col-md-8">
+        <input type="number" class="form-control" id="duree" name="duree" value="<?= htmlspecialchars($duree) ?>" placeholder="Durée du cours">
+        <?php if (isset($errors['duree'])): ?>
+            <small class="text-danger"><?= $errors['duree'] ?></small>
+        <?php endif; ?>
+    </div>
+</div>
+
+<!-- Contenu -->
+<div class="form-group row form-section">
+    <label class="col-md-4 col-form-label">Contenu</label>
+    <div class="col-md-8">
+        <textarea class="form-control" id="contenu" name="contenu" rows="3" placeholder="Ajoutez un contenu pour le cours"><?= htmlspecialchars($contenu) ?></textarea>
+        <?php if (isset($errors['contenu'])): ?>
+            <small class="text-danger"><?= $errors['contenu'] ?></small>
+        <?php endif; ?>
+    </div>
+</div>
+
+<!-- Position -->
+<div class="form-group row form-section">
+    <label class="col-md-4 col-form-label">Position</label>
+    <div class="col-md-8">
+        <input type="number" class="form-control" id="position" name="position" value="<?= htmlspecialchars($position) ?>" placeholder="Position du cours">
+        <?php if (isset($errors['position'])): ?>
+            <small class="text-danger"><?= $errors['position'] ?></small>
+        <?php endif; ?>
+    </div>
+</div>
+
+<!-- Certification -->
+<div class="form-group row form-section">
+    <label class="col-md-4 col-form-label">Détails Certif</label>
+    <div class="col-md-8">
+        <select class="form-control" id="id_certif" name="id_certif">
+            <option value="">-- Choisissez un détail de certification --</option>
+            <?php foreach ($certifications as $certif): ?>
+                <option value="<?= $certif['id_certif'] ?>" <?= $id_certif == $certif['id_certif'] ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($certif['detail']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <?php if (isset($errors['id_certif'])): ?>
+            <small class="text-danger"><?= $errors['id_certif'] ?></small>
+        <?php endif; ?>
+    </div>
+</div>
+
                     <!-- Buttons -->
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label"></label>
                         <div class="col-md-8">
                             <button type="submit" class="btn btn-custom">Ajouter</button>
-                            <button type="reset" class="btn btn-outline-secondary">Annuler</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='listecoursB.php'">Annuler</button>
+
                         </div>
                     </div>
                 </form>

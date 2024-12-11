@@ -19,8 +19,8 @@ class CoursController {
 
     // Méthode pour ajouter un cours
    
-    public function addCours($titre_c, $description_c, $niveau, $nombre_consultation, $duree, $contenu, $position) {
-        $course = new Cours($titre_c, $description_c, $niveau, $nombre_consultation, $duree, $contenu, $position
+    public function addCours($titre_c, $description_c, $niveau, $nombre_consultation, $duree, $contenu, $position,$id_certif) {
+        $course = new Cours($titre_c, $description_c, $niveau, $nombre_consultation, $duree, $contenu, $position,$id_certif
         );
 
         return $course->save();
@@ -41,19 +41,21 @@ class CoursController {
         }
     }
 
-    // Méthode pour récupérer un cours par son ID
-    public function getCoursById($idc) {
-        $db = config::getConnexion();
+         public function getCoursById($idc) {
+        $db = Config::getConnexion();
         $sql = "SELECT * FROM cours WHERE idc = :idc";
         try {
-            
+            $stmt = $db->prepare($sql);
             $stmt->bindParam(':idc', $idc, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ?: null; // Retourne null si aucun cours n'est trouvé
+        } catch (PDOException $e) {
             throw new Exception("Erreur lors de la récupération du cours : " . $e->getMessage());
         }
     }
+    
+    
 
     // Méthode pour mettre à jour un cours
     public function updateCours($cours, $idc) {
@@ -70,7 +72,8 @@ class CoursController {
                     nombre_consultation = :nombre_consultation,
                     duree = :duree,
                     contenu = :contenu,
-                    position = :position
+                    position = :position,
+                    id_certif = :id_certif
                 WHERE idc = :idc'
             );
 
@@ -82,7 +85,8 @@ class CoursController {
                 'nombre_consultation' => $cours->getnombre_consultation(),
                 'duree' => $cours->getduree(),
                 'contenu' => $cours->getcontenu(),
-                'position' => $cours->getposition()
+                'position' => $cours->getposition(),
+                'id_certif' => $cours->getid_certif()
             ]);
 
             echo $query->rowCount();
@@ -90,7 +94,16 @@ class CoursController {
             echo "Erreur : " . $e->getMessage();
         }
     }
-
+    public function getAllCertifications() {
+        $db = config::getConnexion();
+        $sql = "SELECT id_certif, detail FROM certif";  // Récupérer uniquement les certificats
+        try {
+            $stmt = $db->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);  // Retourne toutes les certifications
+        } catch (Exception $e) {
+            throw new Exception("Erreur lors de la récupération des certifications : " . $e->getMessage());
+        }
+    }
     // Méthode pour exporter les cours en Excel
     public function exportToExcel() {
         $list = $this->getAllCours();
@@ -131,5 +144,8 @@ class CoursController {
             echo "Aucun cours trouvé.";
         }
     }
+
+
+    
 }
 ?>

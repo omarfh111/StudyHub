@@ -3,7 +3,7 @@ require_once 'C:\xampp\htdocs\StudyHub\Controller\CertifController.php';
 
 $CertifController = new CertifController();
 $list = $CertifController->getAllCertif();
-
+include 'certif.html'; 
 ?>
 
 <!DOCTYPE html>

@@ -1,9 +1,9 @@
 <?php
 require_once 'C:\xampp\htdocs\StudyHub\Controller\CoursController.php';
-
+ 
 $CoursController = new CoursController();
 $list = $CoursController->getAllCours();
-
+include 'courses.html'; 
 ?>
 
 <!DOCTYPE html>
@@ -131,20 +131,24 @@ $list = $CoursController->getAllCours();
                                 <th class="sortable" onclick="sortTable(4)">Durée <i class="fas fa-sort"></i></th>
                                 <th>Contenu</th>
                                 <th>Position</th>
-                                <th>Actions</th>
+                                <th>id_certif</th>
+                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="courseTable">
                             <?php if (!empty($list)): ?>
                                 <?php foreach ($list as $course): ?>
+
                                     <tr>
-                                        <td><?= htmlspecialchars($course['titre_c']); ?></td>
-                                        <td><?= htmlspecialchars($course['description_c']); ?></td>
-                                        <td><?= htmlspecialchars($course['niveau']); ?></td>
-                                        <td><?= htmlspecialchars($course['nombre_consultation']); ?></td>
-                                        <td><?= htmlspecialchars($course['duree']); ?> </td>
-                                        <td><?= htmlspecialchars($course['contenu']); ?></td>
-                                        <td><?= htmlspecialchars($course['position']); ?></td>
+                                        <td><?= $course['titre_c']; ?></td>
+                                        <td><?= $course['description_c']; ?></td>
+                                        <td><?= $course['niveau']; ?></td>
+                                        <td><?= $course['nombre_consultation']; ?></td>
+                                        <td><?= $course['duree']; ?></td>
+                                        <td><?= $course['contenu']; ?></td>
+                                        <td><?= $course['position']; ?></td>
+                                        <td><?= $course['id_certif']; ?></td>
+                                      
                                         <td>
                                             <a href="modif.php?idc=<?= $course['idc']; ?>" class="btn btn-warning btn-sm" title="Modifier">
                                                 <i class="fas fa-edit"></i> Modifier

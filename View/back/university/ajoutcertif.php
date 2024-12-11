@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Tous les champs marqués d'un * sont obligatoires.";
     }
 }
+include 'certif.html'; 
 ?>
 
 <!DOCTYPE html>

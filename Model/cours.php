@@ -11,8 +11,9 @@ class Cours {
     private $duree;
     private $contenu;
     private $position;
+    private $id_certif;
 
-    public function __construct($titre_c = null, $description_c = null, $niveau = null, $nombre_consultation = null, $duree = null, $contenu = null, $position) {
+    public function __construct($titre_c = null, $description_c = null, $niveau = null, $nombre_consultation = null, $duree = null, $contenu = null, $position, $id_certif) {
        // $this->pdo = config::getConnexion();
         //$this->idc = $idc;
         $this->titre_c = $titre_c;
@@ -22,7 +23,7 @@ class Cours {
         $this->duree = $duree;
         $this->contenu = $contenu;
         $this->position = $position;
-
+        $this->id_certif = $id_certif;
         
     }
 
@@ -74,11 +75,17 @@ class Cours {
     public function setposition($position){
         $this->position=$position;
     }
+    public function getid_certif(){
+        return $this->id_certif;
+    }
+    public function setid_certif($id_certif){
+        $this->id_certif=$id_certif;
+    }
     public function save() {
         $conn = Config::getConnexion();
         try {
-            $sql = "INSERT INTO cours (titre_c, description_c, niveau, nombre_consultation, duree, contenu, position) 
-                VALUES (:titre_c, :description_c, :niveau, :nombre_consultation, :duree, :contenu, :position)";
+            $sql = "INSERT INTO cours (titre_c, description_c, niveau, nombre_consultation, duree, contenu, position,id_certif) 
+                VALUES (:titre_c, :description_c, :niveau, :nombre_consultation, :duree, :contenu, :position , :id_certif)";
             $stmt = $conn->prepare($sql);
             $result = $stmt->execute([
                 'titre_c' => $this->titre_c,
@@ -87,7 +94,8 @@ class Cours {
                 'nombre_consultation' => $this->nombre_consultation,
                 'duree' => $this->duree,
                 'contenu' => $this->contenu,
-                'position' => $this->position
+                'position' => $this->position,
+                'id_certif' => $this->id_certif
             ]);
 
             if ($result) {

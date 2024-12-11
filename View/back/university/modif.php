@@ -7,6 +7,7 @@ $error = "";
 
 // Instanciation du contrôleur
 $CoursController = new CoursController();
+$certifications = $CoursController->getAllCertifications();
 
 // Vérifiez que l'ID est défini dans $_GET
 $idc= $_GET['idc'];
@@ -38,7 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['nombre_consultation'],
             $_POST['duree'],
             $_POST['contenu'],
-            $_POST['position']
+            $_POST['position'],
+            $_POST['id_certif']
         );
 
         // Appelez la méthode de mise à jour
@@ -48,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $error = "Des informations sont manquantes.";
     }
+    include 'courses.html'; 
 ?>
 
 <!DOCTYPE html>
@@ -159,12 +162,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="text" class="form-control" name="position" value="<?= htmlspecialchars($pr['position']) ?>">
                     </div>
                 </div>
+                    <div class="form-group row form-section">
+                    <label class="col-md-4 col-form-label">Détails Certif</label>
+                    <div class="col-md-8">
+                    <select class="form-control" id="id_certif" name="id_certif">
+                    <option value="0">-- Choisissez un détail de certification --</option>
+                    <?php
+                    // Parcourir les données récupérées et générer les options
+                    foreach ($certifications as $certif) {
+                     $selected = ($certif['id_certif'] == $pr['id_certif']) ? 'selected' : '';
+                     echo "<option value='{$certif['id_certif']}' $selected>{$certif['detail']}</option>";
+                     }
+            ?>
+           </select>
+        </div>
+    </div>
 
                 <!-- Boutons de soumission -->
                 <div class="form-group row">
                     <div class="col-md-8 offset-md-4">
                         <button type="submit" class="btn btn-primary">Modifier</button>
-                        <button type="reset" class="btn btn-outline-secondary">Annuler</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='listecoursB.php'">Annuler</button>
                     </div>
                 </div>
             </form>
