@@ -786,7 +786,7 @@
                         <li><a href="departments.html"><i class="fa fa-users"></i><span>Departments</span></a></li>
                         <li><a href="courses.html"><i class="fa fa-graduation-cap"></i><span>Courses</span></a></li>                        
                         <li><a href="http://localhost/project/view/backoffice/university/library.php"><i class="fa fa-book"></i><span>modif offre</span></a></li>
-                        <li><a href="holiday.html"><i class="fa fa-bullhorn"></i><span>Holiday</span></a></li>
+                        <li><a href="holiday.php"><i class="fa fa-bullhorn"></i><span>affiche commande</span></a></li>
                         <li class="g_heading">Extra</li>
                         <li><a href="events.html"><i class="fa fa-calendar"></i><span>-o"></i><span>Chat App</span></a></li>
                         <li><a href="app-contact.html"><i class="fa fa-address-book"></i><span>Contact</span></a></li>

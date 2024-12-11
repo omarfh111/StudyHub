@@ -265,6 +265,131 @@ class OfferController
             echo "Error: " . $e->getMessage(); 
         }
     }
+    //navbar fucntions
+    public function affichinf($page = 1, $limit = 6)
+    {
+        $offers = [];
+        $offset = ($page - 1) * $limit;
+    
+        try {
+            $pdo = Config::getConnexion();
+    
+            // Count total records
+            $totalStmt = $pdo->query("SELECT COUNT(*) FROM produit where types ='info'");
+            $totalRecords = $totalStmt->fetchColumn();
+    
+            // Fetch records for the current page
+            $sql = "SELECT * FROM produit where types='info' LIMIT :limit OFFSET :offset";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            return [
+                'data' => $offers,
+                'totalRecords' => $totalRecords,
+                'totalPages' => ceil($totalRecords / $limit),
+            ];
+        } catch (PDOException $e) {
+            die("Could not fetch offers: " . $e->getMessage());
+        }
+        
+    }
+    public function affichsco($page = 1, $limit = 6)
+    {
+        $offers = [];
+        $offset = ($page - 1) * $limit;
+    
+        try {
+            $pdo = Config::getConnexion();
+    
+            // Count total records
+            $totalStmt = $pdo->query("SELECT COUNT(*) FROM produit where types ='scorlaire'");
+            $totalRecords = $totalStmt->fetchColumn();
+    
+            // Fetch records for the current page
+            $sql = "SELECT * FROM produit where types='scolaire' LIMIT :limit OFFSET :offset";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            return [
+                'data' => $offers,
+                'totalRecords' => $totalRecords,
+                'totalPages' => ceil($totalRecords / $limit),
+            ];
+        } catch (PDOException $e) {
+            die("Could not fetch offers: " . $e->getMessage());
+        }
+        
+    }
+    public function affichbu($page = 1, $limit = 6)
+    {
+        $offers = [];
+        $offset = ($page - 1) * $limit;
+    
+        try {
+            $pdo = Config::getConnexion();
+    
+            // Count total records
+            $totalStmt = $pdo->query("SELECT COUNT(*) FROM produit where types ='bureaux'");
+            $totalRecords = $totalStmt->fetchColumn();
+    
+            // Fetch records for the current page
+            $sql = "SELECT * FROM produit where types='bureaux' LIMIT :limit OFFSET :offset";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            return [
+                'data' => $offers,
+                'totalRecords' => $totalRecords,
+                'totalPages' => ceil($totalRecords / $limit),
+            ];
+        } catch (PDOException $e) {
+            die("Could not fetch offers: " . $e->getMessage());
+        }
+        
+    }
+    public function affichen($page = 1, $limit = 6)
+    {
+        $offers = [];
+        $offset = ($page - 1) * $limit;
+    
+        try {
+            $pdo = Config::getConnexion();
+    
+            // Count total records
+            $totalStmt = $pdo->query("SELECT COUNT(*) FROM produit where quantite >0");
+            $totalRecords = $totalStmt->fetchColumn();
+    
+            // Fetch records for the current page
+            $sql = "SELECT * FROM produit where quantite>0  LIMIT :limit OFFSET :offset";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            return [
+                'data' => $offers,
+                'totalRecords' => $totalRecords,
+                'totalPages' => ceil($totalRecords / $limit),
+            ];
+        } catch (PDOException $e) {
+            die("Could not fetch offers: " . $e->getMessage());
+        }
+        
+    }
+
+
+
+
     
 
 }

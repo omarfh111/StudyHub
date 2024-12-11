@@ -6,16 +6,16 @@ class CartModel
 {
     private $idp;
     private $nompp;
-    
+    //private $user_id=1;
     private $price;
     private $quantite;
 
     // Constructeur pour initialiser les propriétés
-    public function __construct($idp, $nompp,  $price, $quantite)
+    public function __construct($idp,$nompp,$user_id ,  $price, $quantite)
     {
         $this->idp = $idp;
         $this->nompp = $nompp;
-        
+        //$this->user_id = $user_id;
         $this->price = $price;
         $this->quantite = $quantite;
     }
@@ -28,15 +28,15 @@ class CartModel
 
         try {
             // Préparer la requête d'insertion dans la table 'cart'
-            $sql = "INSERT INTO cart (idp, nompp,  price, quantite) 
-                    VALUES (:idp, :nompp,  :price, :quantite)";
+            $sql = "INSERT INTO cart (idp, nompp,user_id , price, quantite) 
+                    VALUES (:idp, :nompp,:user_id  ,:price, :quantite)";
             $stmt = $conn->prepare($sql);
 
             // Exécuter la requête avec les paramètres
             $stmt->execute([
                 ':idp' => $this->idp,
                 ':nompp' => $this->nompp,
-                
+                //':user_id' => $this->user_id,
                 ':price' => $this->price,
                 ':quantite' => $this->quantite
             ]);

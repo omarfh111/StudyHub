@@ -7,7 +7,7 @@ $limit = 6; // Max 6 products per page
 
 // Instantiate the controller and fetch the products with pagination
 $controller = new OfferController();
-$result = $controller->affichee($page, $limit);
+$result = $controller->affichinf($page, $limit);
 $offers = $result['data'];
 $totalPages = $result['totalPages'];
 try {
@@ -94,7 +94,7 @@ try {
   <link rel="stylesheet" href="css/style.css">
   
   <script src="affichage.js" defer></script>
-  <link rel="stylesheet" href="affichage.css?v=1.0">   
+  <link rel="stylesheet" href="css/affichage.css?v=1.0">   
 
 </head>
 
@@ -226,34 +226,48 @@ try {
                     <?php endfor; ?>
 </div>
 <br>
-            <?php foreach ($offers as $produit) : ?>
-                <div class="product-card">
-                    <!-- Left Section -->
-                    <div class="product-info">
-                        <h4><?php echo htmlspecialchars($produit['nomp']); ?></h4>
-                        <p class="price">Prix: <?php echo htmlspecialchars($produit['prix_p']); ?> DT</p>
-                        <p>prix finale: <?php echo htmlspecialchars($produit['fin_prix']); ?>DT</p>
-                        <p>Description: </p>
-                        <p class="quantite">
-                            <?php 
-                                if ($produit['quantite'] > 0) {
-                                    echo '<span class="in-stock">en stock</span>';
-                                } else {
-                                    echo '<span class="out-of-stock">out of stock</span>';
-                                }
-                            ?>
-                        </p>
-                    </div>
-                    
-                    <!-- Right Section -->
-                    <div class="action-buttons">
-                        <input type="button" value="Add to Cart" class="add-to-cart" <?php if ($produit['quantite'] < 1) { echo 'disabled'; } ?>  >
-                        <a href="product_detail.php?idp=<?php echo htmlspecialchars($produit['idp']); ?>">See More</a>
-                    </div>
+<?php foreach ($offers as $produit) : 
+    if ($produit['types'] == 'info') : ?>
+        <div class="product-card">
+            <!-- Left Section -->
+            <div class="product-info">
+                <h4><?php echo htmlspecialchars($produit['nomp']); ?></h4>
+                <p class="price">Prix: <?php echo htmlspecialchars($produit['prix_p']); ?> DT</p>
+                <p>Prix Finale: <?php echo htmlspecialchars($produit['fin_prix']); ?> DT</p>
+                <p>Description:</p>
+                <p class="quantite">
+                    <?php 
+                        if ($produit['quantite'] > 0) {
+                            echo '<span class="in-stock">En Stock</span>';
+                        } else {
+                            echo '<span class="out-of-stock">Out of Stock</span>';
+                        }
+                    ?>
+                </p>
+            </div>
+            
+            <!-- Right Section -->
+            <div class="action-buttons">
+                <input type="button" value="Add to Cart" class="add-to-cart" 
+                       <?php if ($produit['quantite'] < 1) { echo 'disabled'; } ?>>
+                <a href="product_detail.php?idp=<?php echo htmlspecialchars($produit['idp']); ?>">See More</a>
+            </div>
+        </div>
+<?php 
+    endif; 
+endforeach; ?>
+
+<!-- Pagination -->
+<div class="pagination">
+    <?php for ($page = 1; $page <= $totalPages; $page++) : ?>
+        <a href="?page=<?php echo $page; ?>" class="page-link"><?php echo $page; ?></a>
+    
+</div>
+
                     
                 </div>
-                
-            <?php endforeach; ?>
+                <?php endfor; ?>    
+            
             <div class="modal" id="cart-modal">
         <h4 id="modal-product-name"></h4>
         <p id="modal-product-price"></p>
@@ -277,9 +291,7 @@ try {
         });
     </script>
             <div class="pagination">
-    <?php for ($page = 1; $page <= $totalPages; $page++) : ?>
-        <a href="?page=<?php echo $page; ?>" class="page-link"><?php echo $page; ?></a>
-    <?php endfor; ?>
+  
 </div>
 
 

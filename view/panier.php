@@ -5,10 +5,14 @@ require_once 'C:\xampp\htdocs\project\config.php';
 // Connexion à la base de données
 $conn = Config::getConnexion();
 
+$idu=9;
 // Récupérer les produits dans le panier
-$sql = "SELECT cart.idc, cart.idp, cart.nompp, cart.price, cart.quantite, produit.nomp AS produit_nom
-        FROM cart
-        INNER JOIN produit ON cart.idp = produit.idp";
+$sql = "SELECT cart.idc, cart.idp, cart.nompp, cart.user_id,cart.price, cart.statut ,cart.quantite, produit.nomp AS produit_nom
+FROM cart
+INNER JOIN produit ON cart.idp = produit.idp
+where statut=0 "
+;
+
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -19,6 +23,7 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
   <script src="addToCart.js" defer></script>
   <title>Academics &mdash; Website by Colorlib</title>
   <meta charset="utf-8">
@@ -46,7 +51,7 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <link rel="stylesheet" href="css/style.css">
   
   <script src="affichage.js" defer></script>
-  <link rel="stylesheet" href="affichage.css?v=1.0">   
+  <link rel="stylesheet" href="css/affichage.css?v=1.0">   
 
 </head>
 
@@ -168,8 +173,13 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <a href="affichage.php">Page des Produits</a>
 <h1>Votre Panier</h1>
 
-    <?php if (count($cartItems) > 0): ?>
-        <table>
+<?php
+require 'C:\xampp\htdocs\project\vendor\autoload.php'; // N'oubliez pas d'avoir installé Stripe avec Composer
+
+\Stripe\Stripe::setApiKey(' sk_test_51QRAvuGCbEvzwn6bRdqMY6mR8UZXyQJha9WMtYUJN5bEqww2dkOwn9kBU0kwCFi65fsNJ2JwUaorYMq7IFTGkljE00JoKNa9Pw');
+
+if (count($cartItems) > 0) {
+    echo '<table>
             <thead>
                 <tr>
                     <th>Produit</th>
@@ -179,48 +189,73 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php foreach ($cartItems as $item): ?>
-                    <tr data-idc="<?php echo htmlspecialchars($item['idc']); ?>">
-                        <td><?php echo htmlspecialchars($item['produit_nom']); ?></td>
-                        <td>
-                            <input type="number" class="quantite" value="<?php echo htmlspecialchars($item['quantite']); ?>" min="1">
-                        </td>
-                        <td><?php echo htmlspecialchars($item['price']); ?> DT</td>
-                        <td class="total-price"><?php echo htmlspecialchars($item['price'] * $item['quantite']); ?> DT</td>
-                        <td>
-                            <input type="button" value="update" class="update-quantite">
-                        
-                            <a href="supp.php?idc=<?php echo htmlspecialchars($item['idc']); ?>">Supprimer</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+            <tbody>';
 
-        <div class="total">
-            <p>Total: 
-                <?php 
-                    $total = 0;
-                    foreach ($cartItems as $item) {
-                        $total += $item['price'] * $item['quantite'];
-                    }
-                    echo $total . " DT";
-                ?>
-            </p>
-        </div>
+    foreach ($cartItems as $item) {
+      if ($item['user_id'] == $idu && $item['statut'] == 0){ 
+        echo '<tr data-idc="' . htmlspecialchars($item['idc']) . '">
+                <td>' . htmlspecialchars($item['produit_nom']) . '</td>
+                <td>
+                    <input type="number" class="quantite" value="' . htmlspecialchars($item['quantite']) . '" min="1">
+                </td>
+                <td>' . htmlspecialchars($item['price']) . ' DT</td>
+                <td class="total-price">' . htmlspecialchars($item['price'] * $item['quantite']) . ' DT</td>
+                <td>
+                    <input type="button" value="update" class="update-quantite">
+                    <a href="supp.php?idc=' . htmlspecialchars($item['idc']) . '">Supprimer</a>
+                </td>
+            </tr>';
+      }
+    }
+    echo '</tbody></table>';
+    // Calculer le total
+    $total = 0;
+    foreach ($cartItems as $item) {
+      if ($item['user_id'] == $idu && $item['statut'] == 0) {
+        $total += $item['price'] * $item['quantite'];
+        $_SESSION['total'] = $total;
+    }
+  }
+    echo '<div class="total">
+            <p>Total: ' . $total . ' DT</p>
+          </div>';
 
-    <?php else: ?>
-        <p>Votre panier est vide.</p>
-    <?php endif; ?>
+    // Afficher le bouton de paiement Stripe Checkout
+    
+    
+} else {
+    echo '<p>Votre panier est vide.</p>';
+}
+?>
+
+<script>
+    var stripe = Stripe('pk_test_51QRAvuGCbEvzwn6bnEfYA72mqMZ6GEPe1861FWf3TsFmx9Br4MHfJFMDQmQlf8WGvHeBesSCTixBDmwUlSkq85oh00pho1amFi');
+
+    document.getElementById('checkout-button').addEventListener('click', function () {
+        fetch('/create-checkout-session.php', {
+            method: 'POST'
+        })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (sessionId) {
+            return stripe.redirectToCheckout({ sessionId: sessionId });
+        })
+        .then(function (result) {
+            if (result.error) {
+                alert(result.error.message);
+            }
+        })
+        .catch(function (error) {
+            console.error('Error:', error);
+        });
+    });
+</script>
 
     <div class="checkout">
     <a href="validpan.php">Passer à la caisse</a>
 
-        <br>
-        <br>
-        
-        <a href="delete.php">Vider le panier</a>
+       
     </div>
 
     <script>

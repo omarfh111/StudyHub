@@ -1,29 +1,37 @@
 <?php
 require 'vendor/autoload.php';
 
-// Set your secret key
-\Stripe\Stripe::setApiKey('sk_test_51QRAvuGCbEvzwn6bRdqMY6mR8UZXyQJha9WMtYUJN5bEqww2dkOwn9kBU0kwCFi65fsNJ2JwUaorYMq7IFTGkljE00JoKNa9Pw');
+\Stripe\Stripe::setApiKey('your_secret_key');
 
-// Get the payment method ID from the request
-$data = json_decode(file_get_contents('php://input'), true);
-$paymentMethodId = $data['paymentMethodId'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    try {
+        // Create a new Checkout Session
+        $session = \Stripe\Checkout\Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [
+                [
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => $_POST['nompp'],
+                            'description' => $_POST['desc'],
+                        ],
+                        'unit_amount' => $_POST['prix_p'] * 100, // Convert to cents for Stripe
+                    ],
+                    'quantity' => $_POST['quantite'],
+                ],
+            ],
+            'mode' => 'payment',
+            'success_url' => 'your-redirect-url-after-payment?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => 'your-cancel-url',
+        ]);
 
-try {
-    // Create a payment intent
-    $intent = \Stripe\PaymentIntent::create([
-        'amount' => 9999, 
-        'currency' => 'dt',
-        'payment_method' => $paymentMethodId,
-        'confirmation_method' => 'manual',
-        'confirm' => true,
-    ]);
+        header('Location: ' . $session->url);
+        exit();
 
-    // Respond with success
-    http_response_code(200);
-    echo json_encode(['success' => true, 'paymentIntent' => $intent]);
-} catch (\Stripe\Exception\ApiErrorException $e) {
-    // Respond with error
-    http_response_code(500);
-    echo json_encode(['error' => $e->getMessage()]);
+    } catch (\Stripe\Exception\ApiErrorException $e) {
+        echo 'Error: ' . $e->getMessage();
+        exit();
+    }
 }
 ?>

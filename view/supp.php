@@ -9,8 +9,9 @@ if (isset($_GET['idc'])) {
     $conn = Config::getConnexion();
 
     try {
+       
         // Supprimer l'article du panier
-        $sql = "DELETE FROM cart WHERE idc = :idc";
+        $sql = "DELETE FROM cart WHERE idc = :idc ";
         $stmt = $conn->prepare($sql);
         $stmt->execute([':idc' => $idc]);
 

@@ -7,7 +7,7 @@ $limit = 6; // Max 6 products per page
 
 // Instantiate the controller and fetch the products with pagination
 $controller = new OfferController();
-$result = $controller->affichee($page, $limit);
+$result = $controller->affichen($page, $limit);
 $offers = $result['data'];
 $totalPages = $result['totalPages'];
 try {
@@ -95,7 +95,7 @@ try {
   <link rel="stylesheet" href="css/style.css">
   
   <script src="affichage.js" defer></script>
-  <link rel="stylesheet" href="affichage.css?v=1.0">   
+  <link rel="stylesheet" href="css/affichage.css?v=1.0">   
 
 </head>
 

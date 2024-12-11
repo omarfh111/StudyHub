@@ -6,7 +6,7 @@ try {
     // Connect to the database
     $conn = Config::getConnexion();
 
-    // Get the user's cart quantities (you need to customize this part based on your table structure)
+    // Get the user's cart quantities
     $cartItems = $conn->query("SELECT idp, quantite FROM cart")->fetchAll(PDO::FETCH_ASSOC);
 
     // Check each cart item against the database
@@ -23,31 +23,92 @@ try {
         if ($product) {
             $availableStock = $product['quantite'];
             if ($cartQuantity > $availableStock) {
-                $req='select nomp from produit where idp=:idp';
-                $query=$conn->prepare($req);
-                $query->execute(array(':idp'=>$productId));
-                $res=$query->fetch();
+                // Fetch product name
+                $req = 'SELECT nomp FROM produit WHERE idp = :idp';
+                $query = $conn->prepare($req);
+                $query->execute([':idp' => $productId]);
+                $res = $query->fetch();
                 $productName = $res['nomp'];
-                $errorMessages[] = "La quantite demandé par le produit $productName est superieure au stock";
+                $errorMessages[] = "La quantité demandée pour le produit $productName dépasse le stock disponible.";
             }
         } else {
-            $errorMessages[] = "Le produit ID $productId n'existe pas dans la base de données.";
+            $errorMessages[] = "Le produit ID <strong>$productId</strong> n'existe pas dans la base de données.";
         }
     }
 
     // If there are errors, display them; otherwise, proceed to cmd.php
     if (!empty($errorMessages)) {
-        echo "<h3>Erreur(s) :</h3><ul>";
+        echo '<!DOCTYPE html>
+        <html lang="fr">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Erreur de Stock</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f9f9f9;
+                    margin: 0;
+                    padding: 0;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 50px auto;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                    padding: 20px;
+                }
+                h3 {
+                    color: #e74c3c;
+                    text-align: center;
+                }
+                ul {
+                    list-style-type: none;
+                    padding: 0;
+                }
+                ul li {
+                    margin: 10px 0;
+                    color: #333;
+                }
+                a {
+                    display: inline-block;
+                    text-decoration: none;
+                    background-color: #3498db;
+                    color: white;
+                    padding: 10px 15px;
+                    border-radius: 5px;
+                    text-align: center;
+                    margin-top: 20px;
+                }
+                a:hover {
+                    background-color: #2980b9;
+                }
+                .footer {
+                    text-align: center;
+                    margin-top: 20px;
+                    color: #777;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h3>Erreurs détectées</h3>
+                <ul>';
         foreach ($errorMessages as $message) {
-            echo "<li>" . htmlspecialchars($message) . "</li>";
+            echo '<li>' . htmlspecialchars($message) . '</li>';
         }
-        echo "</ul>";
-        echo '<a href="panier.php">Retour au panier</a>'; // Link back to cart
+        echo '</ul>
+                <a href="panier.php">Retour au panier</a>
+            </div>
+            <div class="footer">Merci davoir changer les informations avant de procéder.</div>
+        </body>
+        </html>';
     } else {
         header("Location: cmd.php");
         exit();
     }
 } catch (PDOException $e) {
-    echo "Erreur : " . htmlspecialchars($e->getMessage());
+    echo "<p>Erreur de base de données : " . htmlspecialchars($e->getMessage()) . "</p>";
 }
 ?>

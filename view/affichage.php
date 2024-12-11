@@ -96,7 +96,7 @@ try {
   <link rel="stylesheet" href="css/style.css">
   
   <script src="affichage.js" defer></script>
-  <link rel="stylesheet" href="affichage.css?v=1.0">   
+  <link rel="stylesheet" href="css/affichage.css?v=1.0">   
 
 </head>
 

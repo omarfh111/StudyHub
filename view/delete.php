@@ -6,9 +6,10 @@ require_once 'C:\xampp\htdocs\project\config.php';
 try {
     // Connexion à la base de données
     $conn = Config::getConnexion();
-
+    $idu=7;
+    $user_id=$idu;
     // Supprimer tous les articles du panier
-    $sql = "DELETE FROM cart";
+    $sql = "DELETE FROM cart where user_id=:user_id";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
 

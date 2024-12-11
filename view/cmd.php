@@ -1,9 +1,22 @@
 <?php 
 require_once 'C:\xampp\htdocs\project\config.php';
-require_once 'C:\xampp\htdocs\project\controller\offercontroller.php';
-$OfferController = new OfferController();
+require_once 'C:\xampp\htdocs\project\controller\cartcontroller.php';
+require_once 'C:\xampp\htdocs\project\vendor\autoload.php';
 
+$CartController = new CartController();
+$idu = 9;
+$user_id = $idu;
 
+// Obtenez les produits du panier
+$cartItems = $CartController->getCartItems($user_id);
+
+$total = 0;
+
+foreach ($cartItems as $item) {
+    if ($item['statut'] == 0) {
+        $total += $item['price'] * $item['quantite'];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -51,13 +64,13 @@ $OfferController = new OfferController();
         <form id="payment-form">
             <div id="card-element"></div>
             <div id="card-errors" role="alert"></div>
-            <button type="submit">Pay	</button>
+            <button type="submit" id="checkout-button">Pay <?php echo $total; ?> DT</button> <!-- Afficher le montant total dans le bouton -->
         </form>
     </div>
 
     <script>
         // Stripe Initialization
-        const stripe = Stripe('YOUR_PUBLISHABLE_KEY');
+        const stripe = Stripe('pk_test_51QRAvuGCbEvzwn6bnEfYA72mqMZ6GEPe1861FWf3TsFmx9Br4MHfJFMDQmQlf8WGvHeBesSCTixBDmwUlSkq85oh00pho1amFi');
         const elements = stripe.elements();
 
         // Card Element
@@ -77,14 +90,18 @@ $OfferController = new OfferController();
             if (error) {
                 document.getElementById('card-errors').textContent = error.message;
             } else {
-                // Send paymentMethod.id to your server
-                fetch('/process_payment.php', {
+                // Send paymentMethod.id and total amount to your server
+                fetch('process_payment.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ paymentMethodId: paymentMethod.id }),
+                    body: JSON.stringify({ 
+                        paymentMethodId: paymentMethod.id, 
+                        totalAmount: <?php echo $total * 100; ?> // Convert to cents for Stripe
+                    }),
                 }).then(response => {
                     if (response.ok) {
-                        alert('Payment successful!');
+                        // Redirige vers succes.php
+                        window.location.href = 'succes.php';
                     } else {
                         alert('Payment failed. Please try again.');
                     }
