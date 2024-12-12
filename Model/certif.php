@@ -6,7 +6,7 @@ class Certif {
     private $id_certif;
     private $detail;
     private $certif_url;
-   
+    private $idu=1;
 
     public function __construct($detail = null, $certif_url = null) {
        // $this->pdo = config::getConnexion();
@@ -39,12 +39,13 @@ class Certif {
     public function save() {
         $conn = Config::getConnexion();
         try {
-            $sql = "INSERT INTO certif (detail, certif_url) 
-                VALUES (:detail, :certif_url)";
+            $sql = "INSERT INTO certif (detail, certif_url,idu) 
+                VALUES (:detail, :certif_url,:idu)";
             $stmt = $conn->prepare($sql);
             $result = $stmt->execute([
                 'detail' => $this->detail,
-                'certif_url' => $this->certif_url
+                'certif_url' => $this->certif_url,
+                'idu' => $this->idu
             ]);
             
 

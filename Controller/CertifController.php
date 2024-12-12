@@ -4,10 +4,13 @@ require_once 'C:\xampp\htdocs\StudyHub\config.php';
 
 class CertifController {
 
+
+    private $idu=1;
+
     // Méthode pour récupérer tous les cours
     public function getAllCertif() {
         $db = config::getConnexion();
-        $sql = "SELECT * FROM certif";
+        $sql = "SELECT * FROM certif ";
         try {
             $stmt = $db->query($sql);
             return $stmt;
@@ -18,8 +21,8 @@ class CertifController {
 
     // Méthode pour ajouter une certification
    
-    public function addCertif($detail, $certif_url) {
-        $certif = new Certif($detail, $certif_url);
+    public function addCertif($detail, $certif_url, $idu) {
+        $certif = new Certif($detail, $certif_url, $idu);
         
 
         return $certif->save();
@@ -28,13 +31,16 @@ class CertifController {
 
     // Méthode pour supprimer une certification
     public function deleteCertif($id_certif) {
-        $sql = "DELETE FROM certif WHERE id_certif = :id_certif";
+        $sql = "DELETE FROM certif WHERE id_certif = :id_certif and idu = :idu";
+       
+       try {
         $db = config::getConnexion();
         $req = $db->prepare($sql);
         $req->bindValue(':id_certif', $id_certif);
 
-        try {
-            $req->execute();
+        
+            
+        $req->execute([':id_certif' =>$id_certif, 'idu'=>$idu]);
         } catch (Exception $e) {
             die('Error:' . $e->getMessage());
         }

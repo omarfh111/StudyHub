@@ -3,28 +3,40 @@ require_once  'C:\xampp\htdocs\StudyHub\Controller\CertifController.php';
 require_once 'C:\xampp\htdocs\StudyHub\config.php';
 
 // Instanciation du contrôleur
-//$CoursController = new CoursController();
+$CertifController = new CertifController();
+$idu=1;
+
+
+// Tableau pour stocker les erreurs
+$errors = [];
+$detail = $certif_url='';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupération des données du formulaire
-    $detail =trim ($_POST['detail'] ?? '');
-    $certif_url =trim ($_POST['certif_url'] ?? '');
+    $detail = trim($_POST['detail'] ?? '');
+    $certif_url = trim($_POST['certif_url'] ?? '');
     
-    $CertifController = new CertifController();
-    // Validation des données (exemple simple)
-    if (!empty($detail) && !empty($certif_url) ) {
-        // Appeler le contrôleur pour ajouter la certification
-        if ($CertifController->addCertif($detail, $certif_url)) {
+    // Validation des données
+    if (empty($detail)) {
+        $errors['detail'] = "Le detail est obligatoire.";
+    }
+    if (empty($certif_url)) {
+        $errors['certif_url'] = "L'URL  de la certification  est obligatoire.";
+    }
+   
+
+    // Si aucune erreur, ajouter la certif
+    if (empty($errors)) {
+        if ($CertifController->addCertif($detail, $certif_url,$idu)) {
             header("Location: listecertif.php");
             exit();
         } else {
-            echo "Erreur lors de l'ajout de la certification.";
+            $errors['general'] = "Erreur lors de l'ajout du certif.";
         }
-    } else {
-        echo "Tous les champs marqués d'un * sont obligatoires.";
     }
 }
-include 'certif.html'; 
+
+include 'certif.html';
 ?>
 
 <!DOCTYPE html>
@@ -97,27 +109,35 @@ include 'certif.html';
                     <h3 class="card-title">Ajouter une Certification</h3>
                 </div>
                 <form action="" method="POST" class="card-body">
-                    <!-- Details -->
-                    <div class="form-group row form-section">
-                        <label class="col-md-4 col-form-label">Details de la certification <span class="text-danger">*</span></label>
-                        <div class="col-md-8">
-                            <textarea class="form-control" id="detail" name="detail" rows="3"  placeholder="Entrez les details de la certification"></textarea>
-                        </div>
-                    </div>
-                    <!-- URL -->
-                    <div class="form-group row form-section">
-                        <label class="col-md-4 col-form-label">URL de la certification <span class="text-danger">*</span></label>
-                        <div class="col-md-8">
-                            <textarea class="form-control" id="certif_url" name="certif_url" rows="3"  placeholder="Ajoutez l'URL de la certification"></textarea>
-                        </div>
-                    </div>
+                   <!-- DeTail -->
+<div class="form-group row form-section">
+    <label class="col-md-4 col-form-label">Detail <span class="text-danger">*</span></label>
+    <div class="col-md-8">
+        <textarea class="form-control" id="detail" name="detail" rows="3" placeholder="Ajoutez un detail"><?= htmlspecialchars($detail) ?></textarea>
+        <?php if (isset($errors['detail'])): ?>
+            <small class="text-danger"><?= $errors['detail'] ?></small>
+        <?php endif; ?>
+    </div>
+</div>
+
+<!-- URL -->
+<div class="form-group row form-section">
+    <label class="col-md-4 col-form-label">URL de la certification <span class="text-danger">*</span></label>
+    <div class="col-md-8">
+        <input type="text" class="form-control" id="certif_url" name="certif_url" value="<?= htmlspecialchars($certif_url) ?>" placeholder="donner l'url de la certification">
+        <?php if (isset($errors['certif_url'])): ?>
+            <small class="text-danger"><?= $errors['certif_url'] ?></small>
+        <?php endif; ?>
+    </div>
+</div>
                   
                     <!-- Buttons -->
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label"></label>
                         <div class="col-md-8">
                             <button type="submit" class="btn btn-custom">Ajouter</button>
-                            <button type="reset" class="btn btn-outline-secondary">Annuler</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='listecertif.php'">Annuler</button>
+
                         </div>
                     </div>
                 </form>
