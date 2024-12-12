@@ -1,0 +1,66 @@
+/* custom-styles.css */
+
+body {
+    background-color: #f8f9fc;
+    font-family: 'Nunito', sans-serif;
+}
+
+.container-fluid {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+h1, h2, h3, label {
+    color: #4e73df;
+    font-weight: bold;
+}
+
+.form-control {
+    border: 1px solid #d1d3e2;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d3e2;
+    border-radius: 10px;
+}
+
+button.btn-primary {
+    background-color: #4e73df;
+    border: none;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+button.btn-primary:hover {
+    background-color: #2e59d9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+input[type="reset"] {
+    background-color: #e74a3b;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+input[type="reset"]:hover {
+    background-color: #c0392b;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}

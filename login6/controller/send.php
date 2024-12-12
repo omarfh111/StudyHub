@@ -42,14 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (empty($reponse)) {
         
-        header('Location: ../View/back/university/app-chat.php?message=error_fields');
+        header('Location: ../View/back/university/view-reponse.php?message=error_fields');
         exit();
     }
 
     $id_rec = filter_input(INPUT_POST, 'id_rec', FILTER_SANITIZE_NUMBER_INT);
     if (empty($id_rec)) {
        
-        header('Location: ../View/back/university/app-chat.php?message=error_fields');
+        header('Location: ../View/back/university/view-reponse.php?message=error_fields');
         exit();
     }
 
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $query->fetch(PDO::FETCH_ASSOC);
 
         if (!$result) {
-            header('Location: ../View/back/university/app-chat.php?message=error_not_found');
+            header('Location: ../View/back/university/view-reponse.php?message=error_not_found');
             exit();
         }
 
@@ -89,16 +89,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($mail->send()) {
             $reponseController = new ReponseC();
             $reponseController->ajouterReponse($id_rec, $reponse);
-            header('Location: ../View/back/university/app-chat.php?message=success');
+            header('Location: ../View/back/university/view-reponse.php?message=success');
             exit();
         } else {
             error_log("Erreur lors de l'envoi de l'email : " . $mail->ErrorInfo);
-            header('Location: ../View/back/university/app-chat.php?message=email_error');
+            header('Location: ../View/back/university/view-reponse.php?message=email_error');
             exit();
         }
     } catch (Exception $e) {
         error_log("Erreur : " . $e->getMessage());
-        header('Location: ../View/back/university/app-chat.php?message=server_error');
+        header('Location: ../View/back/university/view-reponse.php?message=server_error');
         exit();
     }
 }

@@ -45,7 +45,8 @@ $liste = $userC->listuser();
   <link href="css/jquery.mb.YTPlayer.min.css" media="all" rel="stylesheet" type="text/css">
 
   <link rel="stylesheet" href="css/style.css">
-
+ 
+  <script src="js/validation.js"></script>
 
 
 </head>

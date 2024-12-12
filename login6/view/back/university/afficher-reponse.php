@@ -805,12 +805,12 @@ $reponses = $reponseC->recupererReponseParReclamation($id_rec);
                         <li><a href="students.html"><i class="fa fa-users"></i><span>Students</span></a></li>
                         <li><a href="departments.html"><i class="fa fa-users"></i><span>Departments</span></a></li>
                         <li><a href="courses.html"><i class="fa fa-graduation-cap"></i><span>Courses</span></a></li>                        
-                        <li><a href="library.html"><i class="fa fa-book"></i><span>Library</span></a></li>
-                        <li><a href="holiday.html"><i class="fa fa-bullhorn"></i><span>Holiday</span></a></li>
+                        <li><a href="library.php"><i class="fa fa-book"></i><span>Offres</span></a></li>
+                        <li><a href="holiday.php"><i class="fa fa-bullhorn"></i><span>Commandes</span></a></li>
                         <li class="g_heading">Extra</li>
                         <li><a href="events.html"><i class="fa fa-calendar"></i><span>Calender</span></a></li>
 
-                        <li class="active"><a href="app-chat.php"><i class="fa fa-comments-o"></i><span>Reponse</span></a></li>
+                        <li class="active"><a href="view-reponse.php"><i class="fa fa-comments-o"></i><span>Reponse</span></a></li>
 
                         <li><a href="app-contact.php"><i class="fa fa-address-book"></i><span>Reclamation</span></a></li>
 

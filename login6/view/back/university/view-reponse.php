@@ -48,8 +48,91 @@ $reponses = $query->fetchAll(PDO::FETCH_ASSOC);
 <!-- Core css -->
 <link rel="stylesheet" href="../assets/css/style.min.css"/>
 <link rel="stylesheet"href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+<style>
+/* Changer la couleur du texte "Rechercher" */
+    .dt-search label {
+        color: #8d1451 !important; /* Rose foncé */
+        font-weight: bold;
+    }
+
+    /* Changer la couleur du texte "Afficher _MENU_ réclamations par page" */
+    .dataTables_length label {
+        color: #8d1451 !important; /* Rose foncé */
+        font-weight: bold;
+    }
+
+    /* Centrer la barre de recherche */
+    .dataTables_filter {
+        text-align: center;
+    }
+
+    /* Centrer la pagination */
+    div.dataTables_paginate {
+        text-align: center !important; /* Centrer la pagination */
+        margin-top: 10px !important; /* Espacement au-dessus */
+    }
+
+    /* Style général pour les boutons de pagination */
+    .pagination .page-item .page-link {
+        color: #ff0066 !important; /* Couleur rose foncée */
+        font-size: 12px !important; /* Taille du texte plus petite */
+        border: none !important; /* Suppression des cadres */
+        background: none !important; /* Pas de fond */
+        padding: 5px 8px !important; /* Espacement */
+        cursor: pointer !important;
+    }
+
+    /* Style au survol */
+    .pagination .page-item .page-link:hover {
+        color: #cc0052 !important; /* Rose foncé plus intense */
+        text-decoration: underline !important; /* Souligne au survol */
+    }
+
+    /* Style pour la page active */
+    .pagination .page-item.active .page-link {
+        color: white !important;
+        background-color: #ff0066 !important; /* Fond rose foncé */
+        border-radius: 50% !important; /* Rendre les boutons actifs ronds */
+        padding: 5px 10px !important;
+        font-weight: bold !important;
+    }
+
+    /* Style pour les boutons "Précédent" et "Suivant" */
+    .pagination .page-item.disabled .page-link {
+        color: #ddd !important; /* Gris pour les éléments désactivés */
+    }
+
+    /* Cacher les cadres des boutons */
+    .pagination .page-item .page-link {
+        box-shadow: none !important;
+    }
+
+    /* Changer la couleur du texte "Afficher _MENU_ réclamations par page" */
+.dt-length label {
+    color: #8d1451 !important; /* Rose foncé */
+    font-weight: bold;
+}
+
+/* Changer la couleur du texte à l'intérieur du select */
+.dt-length select {
+    color: #8d1451 !important; /* Rose foncé */
+    font-weight: bold;
+    border: 1px solid #8d1451 !important; /* Optionnel : ajouter une bordure rose */
+}
+
+/* Changer la couleur du texte du placeholder du select */
+.dt-length select option {
+    color: #8d1451 !important; /* Rose foncé */
+}
+
+/* Style général pour le label */
+.dt-length {
+    font-size: 14px !important;
+}
 
 
+
+</style>
 
 
 </head>
@@ -816,11 +899,11 @@ $reponses = $query->fetchAll(PDO::FETCH_ASSOC);
             <div class="tab-pane fade show active" id="menu-uni" role="tabpanel">
                 <nav class="sidebar-nav">
                     <ul class="metismenu">
-                        <li><a href="index.html"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-                        <li><a href="professors.html"><i class="fa fa-black-tie"></i><span>Professors</span></a></li>
-                        <li><a href="staff.html"><i class="fa fa-user-circle-o"></i><span>Staff</span></a></li>
-                        <li><a href="students.html"><i class="fa fa-users"></i><span>Students</span></a></li>
-                        <li><a href="departments.html"><i class="fa fa-users"></i><span>Departments</span></a></li>
+                        <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                        <li><a href="professors.php"><i class="fa fa-black-tie"></i><span>Professors</span></a></li>
+                        <li><a href="staff.php"><i class="fa fa-user-circle-o"></i><span>Staff</span></a></li>
+                        <li><a href="students.php"><i class="fa fa-users"></i><span>Users</span></a></li>
+                        <li><a href="departments.php"><i class="fa fa-users"></i><span>Students</span></a></li>
                         <li><a href="courses.html"><i class="fa fa-graduation-cap"></i><span>Courses</span></a></li>                        
                         <li><a href="library.html"><i class="fa fa-book"></i><span>Library</span></a></li>
                         <li><a href="holiday.html"><i class="fa fa-bullhorn"></i><span>Holiday</span></a></li>
@@ -1138,7 +1221,70 @@ $reponses = $query->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+   $(document).ready(function () {
+    $('#datatableid').DataTable({
+        "language": {
+            "lengthMenu": "Afficher _MENU_ réclamations par page",
+            "search": "Rechercher: ",
+            "searchPlaceholder": "Tapez ici...",
+            "paginate": {
+                "next": "Suivant",
+                "previous": "Précédent"
+            }
+        },
+        "pagingType": "simple_numbers", // Pagination simple avec uniquement des chiffres
+    });
+});
 
+</script>
+<style>
+
+    
+    /* Centrer la pagination */
+    div.dataTables_paginate {
+        text-align: center !important; /* Centrer la pagination */
+        margin-top: 10px !important; /* Espacement au-dessus */
+    }
+
+    /* Style général pour les boutons de pagination */
+    .pagination .page-item .page-link {
+        color: #8d1451 !important; /* Couleur rose foncée */
+        font-size: 12px !important; /* Taille du texte plus petite */
+        border: none !important; /* Suppression des cadres */
+        background: none !important; /* Pas de fond */
+        padding: 5px 8px !important; /* Espacement */
+        cursor: pointer !important;
+    }
+
+    /* Style au survol */
+    .pagination .page-item .page-link:hover {
+        color: #cc0052 !important; /* Rose foncé plus intense */
+        text-decoration: underline !important; /* Souligne au survol */
+    }
+
+    /* Style pour la page active */
+    .pagination .page-item.active .page-link {
+        color: white !important;
+        background-color: #8d1451 !important; /* Fond rose foncé */
+        border-radius: 50% !important; /* Rendre les boutons actifs ronds */
+        padding: 5px 10px !important;
+        font-weight: bold !important;
+    }
+
+    /* Style pour les boutons "Précédent" et "Suivant" */
+    .pagination .page-item.disabled .page-link {
+        color: #ddd !important; /* Gris pour les éléments désactivés */
+    }
+
+    /* Cacher les cadres des boutons */
+    .pagination .page-item .page-link {
+        box-shadow: none !important;
+    }
+</style>
 
     <!-- Start main footer -->
     <div class="section-body">

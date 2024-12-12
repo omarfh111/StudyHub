@@ -64,6 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
+$conn = Config::getConnexion();
+$sqlUpdate = "UPDATE reclamation SET `check` = 1 WHERE id_rec = :id_rec";
+$stmtUpdate = $conn->prepare($sqlUpdate);
+
+// Remplacez :id_rec par l'ID de la réclamation traitée
+$stmtUpdate->execute([':id_rec' => $id_rec]);
 
 ?>
 
@@ -848,18 +854,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="tab-pane fade show active" id="menu-uni" role="tabpanel">
                 <nav class="sidebar-nav">
                     <ul class="metismenu">
-                        <li><a href="index.html"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-                        <li><a href="professors.html"><i class="fa fa-black-tie"></i><span>Professors</span></a></li>
-                        <li><a href="staff.html"><i class="fa fa-user-circle-o"></i><span>Staff</span></a></li>
-                        <li><a href="students.html"><i class="fa fa-users"></i><span>Students</span></a></li>
-                        <li><a href="departments.html"><i class="fa fa-users"></i><span>Departments</span></a></li>
+                        <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                        <li><a href="professors.php"><i class="fa fa-black-tie"></i><span>Professors</span></a></li>
+                        <li><a href="staff.php"><i class="fa fa-user-circle-o"></i><span>Staff</span></a></li>
+                        <li><a href="students.php"><i class="fa fa-users"></i><span>Users</span></a></li>
+                        <li><a href="departments.php"><i class="fa fa-users"></i><span>Students</span></a></li>
                         <li><a href="courses.html"><i class="fa fa-graduation-cap"></i><span>Courses</span></a></li>                        
                         <li><a href="library.html"><i class="fa fa-book"></i><span>Library</span></a></li>
                         <li><a href="holiday.html"><i class="fa fa-bullhorn"></i><span>Holiday</span></a></li>
                         <li class="g_heading">Extra</li>
                         <li><a href="events.html"><i class="fa fa-calendar"></i><span>Calender</span></a></li>
 
-                        <li class="active"><a href="app-chat.php"><i class="fa fa-comments-o"></i><span>Reponse</span></a></li>
+                        <li class="active"><a href="view-reponse.php"><i class="fa fa-comments-o"></i><span>Reponse</span></a></li>
 
                         <li><a href="app-contact.php"><i class="fa fa-address-book"></i><span>Reclamation</span></a></li>
 

@@ -61,9 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   ':message' => $message
               ]);
 
-              echo "<p class='text-success'>Réclamation ajoutée avec succès.</p>";
+              header("Location: contact.php?message=success");
+              exit(); // Ajoutez exit() pour arrêter l'exécution du script
           } else {
-              echo "<p class='text-danger'>Tous les champs sont obligatoires.</p>";
+              // Redirection avec un message d'erreur
+              header("Location: contact.php?message=error");
+              exit(); // Ajoutez exit() pour arrêter l'exécution du script
           }
       } else {
           echo "<p class='text-danger'>Utilisateur non trouvé.</p>";
@@ -71,6 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } catch (PDOException $e) {
       echo "<p class='text-danger'>Erreur : " . $e->getMessage() . "</p>";
   }
+
+
 }
 
 
@@ -92,9 +97,37 @@ try {
     echo "Erreur : " . $e->getMessage();
 }
 
+if (isset($_GET['message'])) {
+  if ($_GET['message'] == 'success') {
+      echo "<div id='message-box' class='alert alert-success text-center' role='alert' style='position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;'>
+               Réclamation envoyée avec succès !
+            </div>";
+  } elseif ($_GET['message'] == 'error_fields') {
+      echo "<div id='message-box' class='alert alert-danger text-center' role='alert' style='position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;'>
+               Veuillez remplir tous les champs du formulaire.
+            </div>";
+  } elseif ($_GET['message'] == 'error') {
+      echo "<div id='message-box' class='alert alert-danger text-center' role='alert' style='position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;'>
+               Erreur lors de l'envoi de la réclamation. Veuillez réessayer.
+            </div>";
+  }
+
+  // Ajout d'un script JavaScript pour faire disparaître le message après 5 secondes
+  echo "<script>
+          setTimeout(function() {
+              var messageBox = document.getElementById('message-box');
+              if (messageBox) {
+                  messageBox.style.transition = 'opacity 0.3s ease';
+                  messageBox.style.opacity = '0';
+                  setTimeout(function() {
+                      messageBox.remove();
+                  }, 500); // Attendre la fin de la transition avant de retirer l'élément
+              }
+          }, 3000); // 5000 ms = 5 secondes
+        </script>";
+}
 
 ?>
-
 
 
 
@@ -128,8 +161,34 @@ try {
   <link rel="stylesheet" href="css/style.css?">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-  
+  <style>
+  .success-message {
+    color: green;
+    font-weight: bold;
+}
 
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+#notification {
+    background-color: #4CAF50; /* Couleur de fond verte */
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+
+
+</style>
 
 
 </head>
@@ -168,7 +227,7 @@ try {
       <div class="container">
         <div class="d-flex align-items-center">
           <div class="site-logo">
-            <a href="index.html" class="d-block">
+            <a href="index.php" class="d-block">
               <img src="images/logo.jpg" alt="Image" class="img-fluid">
             </a>
           </div>
@@ -181,18 +240,18 @@ try {
                 <li class="has-children">
                   <a href="about.html" class="nav-link text-left">About Us</a>
                   <ul class="dropdown">
-                  <li><a href="prof.php">Nos Proffesseurs</a></li>
-                  <li><a href="chatgpt.php">Notre assistance AI</a></li>
+                    <li><a href="prof.php">Nos Proffesseurs</a></li>
+                    <li><a href="chatgpt.php">Notre assistance AI</a></li>
                   </ul>
                 </li>
                 <li>
-                  <a href="admissions.html" class="nav-link text-left">Admissions</a>
+                  <a href="Offres.php" class="nav-link text-left">Offres</a>
                 </li>
                 <li>
                   <a href="courses.html" class="nav-link text-left">Cours</a>
                 </li>
                 <li class="active">
-                  <a href="contact.html" class="nav-link text-left">Reclamation</a>
+                  <a href="contact.php" class="nav-link text-left">Reclamation</a>
                   </li>
               </ul>                                                                                                                                                                                                                                                                                          </ul>
             </nav>
@@ -552,7 +611,80 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </script>
 
-  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Fonction pour vérifier le statut de réponse
+    function checkReponseStatus() {
+        $.ajax({
+            url: 'check_reponse_status.php', // Chemin vers le fichier PHP
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    // Afficher la notification en haut
+                    var notification = $('<div id="notification" class="alert alert-success text-center"></div>')
+                        .text(response.message)
+                        .css({
+                            position: 'fixed',
+                            top: '20px', // Placer en haut de la page
+                            left: '50%',
+                            transform: 'translateX(-50%)', // Centrer horizontalement
+                            zIndex: '9999',
+                            backgroundColor: '#28a745', // Vert
+                            color: '#fff', // Texte en blanc
+                            padding: '10px 20px',
+                            borderRadius: '5px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Ombre douce
+                            fontSize: '16px',
+                            fontWeight: 'bold',
+                            display: 'none' // Caché par défaut
+                        });
+
+                    $('body').append(notification);
+
+                    // Afficher la notification avec un effet fade-in
+                    notification.fadeIn(300);
+
+                    // Cacher la notification après 5 secondes
+                    setTimeout(function() {
+                        notification.fadeOut(300, function() {
+                            notification.remove(); // Supprimer après disparition
+                        });
+                    }, 5000);
+                }
+            },
+            error: function() {
+                console.error('Erreur lors de la vérification des réponses.');
+            }
+        });
+    }
+
+    // Lancer la vérification toutes les 10 secondes (10 000 ms)
+    setInterval(checkReponseStatus, 10000);
+});
+
+
+$.ajax({
+    url: 'check_reponse_status.php',
+    method: 'GET',
+    dataType: 'json',
+    success: function(response) {
+        console.log(response); // Voir ce que retourne le fichier PHP
+        if (response.status === 'success') {
+           // alert(response.message); // Test visuel
+        }
+    },
+    error: function(xhr, status, error) {
+        console.error('Erreur AJAX:', error);
+        console.error('Réponse:', xhr.responseText);
+    }
+});
+
+</script>
+
+
 
 
 

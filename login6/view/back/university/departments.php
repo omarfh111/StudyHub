@@ -808,8 +808,8 @@ $liste = $userController->listuser($sort); // Pass sorting parameter
                         <li><a href="students.php"><i class="fa fa-users"></i><span>Users</span></a></li>
                         <li class="active"><a href="departments.php"><i class="fa fa-users"></i><span>Students</span></a></li>
                         <li><a href="courses.html"><i class="fa fa-graduation-cap"></i><span>Courses</span></a></li>                        
-                        <li><a href="library.html"><i class="fa fa-book"></i><span>Library</span></a></li>
-                        <li><a href="holiday.html"><i class="fa fa-bullhorn"></i><span>Holiday</span></a></li>
+                        <li><a href="library.php"><i class="fa fa-book"></i><span>Offres</span></a></li>
+                        <li><a href="holiday.php"><i class="fa fa-bullhorn"></i><span>Commandes</span></a></li>
                         <li class="g_heading">Extra</li>
                         <li><a href="events.html"><i class="fa fa-calendar"></i><span>Calender</span></a></li>
                         <li><a href="app-chat.html"><i class="fa fa-comments-o"></i><span>Chat App</span></a></li>

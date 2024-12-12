@@ -69,41 +69,90 @@ border-radius: 5px;
 }
 
 
-/*css bouton rechercher*/
-form {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
+
+
+    /* Changer la couleur du texte "Rechercher" */
+    .dt-search label {
+        color: #8d1451 !important; /* Rose foncé */
+        font-weight: bold;
     }
 
-    input[type="text"] {
-        padding: 8px 12px;
-        border: 2px solid #852e4d; /* Contour rose */
-        border-radius: 5px;
-        font-size: 16px;
-        outline: none;
-        transition: border-color 0.3s ease-in-out;
+    /* Changer la couleur du texte "Afficher _MENU_ réclamations par page" */
+    .dataTables_length label {
+        color: #8d1451 !important; /* Rose foncé */
+        font-weight: bold;
     }
 
-    input[type="text"]:focus {
-        border-color: #e7a6bb; /* Couleur plus claire lorsque l'input est actif */
+    /* Centrer la barre de recherche */
+    .dataTables_filter {
+        text-align: center;
     }
 
-    button[type="submit"] {
-        padding: 8px 12px;
-        margin-left: 10px;
-        background-color: #852e4d; /* Couleur rose pour le bouton */
-        border: none;
-        border-radius: 5px;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s ease-in-out;
+    /* Centrer la pagination */
+    div.dataTables_paginate {
+        text-align: center !important; /* Centrer la pagination */
+        margin-top: 10px !important; /* Espacement au-dessus */
     }
 
-    button[type="submit"]:hover {
-        background-color: #d05a80; /* Changement de couleur lors du survol */
+    /* Style général pour les boutons de pagination */
+    .pagination .page-item .page-link {
+        color: #ff0066 !important; /* Couleur rose foncée */
+        font-size: 12px !important; /* Taille du texte plus petite */
+        border: none !important; /* Suppression des cadres */
+        background: none !important; /* Pas de fond */
+        padding: 5px 8px !important; /* Espacement */
+        cursor: pointer !important;
     }
+
+    /* Style au survol */
+    .pagination .page-item .page-link:hover {
+        color: #cc0052 !important; /* Rose foncé plus intense */
+        text-decoration: underline !important; /* Souligne au survol */
+    }
+
+    /* Style pour la page active */
+    .pagination .page-item.active .page-link {
+        color: white !important;
+        background-color: #ff0066 !important; /* Fond rose foncé */
+        border-radius: 50% !important; /* Rendre les boutons actifs ronds */
+        padding: 5px 10px !important;
+        font-weight: bold !important;
+    }
+
+    /* Style pour les boutons "Précédent" et "Suivant" */
+    .pagination .page-item.disabled .page-link {
+        color: #ddd !important; /* Gris pour les éléments désactivés */
+    }
+
+    /* Cacher les cadres des boutons */
+    .pagination .page-item .page-link {
+        box-shadow: none !important;
+    }
+
+    /* Changer la couleur du texte "Afficher _MENU_ réclamations par page" */
+.dt-length label {
+    color: #8d1451 !important; /* Rose foncé */
+    font-weight: bold;
+}
+
+/* Changer la couleur du texte à l'intérieur du select */
+.dt-length select {
+    color: #8d1451 !important; /* Rose foncé */
+    font-weight: bold;
+    border: 1px solid #8d1451 !important; /* Optionnel : ajouter une bordure rose */
+}
+
+/* Changer la couleur du texte du placeholder du select */
+.dt-length select option {
+    color: #8d1451 !important; /* Rose foncé */
+}
+
+/* Style général pour le label */
+.dt-length {
+    font-size: 14px !important;
+}
+
+
 </style>
 
 </head>
@@ -870,18 +919,18 @@ form {
             <div class="tab-pane fade show active" id="menu-uni" role="tabpanel">
                 <nav class="sidebar-nav">
                     <ul class="metismenu">
-                        <li><a href="index.html"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-                        <li><a href="professors.html"><i class="fa fa-black-tie"></i><span>Professors</span></a></li>
-                        <li><a href="staff.html"><i class="fa fa-user-circle-o"></i><span>Staff</span></a></li>
-                        <li><a href="students.html"><i class="fa fa-users"></i><span>Students</span></a></li>
-                        <li><a href="departments.html"><i class="fa fa-users"></i><span>Departments</span></a></li>
+                        <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                        <li><a href="professors.php"><i class="fa fa-black-tie"></i><span>Professors</span></a></li>
+                        <li><a href="staff.php"><i class="fa fa-user-circle-o"></i><span>Staff</span></a></li>
+                        <li><a href="students.php"><i class="fa fa-users"></i><span>Users</span></a></li>
+                        <li><a href="departments.php"><i class="fa fa-users"></i><span>Students</span></a></li>
                         <li><a href="courses.html"><i class="fa fa-graduation-cap"></i><span>Courses</span></a></li>                        
                         <li><a href="library.html"><i class="fa fa-book"></i><span>Library</span></a></li>
                         <li><a href="holiday.html"><i class="fa fa-bullhorn"></i><span>Holiday</span></a></li>
                         <li class="g_heading">Extra</li>
                         <li><a href="events.html"><i class="fa fa-calendar"></i><span>Calender</span></a></li>
 
-                        <li><a href="app-chat.php"><i class="fa fa-comments-o"></i><span>Reponse</span></a></li>
+                        <li><a href="view-reponse.php"><i class="fa fa-comments-o"></i><span>Reponse</span></a></li>
 
                         <li class="active"><a href="app-contact.php"><i class="fa fa-address-book"></i><span>Reclamation</span></a></li>
 
@@ -1079,27 +1128,12 @@ form {
                     <table class="table table-hover table-vcenter text-nowrap table_custom list" id="datatableid">
                         <thead>
                             <tr>
-                            <th>
-                                ID
-                                <a href="?order_id=asc">
-                                    <span>&#8593;</span>
-                                </a>
-                                <a href="?order_id=desc">
-                                    <span>&#8595;</span>
-                                </a>
-                            </th>
+                                <th>ID</th>
                                 <th>Nom</th>
                                 <th>Prénom</th>
                                 <th>Email</th>
                                 <th>
-                                    Date
-                                    <a href="?order_date=asc">
-                                        <span>&#8593;</span>
-                                    </a>
-                                    <a href="?order_date=desc">
-                                        <span>&#8595;</span>
-                                    </a>
-                                    
+                                    Date    
                                 </th>
 
                                 <th>Objet</th>
@@ -1172,6 +1206,74 @@ form {
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
+<script>
+   $(document).ready(function () {
+    $('#datatableid').DataTable({
+        "language": {
+            "lengthMenu": "Afficher _MENU_ réclamations par page",
+            "search": "Rechercher: ",
+            "searchPlaceholder": "Tapez ici...",
+            "paginate": {
+                "next": "Suivant",
+                "previous": "Précédent"
+            }
+        },
+        "pagingType": "simple_numbers", // Pagination simple avec uniquement des chiffres
+    });
+});
+
+</script>
+<style>
+
+    
+    /* Centrer la pagination */
+    div.dataTables_paginate {
+        text-align: center !important; /* Centrer la pagination */
+        margin-top: 10px !important; /* Espacement au-dessus */
+    }
+
+    /* Style général pour les boutons de pagination */
+    .pagination .page-item .page-link {
+        color: #8d1451 !important; /* Couleur rose foncée */
+        font-size: 12px !important; /* Taille du texte plus petite */
+        border: none !important; /* Suppression des cadres */
+        background: none !important; /* Pas de fond */
+        padding: 5px 8px !important; /* Espacement */
+        cursor: pointer !important;
+    }
+
+    /* Style au survol */
+    .pagination .page-item .page-link:hover {
+        color: #cc0052 !important; /* Rose foncé plus intense */
+        text-decoration: underline !important; /* Souligne au survol */
+    }
+
+    /* Style pour la page active */
+    .pagination .page-item.active .page-link {
+        color: white !important;
+        background-color: #8d1451 !important; /* Fond rose foncé */
+        border-radius: 50% !important; /* Rendre les boutons actifs ronds */
+        padding: 5px 10px !important;
+        font-weight: bold !important;
+    }
+
+    /* Style pour les boutons "Précédent" et "Suivant" */
+    .pagination .page-item.disabled .page-link {
+        color: #ddd !important; /* Gris pour les éléments désactivés */
+    }
+
+    /* Cacher les cadres des boutons */
+    .pagination .page-item .page-link {
+        box-shadow: none !important;
+    }
+</style>
+
+    
+    
+
 
                     <div class="tab-pane fade" id="grid" role="tabpanel">
                         <div class="row row-deck">

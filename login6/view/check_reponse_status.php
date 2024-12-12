@@ -1,37 +1,30 @@
 <?php
-require_once 'C:/xampp/htdocs/login6/Controller/reclamationC.php';  
+require_once 'C:/xampp/htdocs/login6/Controller/reclamationC.php';
+session_start();
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-
-    // Inclure le contrôleur de réclamation
-    require_once 'C:\xampp\htdocs\login6\config.php';
-    require_once 'C:\xampp\htdocs\login6\Model\reclamationM.php';
-
-    // Créer une instance de ReclamationController
-    $controller = new ReclamationController();
-    
-    // Vérifier si une réponse existe pour la réclamation
-    $reponseExist = $controller->getReponseByReclamationId($id);
-
-    // Retourner 'true' ou 'false' en fonction de la réponse
-    echo $reponseExist ? 'true' : 'false';
+// Vérification que l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(['status' => 'error', 'message' => 'Utilisateur non connecté.']);
+    exit();
 }
 
+$idu = $_SESSION['user_id'];
+$conn = Config::getConnexion();
+
+try {
+    // Vérifier s'il y a une réclamation répondue (check=1)
+    $sqlCheck = "SELECT * FROM reclamation WHERE `check` = 1 AND idu = :idu LIMIT 1";
+    $stmtCheck = $conn->prepare($sqlCheck);
+    $stmtCheck->execute([':idu' => $idu]);
+    $reclamation = $stmtCheck->fetch(PDO::FETCH_ASSOC);
+
+    if ($reclamation) {
+        echo json_encode(['status' => 'success', 'message' => 'Nous avons repondu a votre reclamation .Regarder votre boite mail.']);
+    } else {
+        echo json_encode(['status' => 'none']);
+    }
+} catch (PDOException $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Erreur : ' . $e->getMessage()]);
+}
 
 ?>
-<style>
-.notification {
-    background-color: #51be78;
-    color: white;
-    padding: 15px;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    border-radius: 8px;
-    display: none;
-    z-index: 9999;
-}
-</style>
-
-

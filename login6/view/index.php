@@ -46,9 +46,8 @@ if (isset($_COOKIE['studyhub'])) {
   <link href="css/jquery.mb.YTPlayer.min.css" media="all" rel="stylesheet" type="text/css">
 
   <link rel="stylesheet" href="css/style.css">
-
-
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="js/validation.js"></script>
 </head>
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -103,7 +102,7 @@ if (isset($_COOKIE['studyhub'])) {
                   </ul>
                 </li>
                 <li>
-                  <a href="Offres.html" class="nav-link text-left">offres</a>
+                  <a href="Offres.php" class="nav-link text-left">offres</a>
                 </li>
                 <li class="has-children">
                   <a href="courses.html" class="nav-link text-left">Courses</a>

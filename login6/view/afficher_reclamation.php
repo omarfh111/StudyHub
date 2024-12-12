@@ -1,16 +1,35 @@
 <?php
 
+session_start();
+
 require_once 'C:/xampp/htdocs/login6/Controller/reclamationC.php';  
+require_once 'C:\xampp\htdocs\login6\controller\usercontroller.php';
+require_once 'C:/xampp/htdocs/login6/controller/reponseC.php';
 
-if (isset($_GET['id'])) {
-  $id = $_GET['id'];
-
-  // Crée une instance de ReclamationController
-  $controller = new ReclamationController();
-  // Récupérer la réclamation spécifique par son ID
-  $reclamation = $controller->getReclamationById($id);
-  $reponseExist = $controller->getReponseByReclamationId($id);
+if (!isset($_SESSION['user_id'])) {
+  die('Erreur : utilisateur non connecté.');
 }
+
+$idu = $_SESSION['user_id']; // Récupérer l'ID utilisateur depuis la session
+$userController = new UserController();
+
+// Récupérer les informations de l'utilisateur connecté
+$user = $userController->getUserById($idu);
+
+// Récupérer les réclamations de l'utilisateur connecté
+$conn = Config::getConnexion();
+$sql = "SELECT reclamation.id_rec, reclamation.objet, reclamation.message, reclamation.date,reclamation.check
+      FROM reclamation
+      WHERE reclamation.idu = :idu"; 
+
+try {
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([':idu' => $idu]); // Récupère les réclamations liées à l'utilisateur
+  $reclamations = $stmt->fetchAll(PDO::FETCH_ASSOC);  // Récupérer toutes les réclamations
+} catch (PDOException $e) {
+  echo "Erreur : " . $e->getMessage();
+}
+
 ?>
 
 
@@ -23,6 +42,7 @@ if (isset($_GET['id'])) {
   <title>StudyHub &mdash; Website by WebNexus</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="css/list.css">
 
 
   <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
@@ -44,8 +64,106 @@ if (isset($_GET['id'])) {
   <link href="css/jquery.mb.YTPlayer.min.css" media="all" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="css/style1.css?">
   <link rel="stylesheet" href="css/style.css?">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="js/validation.js"></script>
   
+  <style>
+    /* Style global de la table */
+/* Style global de la table */
+.success-table {
+    width: 70%; /* Augmenter la largeur de la table */
+    height:70%;
+    margin: 20px auto; /* Centrer la table horizontalement */
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+    border-radius: 8px; /* Coins arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre pour un effet de profondeur */
+}
 
+/* Style des en-têtes de la table */
+.success-table th {
+    padding: 15px;
+    background-color: #28a745; /* Couleur verte */
+    color: white;
+    text-align: left;
+    font-size: 16px; /* Taille de police plus grande */
+}
+
+/* Style des cellules de la table */
+.success-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 14px;
+    vertical-align: middle; /* Aligner le texte verticalement au centre */
+}
+
+/* Style des lignes de la table */
+.success-table tr:nth-child(even) {
+    background-color: #f2f2f2; /* Couleur de fond des lignes paires */
+}
+
+.success-table tr:hover {
+    background-color: #eaeaea; /* Couleur de fond au survol */
+}
+
+/* Style de la colonne Réponse Disponible */
+.success-table td:last-child {
+    text-align: center;
+    font-weight: bold;
+    color: #28a745; /* Texte en vert si une réponse est disponible */
+}
+
+/* Style de la colonne Réponse Disponible (si aucune réponse) */
+.success-table td:last-child.empty {
+    color: #ff073a; /* Texte rouge si aucune réponse */
+}
+
+/* Centrer le bouton Retour */
+.success-button {
+    display: block;
+    width: 150px;
+    margin: 30px auto; /* Centrer le bouton horizontalement */
+    padding: 12px 20px;
+    background-color: #28a745; /* Couleur verte */
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.success-button:hover {
+    background-color: #218838; /* Effet au survol du bouton */
+}
+
+/* Style de la barre de navigation */
+.custom-breadcrumns {
+    background-color: #f8f9fa;
+    padding: 10px 0;
+}
+
+.custom-breadcrumns .container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.custom-breadcrumns a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.custom-breadcrumns a:hover {
+    text-decoration: underline;
+}
+
+.custom-breadcrumns .icon-keyboard_arrow_right {
+    margin: 0 10px;
+    color: #6c757d;
+}
+
+</style>
 
 
 </head>
@@ -164,32 +282,61 @@ setTimeout(function() {
         <span class="current">Reclamation</span>
       </div>
     </div>
-    <h2>Votre Réclamation Envoyée</h2>
+    <h2>Mes Reclamations</h2>
 
-    <?php if (isset($reclamation)): ?>
-  <div class="table-container">
-    <table class="success-table">
-      <thead>
-        <tr>
-          <th>Objet</th>
-          <th>Message</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><?= htmlspecialchars($reclamation->getObjet()); ?></td>
-          <td><?= htmlspecialchars($reclamation->getMessage()); ?></td>
-          <td><?= htmlspecialchars($reclamation->getDate()->format('Y-m-d')); ?></td>
-        </tr>
-      </tbody>
-    </table>
+    <?php if (!empty($reclamations)): ?>
+        <div class="site-section">
+        <div class="container">
+        <div class="row justify-content-center">
+        <div class="col-md-9 mb-4">
+          <section class="table-body">  
+            <table >
+                <thead>
+                    <tr>
+                        <th>Objet</th>
+                        <th>Message</th>
+                        <th>Date</th>
+                        <th>Réponse Disponible</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($reclamations as $reclamation):
+                      $id_rec = $reclamation['id_rec']; ?>
+                      <tr>
+                        <td><?php echo htmlspecialchars($reclamation['objet']); ?></td>
+                        <td><?php echo htmlspecialchars($reclamation['message']); ?></td>
+                        <td><?php echo htmlspecialchars($reclamation['date']); ?></td>
+                        <td class="<?php echo empty($reclamation['check']) ? 'empty' : ''; ?>">
+                            <?php 
+                                $reponseC = new ReponseC();
+                               $reponses = $reponseC->recupererReponseParReclamation($id_rec);
+                            if ($reclamation['check'] == 1) {
+                                //echo 'Réponse disponible check ur mail';
+                                foreach($reponses as $reponse){
+
+                                    if($reponse['id_rec'] == $id_rec){
+                                        echo nl2br(htmlspecialchars($reponse['reponse']));
+                                    }
+                                }
+                            } else {
+                                echo 'Aucune réponse';
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+          </section>
+        </div>
+      </div>
+    </div>
+        </div>
+    <?php else: ?>
+        <p>Vous n'avez envoyé aucune réclamation pour l'instant.</p>
+    <?php endif; ?>
+
     <a href="contact.php" class="success-button">Retour</a>
-  </div>
-<?php else: ?>
-  <p>Vous n'avez envoyé aucune réclamation pour l'instant.</p>
-<?php endif; ?>
-
 
 
 
