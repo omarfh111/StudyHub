@@ -2,26 +2,81 @@
 require_once 'C:\xampp\htdocs\project\config.php';
 require_once 'C:\xampp\htdocs\project\controller\cartcontroller.php';
 require_once 'C:\xampp\htdocs\project\vendor\autoload.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-//$CartController = new CartController();
-$idu = 9;
+$idu = 9; // Static user ID
 $user_id = $idu;
 
-// Obtenez les produits du panier
-//$cartItems = $CartController->getCartItems($user_id);                   
- // Préparer et exécuter la requête de mise à jour
-$query = $db->prepare(
-'UPDATE cart SET 
-statut = :statut
-WHERE user_id = :user_id'
-);
+try {
+    // Step 1: Retrieve the cart items for the user
+    $cartQuery = $db->prepare("SELECT idp, quantite FROM cart WHERE user_id = :user_id and statut=0");
+    $cartQuery->execute([':user_id' => $user_id]);
+    $cartItems = $cartQuery->fetchAll(PDO::FETCH_ASSOC);
+
+    // Step 2: Update product quantities in the produit table
+    foreach ($cartItems as $item) {
+        $updateProduitQuery = $db->prepare(
+            "UPDATE produit SET quantite = quantite - :quantite WHERE idp = :idp"
+        );
+        $updateProduitQuery->execute([
+            ':quantite' => $item['quantite'],
+            ':idp' => $item['idp']
+        ]);
+    }
+
+    // Step 3: Update the cart status
+    $updateCartQuery = $db->prepare(
+        'UPDATE cart SET statut = :statut WHERE user_id = :user_id'
+    );
+    $updateCartQuery->execute([
+        ':statut' => 1,
+        ':user_id' => $user_id
+    ]);
+
+} catch (PDOException $e) {
+    // Handle errors
+    echo "Error: " . $e->getMessage();
+    exit;
+}
 
 
-$query->execute([
-':statut' => 1,
-':user_id' => $user_id
-]);
+try {
+    // Server settings
+    $mail = new PHPMailer(true);
+
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'hamzafhaiel1004@gmail.com';
+    $mail->Password = 'zawd ukur rdcd ximy'; // Use App Password here
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;
+    
+    $mail->setFrom('your_email@gmail.com', 'studyhub');
+    $mail->addAddress('recipient_email@example.com');
+    $mail->isHTML(true);
+    $mail->Subject = 'Test Email';
+    $mail->Body    = 'This is a test email.';
+    
+
+    // Recipients
+    $mail->setFrom('your_email@gmail.com','studyhub');
+    $mail->addAddress('hamzafhaiel1004@gmail.com'); // Recipient's email
+
+    // Content
+    $mail->isHTML(true);
+    $mail->Subject = 'Confirmation de Paiement';
+    $mail->Body    = '<h1>Paiement Réussi</h1><p>Merci pour votre achat.</p>';
+    $mail->AltBody = 'Paiement Réussi. Merci pour votre achat.';
+
+    $mail->send();
+    //echo 'Email sent successfully';
+} catch (Exception $e) {
+    echo "Error sending email: {$mail->ErrorInfo}";
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

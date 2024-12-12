@@ -1041,8 +1041,7 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                     <td style="color: ' . ($item['statut'] == 0 ? 'red' : 'green') . ';">' 
                                                        . ($item['statut'] == 0 ? 'non payé' : 'payé') . '</td>
                                                     <td>
-                                                        <button style="padding: 5px 10px; color: white; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer;">Update</button>
-                                                        <a href="supp.php?idc=' . htmlspecialchars($item['idc']) . '" style="padding: 5px 10px; color: white; background-color: #dc3545; text-decoration: none; border: none; border-radius: 5px; cursor: pointer;">Supprimer</a>
+                                                        <a href="suppri.php?idc=' . htmlspecialchars($item['idc']) . '" style="padding: 5px 10px; color: white; background-color: #dc3545; text-decoration: none; border: none; border-radius: 5px; cursor: pointer;">Supprimer</a>
                                                     </td>
                                                 </tr>';
                                         }
@@ -1080,7 +1079,6 @@ if (count($cartItems) > 0) {
                     <td>' . htmlspecialchars($item['price'] * $item['quantite']) . ' DT</td>
                     <td style="color: green;">payé</td>
                     <td>
-                        <button style="padding: 5px 10px; color: white; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer;">Update</button>
                         <a href="supp.php?idc=' . htmlspecialchars($item['idc']) . '" style="padding: 5px 10px; color: white; background-color: #dc3545; text-decoration: none; border: none; border-radius: 5px; cursor: pointer;">Supprimer</a>
                     </td>
                 </tr>';

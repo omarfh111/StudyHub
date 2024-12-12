@@ -156,7 +156,7 @@ if (isset($_POST["nomp"]) && isset($_POST["quantite"]) && isset($_POST["prix_p"]
                                                     <option value="info">info</option>
                                                     
                                                 </select>
-                                           <br>
+                                            <br>
                                         
                                                 <button type="submit" 
                                                 class="btn btn-primary btn-user btn-block" 

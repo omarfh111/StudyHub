@@ -99,7 +99,7 @@
             <div class="form-group">
                 <button type="submit">Proceed to Payment</button>
             </div>
-        </form>
+        </form>)
     </div>
 </body>
 </html>
