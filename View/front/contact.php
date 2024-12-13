@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 $conn = Config::getConnexion();
-
+$idu = 9; 
 // Récupérer les informations de l'utilisateur avec une jointure entre user et reclamation
 $sql = "SELECT reclamation.id_rec, reclamation.objet, reclamation.message
         FROM reclamation
