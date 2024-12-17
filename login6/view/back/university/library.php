@@ -2,7 +2,18 @@
 require_once 'C:\xampp\htdocs\login6\config.php';
 require_once 'C:\xampp\htdocs\login6\controller\offercontroller.php';
 require_once 'C:\xampp\htdocs\login6\model\produitmodel.php';
+session_start();
+if (isset($_COOKIE['studyhub'])) {
+    // Décoder les données du cookie
+    $userData = json_decode($_COOKIE['studyhub'], true);
 
+    $email = $userData['email'];
+    $nom = $userData['nom'];
+    $role = $userData['role'];
+} else {
+    header('Location: /login6/view/login.php');
+    exit();
+}
 $OfferController = new OfferController();
 $list = $OfferController->affichead();
 ?>
@@ -54,7 +65,7 @@ $list = $OfferController->affichead();
             </div>
             <div class="hright">
                 <a href="javascript:void(0)" class="nav-link icon right_tab"><i class="fe fe-align-right"></i></a>
-                <a href="login.html" class="nav-link icon settingbar"><i class="fe fe-power"></i></a>                
+                <a href="/login6/view/logout.php" class="nav-link icon settingbar"><i class="fe fe-power"></i></a>               
             </div>
         </div>
     </div>
@@ -789,22 +800,22 @@ $list = $OfferController->affichead();
         <div class="tab-content mt-3">
             <div class="tab-pane fade show active" id="menu-uni" role="tabpanel">
                 <nav class="sidebar-nav">
-                    <ul class="metismenu">
+                <ul class="metismenu">
                         <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
                         <li><a href="professors.php"><i class="fa fa-black-tie"></i><span>Professors</span></a></li>
                         <li><a href="staff.php"><i class="fa fa-user-circle-o"></i><span>Staff</span></a></li>
-                        <li><a href="students.php"><i class="fa fa-users"></i><span>users</span></a></li>
-                        <li><a href="departments.php"><i class="fa fa-users"></i><span>students</span></a></li>
-                        <li><a href="courses.html"><i class="fa fa-graduation-cap"></i><span>Courses</span></a></li>                        
-                        <li class="active"><a href="library.php"><i class="fa fa-book"></i><span>Offres</span></a></li>
-                        <li><a href="holiday.php"><i class="fa fa-bullhorn"></i><span>affiche commande </span></a></li>
+                        <li><a href="students.php"><i class="fa fa-users"></i><span>Users</span></a></li>
+                        <li><a href="departments.php"><i class="fa fa-users"></i><span>Students</span></a></li>
+                                                <li><a href="listecoursB.php"><i class="fa fa-graduation-cap"></i><span>Courses</span></a></li> 
+                        <li><a href="listecertif.php"><i class="fa fa-flag"></i><span>Certification</span></a></li>                         
+                        <li class="active"><a href="library.php"><i class="fa fa-book"></i><span>offres</span></a></li>
+                        <li><a href="holiday.php"><i class="fa fa-bullhorn"></i><span>commandes</span></a></li>
                         <li class="g_heading">Extra</li>
-                        <li><a href="events.html"><i class="fa fa-calendar"></i><span>Calender</span></a></li>
-                        <li><a href="view-reponse.php"><i class="fa fa-comments-o"></i><span>Chat App</span></a></li>
-                        <li><a href="app-contact.php"><i class="fa fa-address-book"></i><span>Contact</span></a></li>
-                        <li><a href="app-filemanager.html"><i class="fa fa-folder"></i><span>FileManager</span></a></li>
-                        <li><a href="our-centres.html"><i class="fa fa-map"></i><span>OurCentres</span></a></li>
-                        <li><a href="gallery.html"><i class="fa fa-camera-retro"></i><span>Gallery</span></a></li>
+                        <li><a href="view-reponse.php"><i class="fa fa-comments-o"></i><span>Reponses Rec</span></a></li>
+                        <li><a href="app-contact.php"><i class="fa fa-address-book"></i><span>Reclamations</span></a></li>
+                        <li><a href="evaluation.php?action=listeEvaluations"><i class="fa fa-list"></i><span>Liste des Évaluations</span></a></li>
+                        <li><a href="evaluation.php?action=addExercise"><i class="fa fa-plus"></i><span>Ajouter une Évaluation</span></a></li>
+                        <li><a href="evaluation.php?action=listeReponses"><i class="fa fa-list"></i> Liste des Réponses</a>
                     </ul>
                 </nav>
             </div>
@@ -817,7 +828,7 @@ $list = $OfferController->affichead();
                         <li><a href="hostel.html"><i class="fa fa-bed"></i><span>Hostel</span></a></li>
                         <li><a href="transport.html"><i class="fa fa-truck"></i><span>Transport</span></a></li>
                         <li><a href="attendance.html"><i class="fa fa-calendar-check-o"></i><span>Attendance</span></a></li>
-                        <li><a href="leave.html"><i class="fa fa-flag"></i><span>Leave</span></a></li>
+                        <li><a href="listecertif.php"><i class="fa fa-flag"></i><span>Certification</span></a></li>
                         <li><a href="setting.html"><i class="fa fa-gear"></i><span>Settings</span></a></li>
                     </ul>
                 </nav>
@@ -970,7 +981,7 @@ $list = $OfferController->affichead();
                             </div>
                             <div class="dropdown d-flex">
                                 <a href="javascript:void(0)" class="chip ml-3" data-toggle="dropdown">
-                                    <span class="avatar" style="background-image: url(../assets/images/xs/avatar5.jpg)"></span> George</a>
+                                    <span class="avatar" style="background-image: url(../assets/images/xs/avatar5.jpg)"></span> <?php echo $nom . " (" . $role . ")"; ?></a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                     <a class="dropdown-item" href="page-profile.html"><i class="dropdown-icon fe fe-user"></i> Profile</a>
                                     <a class="dropdown-item" href="app-setting.html"><i class="dropdown-icon fe fe-settings"></i> Settings</a>

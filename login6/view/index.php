@@ -105,10 +105,11 @@ if (isset($_COOKIE['studyhub'])) {
                   <a href="Offres.php" class="nav-link text-left">offres</a>
                 </li>
                 <li class="has-children">
-                  <a href="courses.html" class="nav-link text-left">Courses</a>
+                  <a href="listecoursF.php" class="nav-link text-left">Courses</a>
                   <ul class="dropdown">
-                    <li><a href="courses.html">cours</a></li>
-                    <li><a href="evaluation.html">evaluation</a></li>
+                    <li><a href="listecoursF.php">cours</a></li>
+                    <li><a href="liste_evaluations.php">evaluation</a></li>
+                    <li><a href="liste_reponses_user.php">Vos Remises </a></li>
                   </ul>
                 </li>
                 <li>

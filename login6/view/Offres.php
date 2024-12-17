@@ -1,3 +1,18 @@
+<?php // Doit être en tout premier
+require_once 'C:\xampp\htdocs\login6\controller\usercontroller.php';
+session_start();
+if (isset($_COOKIE['studyhub'])) {
+    // Décoder les données du cookie
+    $userData = json_decode($_COOKIE['studyhub'], true);
+
+    $email = $userData['email'];
+    $nom = $userData['nom'];
+    $role = $userData['role'];
+} else {
+    header('Location: /login6/view/login.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,8 +68,8 @@
             <a href="#" class="small mr-3"><span class="icon-envelope-o mr-2"></span> StudyHub@gmail.com</a> 
           </div>
           <div class="col-lg-3 text-right">
-            <a href="login.html" class="small mr-3"><span class="icon-unlock-alt"></span> S'identifier</a>
-            <a href="register.html" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> S'inscrire</a>
+            <a href="profile.php" class="small mr-3"><span class="icon-user"></span> <?php echo $nom . " (" . $role . ")"; ?></a>
+            <a href="logout.php" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-lock"></span> Se Deconnecter</a>
           </div>
         </div>
       </div>
@@ -84,8 +99,13 @@
                 <li>
                   <a href="Offres.html" class="nav-link text-left">Offres</a>
                 </li>
-                <li>
-                  <a href="courses.html" class="nav-link text-left">Courses</a>
+                <li class="has-children">
+                  <a href="courses.html" class="nav-link text-left">Education</a>
+                  <ul class="dropdown">
+                    <li><a href="listecoursF.php">Cours</a></li>
+                    <li><a href="liste_evaluations.php">Evaluations</a></li>
+                    <li><a href="liste_reponses_user.php">Vos rendus</a></li>
+                  </ul>
                 </li>
                 <li>
                     <a href="contact.html" class="nav-link text-left">Contact</a>

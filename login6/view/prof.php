@@ -99,14 +99,19 @@ $liste = $userC->listuser();
                   <a href="about.html" class="nav-link text-left">About Us</a>
                   <ul class="dropdown">
                     <li><a href="teachers.html">Nos Professeurs</a></li>
-                    <li><a href="about.html">Notre academie</a></li>
+                    <li><a href="chatgpt.php">Notre assistance AI</a></li>
                   </ul>
                 </li>
                 <li>
-                  <a href="admissions.html" class="nav-link text-left">Admissions</a>
+                  <a href="Offres.php" class="nav-link text-left">Offres</a>
                 </li>
-                <li>
-                  <a href="courses.html" class="nav-link text-left">Courses</a>
+                <li class="has-children">
+                  <a href="listecoursF.php" class="nav-link text-left">Education</a>
+                  <ul class="dropdown">
+                    <li><a href="listecoursF.php">Cours</a></li>
+                    <li><a href="liste_evaluations.php">Evaluations</a></li>
+                    <li><a href="liste_reponses_user.php">Vos rendus</a></li>
+                  </ul>
                 </li>
                 <li>
                     <a href="contact.html" class="nav-link text-left">Contact</a>

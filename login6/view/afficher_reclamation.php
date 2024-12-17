@@ -220,10 +220,15 @@ try {
                   </ul>
                 </li>
                 <li>
-                  <a href="admissions.html" class="nav-link text-left">Admissions</a>
+                  <a href="Offres.php" class="nav-link text-left">Offres</a>
                 </li>
-                <li>
-                  <a href="courses.html" class="nav-link text-left">Cours</a>
+                <li class="has-children">
+                  <a href="courses.html" class="nav-link text-left">Education</a>
+                  <ul class="dropdown">
+                    <li><a href="listecoursF.php">Cours</a></li>
+                    <li><a href="liste_evaluations.php">Evaluations</a></li>
+                    <li><a href="liste_reponses_user.php">Vos rendus</a></li>
+                  </ul>
                 </li>
                 <li class="active">
                   <a href="contact.html" class="nav-link text-left">Reclamation</a>
