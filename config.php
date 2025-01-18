@@ -26,7 +26,7 @@ class config {
 // Test de connexion
 try {
     $db = config::getConnexion();
-    echo "Connexion réussie.";
+    //echo "Connexion réussie.";
 } catch (Exception $e) {
     echo "Erreur : " . $e->getMessage();
 }

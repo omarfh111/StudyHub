@@ -1,0 +1,185 @@
+/* Style général pour la page */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f7f7f7;
+}
+
+/* Style pour le formulaire */
+.form-container {
+    background-color: #ff8cba; /* Couleur rose */
+    padding: 30px;
+    border-radius: 20px; /* Bord arrondi */
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Légère ombre */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espacement entre les éléments */
+}
+
+/* Style pour les labels */
+.label-date, .label-reponse {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff; /* Texte blanc pour les labels */
+}
+
+/* Pour le champ de date */
+#date_reponse {
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: #fff;
+    color: #333;
+    cursor: not-allowed; /* Non modifiable */
+}
+
+/* Pour la disposition horizontale de la réponse */
+.horizontal-input {
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background-color: #fff;
+    color: #333;
+    width: 70%; /* Largeur du champ de réponse */
+    margin-left: 20px; /* Espacement entre le label et le champ */
+    display: inline-block; /* Afficher à côté du label */
+}
+
+/* Style pour le bouton d'envoi */
+.btn-submit {
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #007bff; /* Bleu */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Effet de survol sur le bouton d'envoi */
+.btn-submit:hover {
+    background-color: #ffffff;
+    color: #007bff;
+    border: 2px solid #007bff;
+}
+
+/* Pour les petites résolutions */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .label-date, .label-reponse {
+        font-size: 16px;
+    }
+
+    .horizontal-input {
+        width: 100%; /* Prendre toute la largeur sur petits écrans */
+        margin-left: 0;
+    }
+}
+
+
+/*css pour afficher reponse*/
+/* styles.css */
+/* Custom styles 
+body {
+    background-color: #f4f4f9;
+}
+
+.card-header.bline {
+    background-color: #8d1451; /* Rose pour l'entête 
+}
+
+.card-header.bline h3.card-title {
+    color: white; /* Texte en blanc pour le titre de l'entête 
+}
+
+.table th, .table td {
+    background-color: #8d1451; /* Fond rose pour les cellules 
+    color: white; /* Texte en blanc pour une bonne lisibilité 
+}
+
+.table th {
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #8d1451; /* Fond rose pour le bouton 
+    border-color: #8d1451; /* Bordure rose pour le bouton 
+    color: white; /* Texte en blanc pour le bouton 
+    padding: 10px 20px; /* Espacement du texte dans le bouton 
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary.btn-hover:hover {
+    background-color: white; /* Fond blanc au survol 
+    color: #8d1451; /* Texte en rose au survol 
+    border-color: #8d1451; /* Bordure rose au survol 
+}
+
+.card-body {
+    padding: 30px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Table Styling 
+.table th, .table td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.table thead {
+    background-color: #8d1451; /* Fond rose pour l'entête du tableau 
+    color: white;
+}
+
+.table tbody tr {
+    background-color: #f8f9fa; /* Fond clair pour les lignes du tableau 
+}
+
+.table tbody tr:hover {
+    background-color: #f1e2f4; /* Fond léger au survol des lignes 
+}*/
+
+/*ccs pour bouton "retour" de afficher-reponse*/
+.text-center .btn-rose {
+    display: inline-block; /* Assure que le bouton s'affiche correctement */
+    background-color: #8d1451; /* Couleur rose */
+    color: white !important; /* Texte blanc, avec !important pour forcer */
+    border: none; /* Pas de bordure */
+    padding: 10px 20px; /* Marges internes */
+    font-size: 16px; /* Taille du texte */
+    border-radius: 5px; /* Coins arrondis */
+    text-decoration: none; /* Pas de soulignement */
+    transition: background-color 0.3s, color 0.3s; /* Effet doux sur les couleurs */
+}
+
+.text-center .btn-rose:hover {
+    background-color: white !important; /* Fond blanc au survol */
+    color: #8d1451 !important; /* Texte rose au survol */
+    border: 1px solid #ff69b4; /* Bordure rose au survol */
+}
+
+
+

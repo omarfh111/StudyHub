@@ -1,0 +1,442 @@
+<?php
+
+require_once '../controller/offercontroller.php'; // Adjust the path as necessary
+require_once 'C:\xampp\htdocs\login6\config.php';
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1; // Default page is 1
+$limit = 6; // Max 6 products per page
+
+// Instantiate the controller and fetch the products with pagination
+$controller = new OfferController();
+$result = $controller->affichee($page, $limit);
+$offers = $result['data'];
+$totalPages = $result['totalPages'];
+try {
+  // Get the PDO connection
+  $pdo = config::getConnexion();
+
+  // Query to get the count of products
+  $query = "SELECT COUNT(*) AS total FROM produit";
+  $stmt = $pdo->query($query);
+  $result = $stmt->fetch();
+  $countall = $result['total'];
+} catch (Exception $e) {
+  echo "Error: " . $e->getMessage();
+  exit;
+}
+try {
+  // Get the PDO connection
+  $pdo = config::getConnexion();
+
+  // Query to get the count of products
+  $query = "SELECT COUNT(*) AS total FROM produit where types='info'";
+  $stmt = $pdo->query($query);
+  $result = $stmt->fetch();
+  $countinf = $result['total'];
+} catch (Exception $e) {
+  echo "Error: " . $e->getMessage();
+  exit;
+}
+try {
+  // Get the PDO connection
+  $pdo = config::getConnexion();
+
+  // Query to get the count of products
+  $query = "SELECT COUNT(*) AS total FROM produit where types='scolaire'";
+  $stmt = $pdo->query($query);
+  $result = $stmt->fetch();
+  $countsc = $result['total'];
+} catch (Exception $e) {
+  echo "Error: " . $e->getMessage();
+  exit;
+}
+try {
+  // Get the PDO connection
+  $pdo = config::getConnexion();
+
+  // Query to get the count of products
+  $query = "SELECT COUNT(*) AS total FROM produit where types='bureaux'";
+  $stmt = $pdo->query($query);
+  $result = $stmt->fetch();
+  $countbur = $result['total'];
+} catch (Exception $e) {
+  echo "Error: " . $e->getMessage();
+  exit;
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="addToCart.js" defer></script>
+  <title>Academics &mdash; Website by Colorlib</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+  <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
+  <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/jquery-ui.css">
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+
+  <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+
+  <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+
+  <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+
+  <link rel="stylesheet" href="css/aos.css">
+  <link href="css/jquery.mb.YTPlayer.min.css" media="all" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="css/style.css">
+  
+  <script src="affichage.js" defer></script>
+  <link rel="stylesheet" href="css/affichage.css?v=1.0">   
+
+</head>
+
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+
+  <div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+
+
+    <div class="py-2 bg-light">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-9 d-none d-lg-block">
+            <a href="#" class="small mr-3"><span class="icon-question-circle-o mr-2"></span> avez vous une question?</a> 
+            <a href="#" class="small mr-3"><span class="icon-phone2 mr-2"></span> 21544247</a> 
+            <a href="#" class="small mr-3"><span class="icon-envelope-o mr-2"></span> hamzafhaiel1004@gmail.com</a> 
+          </div>
+          <div class="col-lg-3 text-right">
+       
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <header class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner">
+
+      <div class="container">
+        <div class="d-flex align-items-center">
+          <div class="site-logo">
+            <a href="index.html" class="d-block">
+              <img src="images/logo.jpg" alt="Image" class="img-fluid">
+            </a>
+          </div>
+          <div class="mr-auto">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+              <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                <li>
+                  <a href="index.php" class="nav-link text-left">Home</a>
+                </li>
+                <li class="has-children">
+                  <a href="about.html" class="nav-link text-left">About Us</a>
+                  <ul class="dropdown">
+                    <li><a href="prof.php">Our Teachers</a></li>
+                    <li><a href="chatgpt.php">Notre assistance AI</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="Offres.php" class="nav-link text-left">Offres</a>
+                </li>
+                <li class="has-children">
+                  <a href="courses.html" class="nav-link text-left">Education</a>
+                  <ul class="dropdown">
+                    <li><a href="listecoursF.php">Cours</a></li>
+                    <li><a href="liste_evaluations.php">Evaluations</a></li>
+                    <li><a href="liste_reponses_user.php">Vos rendus</a></li>
+                  </ul>
+                </li>
+                <li>
+                    <a href="contact.php" class="nav-link text-left">Contact</a>
+                  </li>
+              </ul>                                                                                                                                                                                                                                                                                          </ul>
+            </nav>
+
+          </div>
+          <div class="ml-auto">
+            <div class="social-wrap">
+              <a href="#"><span class="icon-facebook"></span></a>
+              <a href="#"><span class="icon-twitter"></span></a>
+              <a href="#"><span class="icon-linkedin"></span></a>
+
+              <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span
+                class="icon-menu h3"></span></a>
+            </div>
+          </div>
+         
+        </div>
+      </div>
+
+    </header>
+
+    
+    <div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" >
+
+                <div class="container">
+          <div class="row align-items-end">
+            <div class="col-lg-7">
+              <h2 class="mb-0">Les meilleurs offres pour la rentrée</h2>
+              <p id="tdate"></p>
+            </div>
+          </div>
+        </div>
+      </div> 
+    
+
+    <div class="custom-breadcrumns border-bottom">
+      <div class="container">
+        <a href="index.html">Home</a>
+        <span class="mx-3 icon-keyboard_arrow_right"></span>
+        <span class="current">Offres</span>
+      </div>
+      <nav class="sidebar">
+        <ul>
+            <li> All <?php echo htmlspecialchars($countall); ?></a></li>
+            <li><a href="info.php">Info <?php echo htmlspecialchars($countinf); ?></a></li>
+            <li><a href="bureaux.php">Bureaux <?php echo htmlspecialchars($countbur); ?></a></li>
+            <li><a href="scolaire.php">Scolaire <?php echo htmlspecialchars($countsc); ?></a></li>
+            <li><a href="enstock.php">en stock</a></li>
+            <li><a href="panier.php" class="active"> Votre Panier </li>
+        </ul>
+    </nav>
+    </div>
+
+    <div class="site-section">
+  
+    <div class="container">
+    
+    <div class="row justify-content-center">
+    
+        <div class="col-md-9 mb-4">
+        <div class="pagination">
+        <?php for ($page = 1; $page <= $totalPages; $page++) : ?>
+                        <a href="?page=<?php echo $page; ?>" class="page-link"><?php echo $page; ?></a>
+                    <?php endfor; ?>
+</div>
+<br>
+<?php foreach ($offers as $produit) : ?>
+    <div class="product-card">
+        <!-- Left Section -->
+        <div class="product-info">
+            <h4><?php echo htmlspecialchars($produit['nomp']); ?></h4>
+            <p class="price">Prix: <?php echo htmlspecialchars($produit['prix_p']); ?> DT</p>
+            <p>prix finale: <?php echo htmlspecialchars($produit['fin_prix']); ?> DT</p>
+            <p>Description: </p>
+            <p class="quantite">
+                <?php 
+                    if ($produit['quantite'] > 0) {
+                        echo '<span class="in-stock">en stock</span>';
+                    } else {
+                        echo '<span class="out-of-stock">out of stock</span>';
+                    }
+                ?>
+            </p>
+        </div>
+        
+        <!-- Right Section -->
+        <div class="action-buttons">
+        <button 
+    class="add-to-cart" 
+    data-idp="<?= $produit['idp'] ?>" 
+    data-nomp="<?= $produit['nomp'] ?>" 
+    data-price="<?= $produit['fin_prix'] ?>" 
+    data-quantite="<?= $produit['quantite'] ?>" 
+    <?php if ($produit['quantite'] < 1) { echo 'disabled'; } ?>>
+    Add to Cart
+</button>
+
+            <a href="product_detail.php?idp=<?php echo htmlspecialchars($produit['idp']); ?>">See More</a>
+        </div>
+    </div>
+<?php endforeach; ?>
+    </div>
+
+    <script>
+    $(document).ready(function() {
+    $('.add-to-cart').click(function() {
+        var product = $(this);
+        var idp = product.data('idp');
+        var nomp = product.data('nomp');
+        var price = product.data('price');
+        var quantite = product.data('quantite');
+
+        // Si la quantité est 0 ou inférieure, empêcher l'ajout au panier
+        if (quantite < 1) {
+            alert("Le produit est en rupture de stock.");
+            return;
+        }
+
+        $.ajax({
+            url: 'add_to_cart.php', // La page PHP qui ajoute le produit au panier
+            type: 'POST',
+            data: {
+                idp: idp,
+                nomp: nomp,
+                price: price,
+                quantite: 1 // Quantité par défaut
+            },
+            success: function(response) {
+                
+                // Optionnel: vous pouvez mettre à jour une icône de panier, ou autre, ici
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                alert("Erreur lors de l'ajout au panier.");
+            }
+        });
+    });
+});
+    </script>
+    
+
+
+
+
+           
+        </div>
+        
+    </div>
+    
+</div>
+
+</div>
+
+
+    </div>
+</div>
+
+                
+            </div>
+            
+        </div>
+        
+    </div>
+
+    <div class="section-bg style-1" >
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
+              <span class="icon flaticon-mortarboard"></span>
+              <h3>Our Philosphy</h3>
+              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reiciendis recusandae, iure repellat quis delectus ea? Dolore, amet reprehenderit.</p>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
+              <span class="icon flaticon-school-material"></span>
+              <h3>Academics Principle</h3>
+              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reiciendis recusandae, iure repellat quis delectus ea?
+                Dolore, amet reprehenderit.</p>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
+              <span class="icon flaticon-library"></span>
+              <h3>Key of Success</h3>
+              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reiciendis recusandae, iure repellat quis delectus ea?
+                Dolore, amet reprehenderit.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3">
+            <p class="mb-4"><img src="images/logo.png" alt="Image" class="img-fluid"></p>
+              
+            <p><a href="#">Learn More</a></p>
+          </div>
+          <div class="col-lg-3">
+            <h3 class="footer-heading"><span>Our Campus</span></h3>
+            <ul class="list-unstyled">
+                <li><a href="#">Acedemic</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Our Interns</a></li>
+                <li><a href="#">Our Leadership</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Human Resources</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-3">
+              <h3 class="footer-heading"><span>Our Courses</span></h3>
+              <ul class="list-unstyled">
+                  <li><a href="#">Math</a></li>
+                  <li><a href="#">Science &amp; Engineering</a></li>
+                  <li><a href="#">Arts &amp; Humanities</a></li>
+                  <li><a href="#">Economics &amp; Finance</a></li>
+                  <li><a href="#">Business Administration</a></li>
+                  <li><a href="#">Computer Science</a></li>
+              </ul>
+          </div>
+          <div class="col-lg-3">
+              <h3 class="footer-heading"><span>Contact</span></h3>
+              <ul class="list-unstyled">
+                  <li><a href="#">Help Center</a></li>
+                  <li><a href="#">Support Community</a></li>
+                  <li><a href="#">Press</a></li>
+                  <li><a href="#">Share Your Story</a></li>
+                  <li><a href="#">Our Supporters</a></li>
+              </ul>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="copyright">
+                <p>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+  </div>
+  <!-- .site-wrap -->
+
+  <!-- loader -->
+  <div id="loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#51be78"/></svg></div>
+
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/jquery.countdown.min.js"></script>
+  <script src="js/bootstrap-datepicker.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/jquery.fancybox.min.js"></script>
+  <script src="js/jquery.sticky.js"></script>
+  <script src="js/jquery.mb.YTPlayer.min.js"></script>
+
+
+
+
+  <script src="js/main.js"></script>
+
+</body>
+
+</html>
